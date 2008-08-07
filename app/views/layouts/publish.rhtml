@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<!-- layout publish -->
+<html>
+<head>
+	<%= render 'globals/head' %>
+</head>
+<body class="bg_main body_layout_2">
+	<div id="wrapper">
+		<div id="header">
+			<%= yield :header %>
+		</div>
+		<div id="container">
+			<%= yield %>
+		</div>
+	</div>
+	<% unless in_bookmarklet? %>
+		<%= render 'globals/foot' %>
+		<%= render 'globals/top_nav' %>
+	<% end %>
+</body>
+</html>

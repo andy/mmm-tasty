@@ -1,0 +1,52 @@
+<% @title = (@new_record ? 'новая запись ' : 'редактирование записи ') + @entry.to_russian %>
+<div class='center_data_big_form'>
+
+	<div id='preview_holder'>
+		<%= render(:partial => 'preview') unless @new_record %>
+	</div>
+
+	<form method='post' name='entry_edit_form' action='<%= publish_url(empty_bookmarklet_url_options(:action => @entry[:type].underscore.split(/_/)[0], :bm => in_bookmarklet? ? true : nil)) %>' id='entry_edit_form' enctype="multipart/form-data" class='post'>
+		<%= hidden_field('entry', :id, :style => 'display: none') unless @new_record -%>
+		<%= hidden_field 'entry', :type, :style => 'display: none' %>
+		<%= render 'entries/edit/' + entry.class.to_s.underscore, { :entry => @entry } %>
+		<% unless @entry.is_anonymous? %>
+			<div id='entry_options_toggle'>
+				<% if @new_record %>
+					<%= link_to_function 'Дополнительно ...', 'new Effect.toggle("entry_options", "blind", { duration: 0.3 })' %>
+				<% end %>
+		
+				<div id='entry_options' <%= ' style="display: none"' if @new_record %>>
+					<div id='entry_visibility_div'>
+						<% if entry.visibility != 'voteable' || @new_record %>
+							<label for='entry_visibility'>Тип записи:</label><br/>
+							<%= select :entry, :visibility, @new_record ? Entry::VISIBILITY_FOR_SELECT_NEW : Entry::VISIBILITY_FOR_SELECT_EDIT %>
+						<% end %>
+					</div>
+			
+					<!-- ad_annotation_div removed at rev.211 -->
+			
+					<div id='entry_tags'>
+						<label for='entry_tag_list'>Теги: </label><br/>
+						<%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list' } %>
+						<%= tasty_error_message_on 'entry', 'tag_list' %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+		
+		<%= submit_to_remote "button", "Предпросмотр", :url => { :action => :preview }, :before => 'remote_request_started("generate_preview", "Подготавливаем ...");', :loaded => 'remote_request_finished("generate_preview", "Предпросмотр");', :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
+		<%= submit_tag 'Сохранить', :class => 'button' %>
+		<div class='form_submit_return'>
+			или
+			<% if params[:back] && params[:back] == 'to_entry_page' %>
+				<%= link_to 'вернуться обратно', url_for_entry(@entry, :fragment => @entry.dom_id) %>
+			<% else %>
+				<%= link_to 'вернуться обратно', publish_url(bookmarklet_url_options) %>
+			<% end %>
+		</div>
+	</form>	
+</div>
+
+<% if in_bookmarklet? && params[:bm][:autosave] == 'true' %>
+<script type='text/javascript'>$('entry_edit_form').submit();</script>
+<% end %>

@@ -1,0 +1,6 @@
+---
+mode: development
+bundle: /Applications/Locomotive2/Bundles/standardRailsMar2007.locobundle
+port: 3005
+identifier: rails
+runs_at_launch: 0

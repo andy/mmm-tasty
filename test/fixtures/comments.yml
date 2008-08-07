@@ -1,0 +1,36 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+bored_one:
+  id: 1
+  entry_id: 5
+  user_id: 2
+  comment: |
+    Well, dude, there are a lot of things I can say to support your boredeness, but I would not
+    do so, because I respect YOUR STUFF. Know what I mean?
+  is_disabled: f
+  created_at: <%= Time.now.since(-2.weeks).to_s(:db) %>
+bored_two:
+  id: 2
+  entry_id: 5
+  user_id: 3
+  comment: |
+    Ya know, Anon'z right. You better find some shit to do, or it gets really boring to read that shit here
+  is_disabled: f
+  created_at: <%= Time.now.since(-1.week).to_s(:db) %>
+bored_three:
+  id: 3
+  entry_id: 5
+  user_id: 2
+  comment: |
+    Bobbie!!!!! MAN!!!!!! HOW YOU DIONG THERE?????
+  is_disabled: f
+  created_at: <%= Time.now.since(-3.days).to_s(:db) %>
+bored_four:
+  id: 4
+  entry_id: 5
+  user_id: 1
+  comment: |
+    Guys, thank you for your support. It's *great* pleasue to see you guys here helping me.
+    
+    THANK YOU!
+  is_disabled: f
+  created_at: <%= Time.now.to_s(:db) %>

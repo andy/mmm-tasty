@@ -1,0 +1,29 @@
+<div class='emd_flash' id='emd_flash_<%= entry.id %>' style='display: none'></div>
+<% if entry.tag_list.names.size > 0 %>
+	<div class='emd_tags'>
+		<div>теги:</div>
+		<% entry.tags.each_with_index do |tag, index| %>
+			<span class='emd_tag' id='<%= "t#{tag.id}e#{entry.id}" %>'>
+				<%= link_to tag.name, tag_view_url(:tags => tag.name), :id => "t#{tag.id}e#{entry.id}_a" %>
+				<% if current_user && current_site && current_user.id == current_site.id %>
+					<%= link_to_remote image_tag('delete.gif', :alt => '-', :title => 'удалить этот тег из этой записи', :class => 'emd_delete_tag'), :url => entry_tag_url(entry, tag), :method => :delete %>
+				<% end %>
+				<span id='<%= "t#{tag.id}e#{entry.id}_c" %>'><%= ',' if index < (entry.tags.size - 1) %></span>
+			</span>
+		<% end %>
+	</div>
+<% else %>
+	<div class='emd_tags'>
+		<div class='emd_no_tags_message'>у этой записи нет тегов</div>
+	</div>
+<% end %>
+
+<% if current_site && current_user && current_user.id == current_site.id %>
+	<form method='post' class='emd_addtag'>
+		<div>
+			<input type='text' id='<%= entry.dom_id(:input) %>' name='tag_list' value='' class='emd_addtag_input' />
+			<%= submit_to_remote nil, '+', :url => entry_tags_url(entry), :method => :post %>
+		</div>
+		<span class='emd_addtag_tip'>добавить теги, через запятую</span>
+	</form>
+<% end %>

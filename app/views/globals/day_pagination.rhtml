@@ -1,0 +1,19 @@
+<!-- template globals/day_pagination -->
+<%
+	prev_day = entries.last.prev(:include_private => is_owner?).created_at rescue nil
+	next_day = entries.first.next(:include_private => is_owner?).created_at rescue nil
+%>
+
+<div class='entry_pagination'>
+	<%= link_to('&#x2190; ранее', day_url(:year => prev_day.year, :month => prev_day.month, :day => prev_day.mday), :title => "#{prev_day.mday} #{prev_day.month.to_rmonth} #{prev_day.year}", :class => 'entry_paginate_prev') if prev_day %>
+
+	<%=
+		if next_day
+			if next_day.to_date == Date.today
+				link_to 'сейчас &#x2192;', day_url(:year => next_day.year, :month => next_day.month, :day => next_day.mday), :title => "Сегодня, #{next_day.mday} #{next_day.month.to_rmonth}",  :class => 'entry_paginate_next'
+	   	else
+				link_to 'позже &#x2192;', day_url(:year => next_day.year, :month => next_day.month, :day => next_day.mday), :title => "#{next_day.mday} #{next_day.month.to_rmonth} #{next_day.year}", :class => 'entry_paginate_next'
+			end
+		end %>
+</div>
+<!-- /template globals/day_pagination -->

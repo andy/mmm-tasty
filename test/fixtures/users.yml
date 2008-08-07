@@ -1,0 +1,26 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+andy:
+  id: 1
+  email: andrew.zotov@gmail.com
+  is_confirmed: true
+  password: qwerty
+  openid: NULL
+  url: andy
+  is_disabled: f
+  created_at: <%= Time.now.to_s(:db) %>
+anonuzer:
+  id: 2
+  email: NULL
+  password: NULL
+  openid: http://anonuzer.myopenid.com/
+  url: anonuzer
+  is_disabled: f
+  created_at: <%= Time.now.to_s(:db) %>
+bob:
+  id: 3
+  email: bob@sparja.com
+  password: bob
+  openid: NULL
+  url: bob
+  is_disabled: f
+  created_at: <%= Time.now.to_s(:db) %>

@@ -1,0 +1,9 @@
+<div class='entry_voter entry_voter_up enable_for_current_user' style='display: none;'>
+	<div class='rel'><%= link_to_remote '&uarr;', { :url => vote_url(:entry_id => entry.id, :action => 'up') }, :class => "vote_up", :title => 'проголосовать за' %></div>
+</div>
+
+<span class='entry_rating' id='entry_rating_<%= entry.id %>'><%= entry.rating.value %></span>
+
+<div class='entry_voter entry_voter_down enable_for_current_user' style='display: none;'>
+	<%= link_to_remote '&darr;', { :url => vote_url(:entry_id => entry.id, :action => 'down') }, :class => "vote_down", :title => 'проголосовать против' %>
+</div>

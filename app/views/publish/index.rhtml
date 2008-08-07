@@ -1,0 +1,49 @@
+<% @title = 'выберите вид для новой записи' %>
+<% content_for :header do %>
+	<div class='post_name'>
+		<% if in_bookmarklet? %>
+			Как запостим?
+		<% else %>
+			<%= link_to "&#x2190;", url_for_tlog, :title => 'На главную тлога' %>&nbsp;
+			Ммм... что запостите?
+		<% end %>
+	</div>
+<% end %>
+
+<% if in_bookmarklet? %>
+	<div id='in_bookmarklet'>
+		<p>Исходный адрес: <%= h params[:bm][:url] %></p>
+		<p>Комментарий: <%= h params[:bm][:c] %></p>
+	</div>
+<% end %>
+<div>
+	<div class="choose_table">
+		<table class="post">
+			<tr>
+				<td class="top"><a href="<%= url_for bookmarklet_url_options(:action => "text") %>"><img src="<%= image_path "post_justpost.gif" %>" width="206" height="219"></a></td>
+				<td class="top"><a href="<%= url_for bookmarklet_url_options(:action => "link") %>"><img src="<%= image_path "post_link.gif" %>" width="206" height="219"></a></td>
+				<td class="top"><a href="<%= url_for bookmarklet_url_options(:action => "quote") %>"><img src="<%= image_path "post_quote.gif" %>" width="206" height="219"></a></td>
+			</tr>
+			<tr>
+				<td class="bottom"><a href="<%= url_for bookmarklet_url_options(:action => "image") %>"><img src="<%= image_path "post_photo.gif" %>" width="206" height="219"></a></td>
+				<td class="bottom"><a href="<%= url_for bookmarklet_url_options(:action => "video") %>"><img src="<%= image_path "post_video.gif" %>" width="206" height="219"></a></td>
+				<td class="bottom"><a href="<%= url_for bookmarklet_url_options(:action => "convo") %>"><img src="<%= image_path "post_talk.gif" %>" width="206" height="219"></a></td>
+			</tr>
+		</table>
+		<div class='show_additional' id='show_additional'>
+			<%= link_to_function 'Дополнительно', "Element.hide('show_additional'); new Effect.BlindDown('additional', { duration: 0.5 });" %>
+		</div>
+		<div id='additional' style='display: none;'>
+			<div class='show_additional'>
+				<%= link_to_function 'Скрыть', "new Effect.BlindUp('additional', { duration: 0.5, afterFinish: function( ) { Element.show('show_additional'); } });" %>
+			</div>
+			<table class='post'>
+				<tr>
+					<td class="bottom"><a href="<%= url_for bookmarklet_url_options(:action => "song") %>"><img src="<%= image_path "post_song.gif" %>" width="206" height="219"></a></td>
+					<td class="bottom"><a href="<%= url_for bookmarklet_url_options(:action => "code") %>"><img src="<%= image_path "post_code.gif" %>" width="206" height="219"></a></td>
+					<td class="bottom"><a href="<%= url_for bookmarklet_url_options(:action => "anonymous") %>"><img src="<%= image_path "post_anonymous.gif" %>" width="206" height="219"></a></td>
+				</tr>
+			</table>
+		</div>
+	</div>	
+</div>

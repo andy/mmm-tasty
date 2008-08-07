@@ -1,0 +1,27 @@
+
+<div class='onair'>
+	<%= render 'entries/anonymous_entry_display', { :entry => @entry, :show_datetime => true } %>
+	<a name="comments"></a>
+
+	<% if @entry.comments_enabled? || @entry.comments.size > 0 %>
+		<div class="post_comments">
+			<div class="top_comments_text">
+				<% if @entry.comments.size == 0 %>
+					Комментариев еще нет
+				<% else %>
+					Комментарии (<span id='top_comment_number'><%= @entry.comments.size %></span>):
+				<% end %>
+			</div>
+
+			<%= render :partial => 'tlog/comment', :collection => Comment.find(:all, :conditions => ['comments.entry_id = ?', @entry.id], :include => { :user => :avatar }, :order => 'comments.id') if @entry.comments.size %>
+
+			<% if @entry.comments_enabled? %>
+				<%= render :partial => 'comment_form' %>
+			<% end %>
+		</div>
+	<% end %>
+	
+	<% if !@entry.comments_enabled? %>
+		<div class='return_from_permalink'>комментарии были отключены владельцем тлога</div>
+	<% end %>
+</div>

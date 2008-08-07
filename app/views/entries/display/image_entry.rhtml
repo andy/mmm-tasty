@@ -1,0 +1,18 @@
+<%-
+	mini ||= false unless local_assigns.has_key?(:mini) && mini
+-%>
+<%= "<a href='#{h entry.data_part_3}' rel='nofollow'>" unless entry.data_part_3.blank? %>
+<% if entry.data_part_1 -%>
+		<img src='<%= h entry.data_part_1 %>'<%= entry.geometry_string(mini ? 200 : 420) %> />
+<% elsif !entry.attachments.empty? -%>
+	<img src='<%= image_path entry.attachments.first.public_filename %>'<%= entry.geometry_string(mini ? 200 : 420) %> />
+<% else -%>
+  image entry internal error
+<% end -%>
+<%= "</a>" unless entry.data_part_3.blank? %>
+
+<% if !entry.data_part_2.blank? %>
+	<div class='pic_comment'>
+		<%= white_list_entry entry.data_part_2 %>
+	</div>
+<% end %>

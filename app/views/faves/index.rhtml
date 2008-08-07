@@ -1,0 +1,23 @@
+<% @title = "#{current_site.gender('его', 'её')} избранное#{", страница #{params[:page].to_i}" if @page > 1}" %>
+
+<% if current_site.faves.size.zero? %>
+	<div class='filter'>
+		<p>В <%= current_site.gender('его', 'её') %> <span class='highlight large'>избранном</span> пока что совсем пусто.</p>
+	</div>
+<% else %>
+	<div class='filter'>
+		<p><%= current_site.gender('Его', 'Её') %> <span class='highlight large'>избранное</span></p>
+	</div>
+	<%= render ('globals/pagination', :pageable => @faves, :reverse => true) if @page > 1 %>
+
+	<% @faves.each do |fave| %>
+		<% next if fave.entry.nil? %>
+		<%= render 'entries/entry_display', { :entry => fave.entry, :show_comments_bubble => true, :show_username => true } %>
+	<% end %>
+
+	<%= render 'globals/pagination', :pageable => @faves, :reverse => true %>
+<% end %>
+
+<div class='return_from_permalink'>
+	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", url_for_tlog(current_site) %>
+</div>

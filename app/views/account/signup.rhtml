@@ -1,0 +1,28 @@
+<% @title = 'Регистрация нового пользователя на mmm-tasty.ru' %>
+
+<div class='center_data_big_form'>
+	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
+
+		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
+
+		<div class='form_string'>
+			<label for="user_url">имя Вашего будущего сайта <em>(всегда можно изменить)</em>:
+				<%= f.text_field :url, :class => "at_input" %>
+				<div class="rel"><div class="at"><h1>.mmm-tasty.ru</h1></div></div>
+				<%= tasty_error_message_on('user', 'url') %>
+			</label>
+		</div>
+			
+		<input type="submit" value="Зарегистрироваться" class='button'/>
+
+		<div class='options_togo'>
+			или <%= link_to 'у меня уже есть логин', login_url %>
+		</div>
+		
+		<div id='navigation'>
+			<%= link_to "&#x2190; вернуться на главную", main_url, :id => 'return_to_main' %>
+		</div>
+	<% end %>
+</div>
+
+<%= observe_field 'user_url', :url => { :action => 'update_url_status' }, :frequency => 0.25, :with => 'url' %>

@@ -1,0 +1,130 @@
+<style type='text/css'>
+<% @design = current_site.tlog_design_settings || TlogDesignSettings.new
+case @design.date_style
+  when 'outside' %>
+	/* date_style == :outside */
+	div.service_date {
+		position:absolute;
+		left:-273px;
+		border:0!important;
+		width:200px;
+		text-align:right;
+		font-size:1em!important;
+		text-transform:none!important;
+	}
+	div.service_date span { color:#808080; }
+	span.blue { display:block!important; }
+	span.bg_text_comma { display: none!important;}
+	div.service_date span span { background:white; }
+<% when 'huge' %>
+	/* date_style == :huge */
+	div.service_date {
+		position:absolute;
+		left:-273px;
+		border:0!important;
+		width:200px;
+		text-align:right;
+		font-size:1em!important;
+		text-transform:none!important;
+	}
+	div.service_date span { color:#808080; }
+	span.blue { display:block!important; }
+	span.bg_text_comma { display: none!important;}
+	div.service_date span span { background:white; }
+	span.bg_text_date { text-decoration: none; font-size: 26pt; }
+	span.blue { text-decoration: none; font-size: 13pt; }
+<% end %>
+<% unless @design.background_url.blank? %>
+/* new background */
+div.tlog { background: transparent url(<%= h @design.background_url %>) <%= @design.background_fixed? ? 'fixed' : 'repeat' %>!important; }
+<% end %>
+<% unless @design.color_tlog_text.blank? %>
+/* text of tlog */
+.post_content *, .comment_text *, .top_comments_text, div#post_comment_form_greeting, #allowed_html_tags, span.quote_entry_body, .filter {
+	color:#<%= @design.color_tlog_text %>!important;
+}
+.post_text { border-color:#<%= @design.color_tlog_text %>!important; }
+<% end %>
+<% if !@design.color_tlog_bg.blank? || @design.color_tlog_bg_is_transparent? %>
+/* tlog background */
+.rounded_main_center, .person_1, .person_2, .person_3, .person_4, .emd_tag a {
+	<%- if @design.color_tlog_bg_is_transparent? -%>
+		background:transparent!important;
+	<%- else -%>
+		background:#<%= @design.color_tlog_bg %>!important;
+	<%- end -%>
+}
+<% end %>
+<% unless @design.color_bg.blank? %>
+/* background color */
+.tlog { background:#<%= @design.color_bg %>!important; }
+<% end %>
+<% unless @design.color_sidebar_text.blank? %>
+/* sidebar text */
+#tlog_menu_url a, #tlog_menu_url, #tlog_menu_title, #footer a, #footer p, div.sidebar a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label, #sidebar_hide<%= ', div.service_date span' if %w(huge outside).include?(@design.date_style) %> {
+	color:#<%= @design.color_sidebar_text %>!important;
+}
+<% end %>
+<% if !@design.color_sidebar_bg.blank? || @design.color_sidebar_bg_is_transparent? %>
+/* sidebar bg */
+#tlog_menu_url a, #tlog_menu_url, #tlog_menu_title, #footer a, #footer p, div.sidebar
+a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label<%= ', div.service_date span span' if %w(huge outside).include?(@design.date_style) %> {
+	<%- if @design.color_sidebar_bg_is_transparent? -%>
+		background:transparent!important;
+	<%- else -%>
+		background:#<%= @design.color_sidebar_bg %>!important;
+	<%- end -%>
+}
+<% end %>
+<% unless @design.color_date.blank? %>
+/* date color */
+.service_date span span, div.service_date, .entry_pagination a, .entry_pagination  {
+	color:#<%= @design.color_date %>!important;
+	border-color:#<%= @design.color_date %>!important;
+}
+<% end %>
+<% unless @design.color_highlight.blank? %>
+/* highlight color */
+#sidebar_tag_cloud_content a:hover, #sidebar_calendar_content a:hover, #sidebar_public_friends_content a:hover, .about_more, #sidebar_hide, .highlight {
+	background-color:#<%= @design.color_highlight %>!important;
+}
+<% end %>
+<% unless @design.color_link.blank? %>
+/* link */
+.onair a, div.post_link_entry a.big_link {
+	color:#<%= @design.color_link %>!important;
+	border-color:#<%= @design.color_link %>!important;
+}
+.post_comment_author .highlight, .entry_metadata_link {
+	background-color:#<%= @design.color_link %>!important;
+}
+<% end %>
+<% if !@design.color_tlog_bg.blank? || @design.color_tlog_bg_is_transparent? %>
+/* username inverted link */
+.post_comment_author a.highlight {
+	<% if @design.color_tlog_bg_is_transparent? %>
+		color:transparent!important;
+	<% else %>
+		color:#<%= @design.color_tlog_bg %>!important;
+	<% end %>
+}
+<% end %>
+<% if !@design.color_voter_bg.blank? || @design.color_voter_bg_is_transparent? %>
+/* voter background color */
+.entry_rating {
+	<% if @design.color_voter_bg_is_transparent? %>
+		background:transparent!important;
+	<% else %>
+		background-color:#<%= @design.color_voter_bg %>!important;
+	<% end %>
+}
+<% end %>
+<% unless @design.color_voter_text.blank? %>
+/* voter text color */
+.entry_rating, .entry_metadata_link {
+	color:#<%= @design.color_voter_text %>!important;
+}
+<% end %>
+/* user-defined css */
+<%= @design.user_css.tr('<>', '').gsub(/behavior/i, '').gsub(/expression/i, '') unless @design.user_css.blank? %>
+</style>

@@ -1,0 +1,3 @@
+page.hide :feedback_create
+page.insert_html :bottom, :feedbacks, :partial => 'feedback', :feedback => @feedback
+page.visual_effect :highlight, @feedback.dom_id, { :duration => 0.3 }

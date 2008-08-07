@@ -1,0 +1,28 @@
+<% @title = 'поменять адрес тлога' %>
+
+<% content_for :header do %>
+	переименовать тлог
+<% end %>
+
+<div class="center_data_big_form">
+	<p>
+		У нас на тейсти легко оставаться анонимным, если хочется. На этой специальной странице можно <span class='highlight'>изменить адрес</span> Вашего тлога, т.е. переехать со всем содержимым Вашего текущего тлога на новый адрес. Если он, конечно, еще ни кем не занят. Пожалуйста, обратите внимание что после нажатия кнопки "Переехать!" Ваш тлог будет доступен <span class='highlight'>только по новому адресу</span>, а старый адрес сразу же перестанет работать.
+	</p>
+	
+	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
+
+		<div class='form_string'>
+			<label for="user_url">новое имя / адрес:
+				<%= f.text_field :url, :class => "at_input" %>
+				<div class="rel"><div class="at"><h1>.mmm-tasty.ru</h1></div></div>
+				<%= tasty_error_message_on('user', 'url') %>
+			</label>
+		</div>
+
+		<div class='submit_button'>
+			<input type='submit' value='Переехать!' class='button' />
+		</div>
+	<% end %>
+</div>
+
+<%= observe_field 'user_url', :url => { :action => 'update_url_status' }, :frequency => 0.25, :with => 'url' %>

@@ -1,0 +1,31 @@
+<% if entry.attachments && entry.attachments[0] %>	
+	<% if embed %>
+		<object type="application/x-shockwave-flash" data="<%= image_path "/swf/player.swf" %>" id="audioplayer<%= entry.id %>" height="24" width="290">
+			<param name="movie" value="<%= image_path "/swf/player.swf" %>">
+			<param name="FlashVars" value="playerID=<%= audio_player_id %>&amp;soundFile=<%= url_for_tlog(entry.author) + entry.attachments[0].public_filename %>">
+			<param name="quality" value="high">
+			<param name="menu" value="false">
+			<param name="wmode" value="transparent">
+		</object>
+	<% else %>
+		<div id='tasty_song_embed_<%= entry.id %>'>
+			Hello, you either have JavaScript turned off or an old version of Macromedia's Flash Player. <a href="http://www.macromedia.com/go/getflashplayer/">Get the latest flash player</a>.
+		</div>
+		<script type='text/javascript'>
+			// <![CDATA[
+				var so = new SWFObject("http://www.mmm-tasty.ru/swf/player.swf", "tasty_song_embed_<%= entry.id %>_obj", "290", "24", 7, "#FFFFFF");
+				so.addParam('wmode', 'transparent');
+				so.addParam('menu', 'false');
+				so.addParam('FlashVars', "playerID=<%= audio_player_id %>&amp;soundFile=<%= entry.attachments[0].public_filename %>");
+				so.write("tasty_song_embed_<%= entry.id %>");
+			// ]]>
+		</script>
+	<% end %>
+	<% if entry.data_part_2 %>
+		<div class='song_comment'>
+			<%= white_list_entry entry.data_part_2 %>
+		</div>
+	<% end %>
+<% else %>
+	song entry: internal error
+<% end %>

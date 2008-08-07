@@ -1,0 +1,17 @@
+Здравствуйте, <%= h @comment.entry.author.username %>!
+
+Вам оставили комментарий к записи:
+ <%= h @comment.entry.excerpt %>
+
+Текст комментария:
+ <%= h @comment.comment %>
+
+Посмотреть на сайте:
+<%- if @comment.entry.is_anonymous? -%>
+ <%= anonymous_url(:host => 'www.mmm-tasty.ru', :action => 'show', :id => @comment.entry_id) + "#comment#{@comment.id}" %>
+<%- else -%>
+ <%= "#{url_for_tlog(User.find(@comment.entry.user_id))}#{entry_path(@comment.entry)}#comment#{@comment.id}" %>
+<%- end -%>
+
+
+С уважением, Ммм... тейсти.

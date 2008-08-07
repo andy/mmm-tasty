@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+#
+# Usage: script/mail_fetcher start [environment]
+#
+RAILS_ENV = ARGV[1] if ARGV[1]
+require File.dirname(__FILE__) + '/../config/environment.rb'
+
+require 'daemon'
+require 'net/pop'
+
+class MailFetcher < Daemon::Base
+  @config = YAML.load(IO.read("#{RAILS_ROOT}/config/mail_fetcher.yml"))
+  unless @config[RAILS_ENV]
+    puts "Error: no configuration found for '#{RAILS_ENV}' environment in config/mail_fetcher.yml"
+    exit
+  end
+  @config = @config[RAILS_ENV].to_options
+  @logger = Logger.new("#{RAILS_ROOT}/log/#{RAILS_ENV}-fetcher.log")
+
+  def self.start
+    puts "Starting Mail Fetcher Daemon (environment: #{RAILS_ENV})"
+    
+    loop do
+      pop = Net::POP3.start(@config[:server], nil, @config[:username], @config[:password])
+      unless pop.mails.empty?
+        Entry.connection.reconnect! # make sure sql is up.... any better way to do it anyways?
+        pop.each_mail do |email|
+          begin
+            @logger.info "mail_fetcher: processing new incoming message, #{email.uidl}"
+            IncomingEntryHandler.receive(email.pop)
+            email.delete
+          rescue Exception => e
+            @logger.info "mail_fetcher: error receiving email " + Time.now.to_s + "::: " + e.message
+            @logger.info e.backtrace.join("\n")
+          end
+        end
+      else
+        @logger.info "mail_fetcher: mailbox is empty at #{Time.now.to_s}"
+      end
+      pop.finish
+      
+      # CachedModel.cache_reset
+
+      sleep(@config[:interval] || 60)
+    end
+  end
+  
+  def self.stop
+    puts "Stopping Mail Fetcher Daemon"
+  end
+end
+
+MailFetcher.daemonize

@@ -1,0 +1,27 @@
+table {
+	width:50%;
+}
+span.header {
+	font-size:160%;
+	font-style:italic;
+}
+#friends_table p {
+	font-size:0.72em;
+	font-style:normal;
+	line-height:1em !important;
+}
+#public_friends a {
+	color:green;
+}
+#public_friends a, #friends a, #ignored a, #trash a {
+	padding:0pt 4px;
+}
+body {
+	padding:40px;
+}
+#guessed a {
+	color:orange;
+} 
+#friends_table {
+	width:560px;
+}

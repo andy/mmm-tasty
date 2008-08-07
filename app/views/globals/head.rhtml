@@ -1,0 +1,45 @@
+<!-- template: globals/head -->
+
+<meta name="robots" content="index,follow" />
+
+<% unless @disable_css %>
+<%- if !request.cookies['css'].blank? -%>
+	<%- css = h(request.cookies['css'].value) -%>
+	
+	<% if css.starts_with?('http://www.mmm-tasty.ru/stylesheets/') %>
+		<%- css_path = css[36..100] -%>
+		<%= stylesheet_link_tag (css_path + 'global') %>
+		<!--[if IE]> <%= stylesheet_link_tag (css_path + 'ie_only.css') %> <![endif]-->
+		<%= stylesheet_link_tag (css_path + 'tlog') if current_site %>
+	<% else %>
+		<link href="<%= css + 'global.css' %>" rel="stylesheet" type="text/css">
+		<!--[if IE]> <link href="<%= css + 'ie_only.css' %>" rel="stylesheet" type="text/css"> <![endif]-->
+		<% if current_site %>
+			<link href="<%= css + 'tlog.css'%>" rel="stylesheet" type="text/css">
+		<% end %>
+	<% end %>
+<%- else -%>
+	<%= stylesheet_link_tag 'global' %>
+	<!--[if IE]> <%= stylesheet_link_tag 'ie_only.css' %> <![endif]-->
+	<%= stylesheet_link_tag 'tlog' if current_site %>
+<%- end -%>
+<% end %>
+
+<%#= javascript_include_tag 'prototype', 'effects', 'application', 'audio-player', 'swfobject' %>
+<%#= javascript_include_tag 'default' %>
+<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'application', 'audio-player', 'swfobject', :cache => true %>
+<script type='text/javascript'>function urchinTracker(url) { return true; }</script>
+
+<script type='text/javascript'>var current_user = <%= current_user ? current_user.id : 0 %>;</script>
+
+<link rel="shortcut icon" href="<%= image_path '/favicon.ico' %>" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="generator" content="http://www.mmm-tasty.ru/" />
+
+<% if @title %>
+	<title><%= h(current_site ? host_for_tlog(current_site, { :use_domain => true }) : 'ммм... тейсти') + ' &mdash; ' + strip_tags(@title) %></title>
+<% end %>
+
+<%= yield :head %>
+<!-- /template: globals/head -->

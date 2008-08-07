@@ -1,0 +1,62 @@
+<% @title = 'общие настройки пользователя' %>
+<% content_for :header do %>
+	общие настройки пользователя
+<% end %>
+
+<form method='post' action='<%= settings_url(:action => 'user_common') %>' enctype='multipart/form-data' class='small'>
+	<table class='form'>
+		<tr>
+			<td class='label'><label for='settings_username'>Имя:</label></td>
+			<td class='input'>
+				<%= text_field :user, :username %>
+				<div class='input_note'>
+					нам это нужно лишь для того, чтобы обращаться к Вам по имени внутри системы
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'><label for='settings_gender_m'>Пол:</label></td>
+			<td class='input'>
+				<%= radio_button :user, :gender, 'm', :class => 'radio' %><label for='user_gender_m' class='radio'>мужской</label>
+				<%= radio_button :user, :gender, 'f', :class => 'radio' %><label for='user_gender_f' class='radio'>женский</label>
+				<div class='input_note'>
+					мы тут где-то пишем "его тлог" или "её тлог", и эта настройка как раз для этого
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'><label for='avatar_uploaded_data'>Ваш портрет:</label></td>
+			<td class='input'>
+				<% if current_user.avatar %>
+					<%= avatar_image_tag(current_user) %>
+					<%= link_to image_tag('delete.gif'), settings_url(:action => :deavatar), :title => 'удалить аватар', :method => :delete %>
+					<br/> <br/>
+				<% end %>
+				<%= file_field 'avatar', :uploaded_data %>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'><label for='tlog_settings_title'>Заголовок тлога:</label></td>
+			<td class='input'>
+				<%= text_field_tag 'tlog_settings[title]', @tlog_settings[:title], :id => 'tlog_settings_title' %>
+				<div class='input_note'>
+					с этим пунктом должно быть все понятно и без комментария
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'><label for='tlog_settings_about'>О себе:</label></td>
+			<td class='input'>
+				<%= text_area_tag 'tlog_settings[about]', @tlog_settings[:about], :rows => nil, :cols => nil, :id => 'tlog_settings_about', :class => 'resizeable' %>
+				<div class='input_note'>
+					Этот текст, который Вы, возможно, здесь напишете, он появится на странице "о вас", когда другой пользователь нажмет на Вашу картинку в тлоге.
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class='submit_button'>
+		<input type='submit' value='Сохранить' class='button' />
+	</div>
+</form>
+

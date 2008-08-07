@@ -1,0 +1,7 @@
+<%
+	mini ||= false unless local_assigns.has_key?(:mini) && mini
+%>
+<a href="<%= h entry.data_part_1 %>" target="_blank" rel="nofollow" class="big_link"><%= entry.data_part_2.blank? ? (h(truncate(entry.data_part_1, mini ? 25 : 30))) : h(entry.data_part_2) %></a>
+<% if entry.data_part_3 %>
+	<%= white_list_entry entry.data_part_3 %>
+<% end %>

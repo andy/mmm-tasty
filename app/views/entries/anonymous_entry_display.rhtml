@@ -1,0 +1,32 @@
+<% if show_datetime %>
+	<div class="rel">
+		<div class="service_date">
+			<%- if entry.created_at.today? -%>
+				<span class="blue">
+					<span>Сегодня<span class='bg_text_comma'>,</span></span>
+				</span>
+			<%- end -%>
+			<span class="bg_text_date"><span><%= entry.created_at.day %></span></span>
+			<span class="blue"><span><%= entry.created_at.month.to_rmonth %></span></span><%- if entry.created_at.same_day?(Time.now.yesterday) -%><span class="blue"><span><span class='bg_text_comma'>, </span> вчера</span></span><%- end -%>
+		</div>
+	</div>
+<% end %>
+
+<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %>" id="<%= dom_id(entry) %>">
+	<!-- <div class='rel'><div class='post_anonymous_author'><%= link_to "Анонимка ##{entry.id}", anonymous_path(:action => :show, :id => entry.id) %></div></div> -->
+	
+	<%- if entry.comments_enabled? || entry.comments.size > 0 -%>
+		<div class='service_comments<%= ' has_comments' if entry.comments.size > 0 %>'>
+			<div class="comment_cloud iePNG<%= ' has_comments' if entry.comments.size > 0 %>"><a href="/main/anonymous/show/<%= entry.id %>" title='читать комментарии / комментировать'><span id='entry_comments_count_<%= entry.id %>'><%= entry.comments.size %></span></a></div>
+		</div>
+	<%- else -%>
+		<div class='service_link'><a href="/main/anonymous/show/<%= entry.id %>" title='постоянная ссылка только на эту запись'>link</a></div>
+	<%- end -%>
+	
+	<% if entry.data_part_2 %>
+		<h1><span class="post_text_h1"><%= white_list_entry entry.data_part_2 %></span></h1>
+	<% end %>
+	<div class='post_text'>
+		<%= white_list_entry entry.data_part_1 %>
+	</div>
+</div>

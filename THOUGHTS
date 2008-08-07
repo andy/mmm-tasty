@@ -1,0 +1,10 @@
+
+Find items with similar (or as many as possible) relationships - for a 'related posts' box etc
+http://snippets.dzone.com/posts/show/35
+
+Matching on data intersection across a many-to-many join - aka, how to find an object (e.g. a post or a recipe) with two or more tags (i.e. show my all posts tagged with tagging and sql).
+http://www.petercooper.co.uk/archives/000648.html
+
+
+http://subsimple.com/bookmarklets/jsbuilder.htm
+javascript:d=document,s='';if(d.getSelection)s=d.getSelection();if(d.selection)s=d.selection.createRange().text;if(window.getSelection)s=window.getSelection();void(window.open('http://www.mmm-tasty.ru/bookmarklet/new?v=1&url='+encodeURIComponent(d.location)+'&title='+encodeURIComponent(d.title)+'&c='+encodeURIComponent(s),'n','menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=790,height=700,left=50,top=50'))

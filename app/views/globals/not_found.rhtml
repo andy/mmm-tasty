@@ -1,0 +1,8 @@
+<% @title = '404 - страница не найдена' %>
+Запрашиваемая Вами страница не найдена
+<br/>
+<% if current_site %>
+	<%= link_to "&#x2190; вернуться на главную тлога", url_for_tlog(current_site) %>
+<% else %>
+	<%= link_to "&#x2190; вернуться на главную", main_url(:host => 'www.mmm-tasty.ru') %>
+<% end %>

@@ -1,0 +1,42 @@
+<!-- top_nav -->
+<div class='pref' id='fixedbox_r_t'>
+ <div class="krug_div iePNG"><%= image_tag "krug.png", :size => '38x47', :class => 'krug' %></div>
+ <div class="wrapper_pref">
+	<% if current_user %>
+  		<div class='iePNG pref_png'>
+			<table id='pref_table'>
+				<tr>
+					<td id='pref_home'><%= link_to image_tag("live.gif", :class => 'home', :size => '17x14'), main_url(:host => 'www.mmm-tasty.ru', :action => :live), :title => 'В прямой эфир', :onclick => 'urchinTracker("/top_nav/live");' %></td>
+					<td id='pref_fav'>
+						<%= link_to_function (image_tag('heart_sel.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart_sel') + image_tag('heart.gif', :class => 'heart', :size => '9x8', :id => 'pref_fav_local_heart', :style => 'display: none')), 'new Effect.toggle("pref_friends_rel", "appear", { duration: 0.3 }); urchinTracker("/top_nav/heart"); $("pref_fav_local_heart", "pref_fav_local_heart_sel").invoke("toggle"); return false;', :id => 'pref_fav_local', :style => 'display: none' %>
+						<%= link_to_remote image_tag("heart.gif", :class => 'heart', :size => '9x8'), { :url => global_url(:action => 'pref_friends'), :success => '$("pref_fav_remote", "pref_fav_local").invoke("toggle");', :after => 'urchinTracker("/top_nav/heart"); return false;'}, :id => 'pref_fav_remote' %>
+					</td>
+					<td id='pref_add'><%= link_to image_tag("add_post.png", :size => '22x23', :class => 'img_new_post'), publish_url(:host => host_for_tlog), :title => 'Сделать новую запись', :onclick => 'urchinTracker("/top_nav/publish");' %></td>
+					<td id='pref_user'><%= link_to_tlog(current_user, { :to => :domain }, :class => 'username', :onclick => 'urchinTracker("/top_nav/tlog");') %></td>
+					<td id='pref_pref'><%= link_to image_tag("pref.gif", :size => '19x19', :class => 'prefer', :title => 'Настройки'), settings_url(:host => host_for_tlog), :title => 'Настройки', :onclick => 'urchinTracker("/top_nav/settings");' %></td>
+					<td id='pref_exit'><%= link_to image_tag("exit.gif", :size => '23x23', :class => 'exit', :title => 'Выход'), logout_url(:host => 'www.mmm-tasty.ru'), :title => 'Выйти', :confirm => 'Вы действительно хотите выйти?', :onclick => 'urchinTracker("/top_nav/logout");' %></td>
+				</tr>
+			</table>
+  		</div>
+	<% else %>
+		<div class='unregistered iePNG pref_png'>
+			<table id='pref_table'>
+				<tr>
+					<td id='pref_home'><%= link_to image_tag("home.gif", :size => '17x14', :class => 'home'), main_url(:host => 'www.mmm-tasty.ru'), :title => 'На главную тейсти', :onclick => 'urchinTracker("/top_nav/main");' %></td>
+					<td id='pref_unreg_text'>Вы вне системы,&nbsp;</td>
+					<td id='pref_login'><%= link_to "войти", login_url(:host => 'www.mmm-tasty.ru', :ref => (current_site.domain if current_site)), :onclick => 'urchinTracker("/top_nav/login");' %></td>
+					<td id='pref_signup'><%= link_to 'зарегистрироваться', signup_url(:host => 'www.mmm-tasty.ru'), :onclick => 'urchinTracker("/top_nav/signup");' %></td>
+				</tr>
+			</table>
+		</div>
+	<% end %>
+ </div>
+ <% if current_user %><div id='pref_friends_holder'></div><% end %>
+</div>
+
+<% if RAILS_ENV == 'development' || (current_user && current_user.is_admin?) %>
+	<div id='debug_button'>
+		<%= link_to (RAILS_ENV == 'development') ? 'dev mode' : 'prod mode', admin_url(:host => 'www.mmm-tasty.ru', :action => 'switch'), :title => (RAILS_ENV == 'development') ? 'switch to Production version' : 'switch to Development version' %>
+	</div>
+<% end %>
+<!-- /top_nav -->

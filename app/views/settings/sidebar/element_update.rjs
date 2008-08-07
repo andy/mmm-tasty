@@ -1,0 +1,11 @@
+page.call :clear_all_errors
+if @element.valid?
+  page.replace_html @element.dom_id, :partial => 'element', :locals => { :element => @element }
+else
+  @element.errors.each do |element, message|
+    page.call :error_message_on, (@element.new_record? ? @section : @element).dom_id((@element[:type] == 'SidebarLinkElement') ? :sidebar_link_element : :sidebar_element), message
+  end
+end
+# page[@element.dom_id(:edit)].hide()
+# page.replace_html @element.dom_id(:content), @element.content
+# page.visual_effect :highlight, @element.dom_id

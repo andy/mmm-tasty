@@ -1,0 +1,12 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- template: entry_embed -->
+<html>
+	<head>
+		<%= stylesheet_link_tag 'embed' %>
+	</head>
+	<body>
+		<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %>" id="<%= dom_id(entry) %>">
+			<%= render 'entries/display/' + entry.class.to_s.underscore, { :entry => entry, :embed => true } %>
+		</div>
+	</body>	
+</html>

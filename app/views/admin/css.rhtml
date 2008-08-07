@@ -1,0 +1,25 @@
+<% content_for :header do %>
+	Какие CSS-шаблоны использовать?
+<% end %>
+
+<p class='settings_warning'>сейчас Вами используется css с адреса <%= link_to h(@css), @css %></p>
+
+<form method='post' action='<%= admin_url(:action => 'css') %>' class='small'>
+	<table class='form'>
+		<tr>
+			<td class='label'>
+				<label for='css_url'>CSS base:</label>
+			</td>
+			<td>
+				<input id='css_url' type='text' name='css' value='<%= h @css %>' />
+				<abbr><%= link_to_function 'http://genue.ru/project/cut/css', '$("css_url").value="http://genue.ru/project/cut/css"' %></abbr>,
+				<abbr><%= link_to_function "http://www.mmm-tasty.ru/stylesheets/", "$('css_url').value='http://www.mmm-tasty.ru/stylesheets/'" %></abbr>,
+				<abbr><%= link_to_function "http://www.mmm-tasty.ru/stylesheets/genue/css/", "$('css_url').value='http://www.mmm-tasty.ru/stylesheets/genue/css/'" %></abbr>
+			</td>
+		</tr>
+	</table>
+	
+	<div class='submit_button'>
+		<input type='submit' value='Сохранить' class='button' /><div class='cancel_link'>или <%= link_to "отменить", admin_url %></div>
+	</div>
+</form>

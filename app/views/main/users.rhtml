@@ -1,0 +1,30 @@
+<div class='onair'>
+	<%= render ('globals/pagination', :pageable => @users, :css_class => 'top_nav_paginator') if @page > 1  %>
+</div>
+
+<table class='detailed_users'>
+	<% @users.each do |user| %>
+		<tr>
+			<td class='avatar'>
+				<%= link_to_tlog user, :link => :avatar, :empty => :blank %>
+			</td>
+			<td class='about'>
+				<span class='link'><%= link_to_tlog user %></span>
+				<%= white_list_entry(user.tlog_settings.about) if user.tlog_settings.about %>
+				<p class='brief'><%= h user.url %> в тейсти уже примерно <%= user.created_at.distance_between_in_words(Time.now) %> и за все это время успел<%= user.gender('', 'а') %> написать <%= user.entries_count_for(current_user).pluralize("запись", "записи", "записей", true) %></p>
+			</td>
+		</tr>
+	<% end %>
+</table>
+
+<div class='onair'>
+	<%= render 'globals/pagination', :pageable => @users %>
+</div>
+
+<% content_for :sidebar_left do %>
+	<h2><span>На кого посмотрим?</span></h2>
+	<div class='users_nav'>
+		<%= link_to 'на кого угодно', { :action => :users }, :class => (params[:action] == 'users') ? 'highlight' : nil %><br/>
+		<%= link_to 'на новеньких', { :action => :new_users, :page => nil }, :class => (params[:action] == 'new_users') ? 'highlight' : nil %>
+	</div>
+<% end %>

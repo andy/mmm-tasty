@@ -1,0 +1,18 @@
+<!-- publish _preview -->
+<div id='post_preview'>
+	<h2 class='preview'>Предварительный просмотр</h2>
+	<%= render 'entries/entry_display', { :entry => @entry, :show_comments => false, :show_datetime => false } -%>
+
+	<div id='preview_controls'>
+		<% unless @entry.new_record? %>
+			<div class='delete_post_button'>
+				<%= link_to image_tag('delete.gif', :alt => "удалить эту #{@entry.to_russian(:whom)}", :title => "удалить запись", :class => 'delete_post_img'), entry_path(@entry), :confirm => "Вы действительно хотите удалить эту запись?", :method => :delete, :html => { :alt => 'удалить запись', :title => 'удалить запись' } %>
+			</div>
+		<% end %>
+
+		<%= button_to_function 'Сохранить', '$("entry_edit_form").submit(); return false;', :id => 'save_from_preview', :class => 'button' %>
+	
+		<%= yield :preview_controls %>
+	</div>
+</div>
+<!-- /publish _preview -->

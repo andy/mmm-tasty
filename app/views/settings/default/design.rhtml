@@ -1,0 +1,202 @@
+<% @title = 'настройки внешнего вида тлога' %>
+<% content_for :head do %>
+	<%= stylesheet_link_tag 'colorpicker' %>
+	<%= javascript_include_tag 'dragdrop', 'builder', 'slider', 'yahoo.color.js', 'colorpicker' %>
+<% end %>
+<% content_for :header do %>
+	оформление тлога
+<% end %>
+
+
+<form method='post' action='<%= settings_url(:action => 'design') %>' enctype="multipart/form-data" class='small'>
+	<h2>Фоновая картинка</h2>
+	<table class='form'>
+		<tr id='choise_1'>
+			<td class='label'><label for='bg_by_link_input'>Ссылка:</label></td>
+			<td class='input'>
+				<%= text_field 'design', 'background_url' %>
+				<div class='input_note'>
+					<%= link_to_function "Картинка есть у Вас на диске?", "$('choise_2', 'choise_1').invoke('toggle');" %>
+				</div>
+			</td>
+		</tr>
+		<tr id='choise_2' style='display: none'>
+			<td class='label'><label for='attachment_uploaded_data'>Файл:</label></td>
+			<td class='input'>
+				<%= file_field 'attachment', :uploaded_data %>
+				<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
+				<div class='input_note'>
+					<%= link_to_function "Использовать ссылку", "$('choise_2', 'choise_1').invoke('toggle');" %>
+				</div>			
+			</td>
+		</tr>
+		<tr>
+			<td class='label'></td>
+			<td class='input'>
+				<%= check_box 'design', 'background_fixed' %><label for='design_background_fixed' id='design_background_fixed_label'>зафиксировать</label>
+			</td>
+		</tr>
+	</table>
+
+	<h2>Расположение и оформление дат</h2>
+	<table class='date_style'>
+		<tr>
+			<td></td>
+			<td>
+				<label>
+					<%= radio_button :design, :date_style, 'inside' %> внутри, по-умолчанию
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<label>
+					<%= radio_button :design, :date_style, 'huge' %> большая, сбоку
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<label>
+					<%= radio_button :design, :date_style, 'outside' %> маленькая, сбоку
+				</label>
+			</td>
+		</tr>
+	</table>
+	
+	<h2>Цвета</h2>
+	<table id='design_colors' class='form'>
+		<tr>
+			<th colspan='2'></th>
+			<th class='transparent' title='включает прозрачность, и цвет не будет учитываться'>Выкл</th>
+			<th colspan='2'></th>
+		</tr>
+		<tr>
+			<td class='label'>фоновый</td>
+			<td><%= text_field 'design', 'color_bg' %></td>
+			<td></td>
+			<td class='label border'>даты</td>
+			<td><%= text_field 'design', 'color_date' %></td>
+		</tr>
+		<tr>
+			<td class='label'>фон ленты тлога</td>
+			<td><%= text_field 'design', 'color_tlog_bg' %></td>
+			<td><%= check_box 'design', 'color_tlog_bg_is_transparent', :class => 'checkbox' %></td>
+			<td class='label border'>текст в тлоге</td>
+			<td><%= text_field 'design', 'color_tlog_text' %></td>
+		</tr>
+		<tr>
+			<td class='label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
+			<td><%= text_field 'design', 'color_sidebar_bg' %></td>
+			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox' %></td>
+			<td class='label border'>текст боковой панели</td>
+			<td><%= text_field 'design', 'color_sidebar_text' %></td>
+		</tr>
+		<tr>
+			<td class='label'>фон голосовалки</td>
+			<td><%= text_field 'design', 'color_voter_bg' %></td>
+			<td><%= check_box 'design', 'color_voter_bg_is_transparent', :class => 'checkbox' %></td>
+			<td class='label border'>текст голосовалки</td>
+			<td><%= text_field 'design', 'color_voter_text' %></td>
+		</tr>
+		<tr>
+			<td class='label'>подсветка<br><span class='input_note'>поднадька, поданька</span></td>
+			<td><%= text_field 'design', 'color_highlight' %></td>
+			<td></td>
+			<td class='label border'>текст ссылки</td>
+			<td><%= text_field 'design', 'color_link' %></td>
+		</tr>
+	</table>
+	
+	<div class='submit_button'>
+		<input type='submit' value='Сохранить' class='button' />
+	</div>
+	
+	<h2>Предпросмотр</h2>
+	<div id='design_preview' style='<%= "background-image: url(#{image_path @design.background_url});" unless @design.background_url.blank? %><%= "background-color: ##{@design.color_bg};" unless @design.color_bg.blank? %>' class='design_color_bg'>
+		<div id='design_tlog_title'>
+			<span class='design_color_sidebar_bg design_color_sidebar_text'><%= h current_user.url %></span>
+		</div>
+		<div class='rel'>
+			<div id='design_sidebar'>
+				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>О нем</p></div>
+				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>Поиск</p></div>
+				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>Теги</p></div>
+				<div><p class='design_color_sidebar_text design_color_sidebar_bg'>Календарь</p></div>
+				<div><p class='design_color_highlight design_color_sidebar_text'>Друзья</p></div>
+				<div><p class='design_friends'>
+					<% current_user.public_friends[0..5].each do |user| %>
+						<%= link_to_tlog user, {}, :class => 'design_color_sidebar_text design_color_sidebar_bg' %>
+					<% end %>
+					...
+				</p></div>
+			</div>
+		</div>
+		<div id='design_preview_tlog' class='design_color_tlog_bg design_color_tlog_text' style='<%= "background-color: ##{@design.color_tlog_bg};" unless @design.color_tlog_bg.blank? %><%= "color: ##{@design.color_tlog_text}" unless @design.color_tlog_text.blank? %>'>
+			<div id='design_date' class='design_color_date'>Сегодня, <%= "#{Time.now.mday} #{Time.now.month.to_rmonth}" %></div>
+			<div class='rel'>
+				<div id='design_voter' class='design_color_voter_bg design_color_voter_text'>7</div>
+			</div>
+			<h2 class='design_color_tlog_text'>Заголовок</h2>
+			<p>примерно так будет выглядеть ваш тлог если отойти от монитора на 10 метров</p>
+			<h2 class='design_color_tlog_text'>Картинка</h2>
+			<p><%= image_tag "sleepy_hollow_by_spookyme.jpg" %></p>
+			<h2 class='design_color_tlog_text'>Cсылка</h2>
+			<p><a href='http://www.mmm-tasty.ru/' class='design_color_link' style='<%= "color: ##{@design.color_link}" if false %>'>mmm-tasty.ru</a></p>
+			<h2 class='design_color_tlog_text'>Цитата</h2>
+			<p><span>&laquo;</span>То, что долго живет, растет медленно<span>&raquo;</span></p>
+		</div>
+	</div>
+
+	<h2>Ваш CSS</h2>
+	<%= link_to_function 'Добавте Ваш собственный CSS-код', 'Effect.toggle("design_css", "blind", { duration: 0.3 });', :class => 'design_css_toggle' %>
+	<div id='design_css' style='display: none'>
+		<div>
+			<%= text_area :design, :user_css, :rows => nil, :cols => nil, :class => 'resizeable' %>
+			<%= tasty_error_message_on 'design', 'user_css' %>
+		</div>
+	</div>
+	
+
+	<div class='submit_button'>
+		<input type='submit' value='Сохранить' class='button' />
+	</div>
+</form>
+
+<script type='text/javascript'>
+if(/MSIE/.test(navigator.userAgent) != true || window.opera) {
+	['bg', 'tlog_bg', 'tlog_text', 'sidebar_bg', 'sidebar_text', 'link', 'highlight', 'date', 'voter_bg', 'voter_text'].each(function(color) {
+		var fieldName = 'design_color_' + color;
+		var rgb = YAHOO.util.Color.hex2rgb( $(fieldName).value );
+		if (YAHOO.util.Color.isValidRGB(rgb)) {
+			var nodes = $$('.' + fieldName);
+			if(fieldName.match(/(_text|link|date)/)) {
+				nodes.each(function(node) {
+					node.style.color = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";					
+				});				
+			} else {
+				nodes.each(function(node) {
+					node.style.backgroundColor = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
+				});
+			}
+		}
+		
+		new Control.ColorPicker(fieldName, { IMAGE_BASE: 'http://www.mmm-tasty.ru/images/colorpicker/', field: fieldName, onUpdate: function(value) {
+			var rgb = YAHOO.util.Color.hex2rgb( this.field.value );
+			var nodes = $$('.' + this.options.field);
+			if(this.options.field.match(/(_text|link|date)/)) {
+				nodes.each(function(node) {
+					node.style.color = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";					
+				});				
+			} else {
+				nodes.each(function(node) {
+					node.style.backgroundColor = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
+				});
+			}
+		}
+	});
+});
+}
+</script>

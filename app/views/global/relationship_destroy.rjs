@@ -1,0 +1,5 @@
+# page.visual_effect :highlight, user.dom_id(:rel_div), :duration => 1.0, :startcolor => '#cccccc', :endcolor => '#959592'
+page.visual_effect :fade, @user.dom_id(:rel_div), :duration => 1.0
+page.delay(1000) do
+  page.remove @user.dom_id(:rel_div)
+end

@@ -1,0 +1,68 @@
+<% @title = 'изменить или добавить емейл' %>
+<% content_for :header do %>
+	Настройки почты
+<% end %>
+
+<% if current_user.email.blank? %>
+	<p class='settings_warning'><span>У вас не указан почтовый адрес</span>. Добавление адреса активирует такие возможности как, например, отсылка новых комментариев к вашим записям.</p>
+<% end %>
+
+<% form_for :user, @user, :html => { :class => 'small' } do |f| %>	
+	<table class='form' style='width: 100%'>
+		<% if !current_user.email.blank? %>
+			<tr>
+				<td class='label'><label>Текущий адрес:</label></td>
+				<td class='input'><%= current_user.email %></td>
+			</tr>
+		<% end %>
+		<tr>
+			<td class='label'><label for='user_email'><%= current_user.email.blank? ? 'Новый адрес:' : 'Изменить на:' %></label></td>
+			<td class='input'>
+				<%= text_field_tag 'user[email]', @email %>
+				<%= tasty_error_message_on :user, :email %>
+				<%= '(адрес не подтвержден)' if !@email.blank? %>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'></td>
+			<td class='input'>
+				<%= check_box :user, :email_comments, :class => 'checkbox' %>
+				<label for='user_email_comments'>отправлять комментарии на емейл</label>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'></td>
+			<td class='input'>
+				<%= check_box :tlog_settings, :email_messages, :class => 'checkbox' %>
+				<label for='user_email_messages'>отправлять личные сообщения на емейл</label>
+				<div class='input_note'>
+					Личные сообщения - это небольшие текстовые послания, оставленные лично вам через боковую панель вашего тлога.
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'></td>
+			<td class='input'>
+				<%= check_box :user, :comments_auto_subscribe, :class => 'checkbox' %>
+				<label for='user_comments_auto_subscribe'>автоматически подписываться на комментарии</label>
+				<div class='input_note'>
+					Каждый раз когда вы откомментируете какой-нибудь пост, вы будете автоматически подписаны на все новые комментарии к нему, даже если комментарии будут адресованы не вам! Это очень клевая функция если вы хотите всегда быть в курсе происходящего и ничего не пропускать.
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'></td>
+			<td class='input'>
+				<%= check_box :tlog_settings, :tasty_newsletter, :class => 'checkbox' %>
+				<label for='tlog_settings_tasty_newsletter'>получать новости о проекте</label>
+				<div class='input_note'>
+					Только новости которые мы сочтем действительно важными чтобы побеспокоить Вас, <%= h current_user.url %>.
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class='submit_button'>
+		<input type='submit' value='Сохранить' class='button' />
+	</div>
+<% end %>

@@ -1,0 +1,36 @@
+<% if @entries.size > 0 %>
+	<% prev_entry = nil -%>
+	<% @entries.each_with_index do |entry, index| -%>
+		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false), :index => index, :show_tags => is_owner? } %>
+		<% prev_entry = entry -%>
+	<% end %>
+
+	<% if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
+		<%= render 'globals/day_pagination', { :entries => @entries } %>
+	<% else %>
+		<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>
+	<% end %>
+	
+<% else %>
+	<% if params[:action] == 'day' %>
+		<div class='help_intro'>
+			<h2>За этот день записей не найдено</h2>
+		</div>
+	<% elsif is_owner? %>
+		<div class='help_intro'>
+			<h2>Здравствуйте, <%= h current_site.url %>!</h2>
+			<p>Добро пожаловать в тейсти!</p>
+			<p>Ваш тлог уже полностью готов для того, чтобы вы могли сделать <%= link_to 'первую запись', publish_url %>.</p>
+			<p>Если же у вас пока нет идеи о чем можно было бы написать, или вы из тех людей кто сначала любит навести порядок, а уже потом приступать к развлечениям, то мы можем предложить вам несколько интересных занятий:
+				<ul>
+					<li>Настроить внешний вид тлога, <%= link_to 'здесь', settings_url(:action => :design) %></li>
+					<li>Залить свой аватар или рассказать что-нибудь о себе, <%= link_to 'здесь', settings_url(:action => :user_common) %></li>
+					<li>Сделать какие-то общие настройки тлога, <%= link_to 'здесь', settings_url %></li>
+					<li>Почитать, что прямо сейчас пишут  другие пользователи, в <%= link_to 'прямом эфире', main_url(:host => 'www.mmm-tasty.ru', :action => :live) %>, который теперь вам доступен.</li>
+				</ul>
+			</p>
+			<p>Если у Вас есть какие-то вопросы, пишите нам в на <a href='mailto:feedback@mmm-tasty.ru'>feedback@mmm-tasty.ru</a>, и мы постараемся помочь.</p>
+			<p>Спасибо за регистрацию в тейсти!</p>
+		</div>
+	<% end %>
+<% end %>

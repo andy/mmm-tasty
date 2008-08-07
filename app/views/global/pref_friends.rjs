@@ -1,0 +1,4 @@
+# page[:pref_friends_holder].visibility = 'hidden'
+page[:pref_friends_holder].display = 'block'
+page.replace_html :pref_friends_holder, :partial => 'globals/pref_friends'
+page.visual_effect :appear, :pref_friends_holder, :duration => 0.3

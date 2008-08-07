@@ -1,0 +1,19 @@
+<% @title = "Вход на сайт mmm-tasty.ru" %>
+
+<div class="center_data_big_form">
+	<% form_for :user, @user, :html => { :class => 'big' } do |f| %>
+
+		<%= render :partial => 'login_and_signup_form', :locals => { :f => f } %>
+
+		<input type="submit" value="Войти" class='button' />
+		<div class='options_togo'>
+			<%= link_to 'забыли пароль?', lost_password_url %>
+		</div>
+		
+		<div id='navigation'>
+			<%= link_to "&#x2190; вернуться на главную", main_url, :id => 'return_to_main' %>
+			...
+			<%= link_to 'зарегистрироваться &#x2192;', signup_url, :id => 'signup_url' %>
+		</div>		
+	<% end %>
+</div>

@@ -1,0 +1,12 @@
+<% content_for :head do %>
+	<!-- content_for :head -->
+	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
+	<!-- /content_for :head -->
+<% end %>
+
+<% @entries = current_site.recent_entries(@options) %>
+<%= render :partial => 'lenta' %>
+
+<% content_for :sidebar do %>
+	<%= render 'tlog/_sidebar' %>	
+<% end %>

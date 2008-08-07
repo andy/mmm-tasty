@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<!-- layout tlog_rounded_new -->
+<html>
+<head>
+	<%= render 'globals/head' %>
+	<% cache(:controller => '/tlog', :action => 'style', :revision => current_site.tlog_settings.css_revision) do %>
+		<%= render :partial => 'tlog/style' %>
+	<% end %>
+</head>
+<body id='the_tlog_body'>
+	<div class='tlog'>
+		<div class="tlog_header">
+			<div id='tlog_menu'>
+				<span id='tlog_menu_desc'>
+					<div>
+						<span id='tlog_menu_url'>
+							<%= link_to_tlog_if(params[:action] != 'index' || params[:controller] != 'tlog' || (@page && @page != 1), current_site) %>
+						</span>
+					</div>
+					<% unless current_site.tlog_settings.title.blank? %>
+						<span id='tlog_menu_title'><%= h(current_site.tlog_settings.title) %></span>
+					<% end %>
+				</span>
+			</div>
+
+			<div class='sidebar_holder sidebar_tlog_right <%= ' sidebar_is_closed' unless current_site.tlog_settings.sidebar_is_open? %>' id='tlog_sidebar'>
+				<div class='rel'>
+					<div class='sidebar' id='tlog_sidebar_content' style='<%= current_site.tlog_settings.sidebar_is_open? ? 'display: block' : 'display: none' %>'>
+						<div class="personal round">
+						  <div class="content">
+								<%= yield :sidebar %>
+						  </div>
+						</div>								
+					</div>
+					<div class='show_sidebar' id='show_sidebar' style='<%= current_site.tlog_settings.sidebar_is_open? ? 'display: none' : 'display: block' %>' onclick='new Effect.Move("show_sidebar", { x: -25, duration: 0.2, afterFinish: function() { $("show_sidebar").hide(); $("tlog_sidebar_content").show(); new Effect.Move("tlog_sidebar", { x: 216, duration: 0.3 }); } });'>i</div>
+				</div>
+			</div>
+		</div>
+		<div class="main_rounded_holder">
+			<div class="rounded_main_center">
+				<div class='onair'>
+					<%= flash_div %>
+					<%= yield %>
+				</div>
+			</div>
+		</div>
+		<%= render 'globals/foot' %>
+	</div>	
+	<%= render 'globals/top_nav' %>
+</body>
+</html>

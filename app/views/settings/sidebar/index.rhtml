@@ -1,0 +1,94 @@
+<% @title = 'боковая панель в тлоге' %>
+<% content_for :head do %>
+	<%= javascript_include_tag 'dragdrop' %>
+<% end %>
+<% content_for :header do %>
+	боковая панель в тлоге
+<% end %>
+
+
+<p class='settings_warning'>
+ Боковая панель - это <strong>боковая планка с вашей фотографией</strong>, которая показывается на всех страницах вашего тлога и является его неотъемлемой частью.
+</p>
+
+<div id='sidebar_is_open_td'>
+	<%= sidebar_check_box :is_open %>
+	<label for='sidebar_is_open'>задвигать боковую панель по-умолчанию</label>
+	<div class='input_note'>
+		Если вы отметите эту галочку, то в правом верхнем углу тлога, на месте боковой панели, будет показываться маленький значок <strong>i</strong>, при нажатии на который боковая панель будет раскрываться в полной красе.
+	</div>
+</div>
+
+<h2>Основные разделы</h2>
+<table class='form'>
+	<tr>
+		<td class='label'></td>
+		<td class='input' id='sidebar_hide_tags_td'>
+			<%= sidebar_check_box :hide_tags %>
+			<label for='sidebar_hide_tags'>показывать <strong>Теги</strong></label>
+		</td>
+	</tr>
+	<tr>
+		<td class='label'></td>
+		<td class='input' id='sidebar_hide_search_td'>
+			<%= sidebar_check_box :hide_search %>
+			<label for='sidebar_hide_search'>показывать <strong>Поиск</strong></label>
+		</td>
+	</tr>
+	<tr>
+		<td class='label'></td>
+		<td class='input' id='sidebar_hide_calendar_td'>
+			<%= sidebar_check_box :hide_calendar %>
+			<label for='sidebar_hide_calendar'>показывать <strong>Календарь</strong></label>
+		</td>
+	</tr>
+	<tr>
+		<td class='label'></td>
+		<td class='input' id='sidebar_hide_messages_td'>
+			<%= sidebar_check_box :hide_messages %>
+			<label for='sidebar_hide_messages'>показывать <strong>Сообщения</strong></label>
+		</td>
+	</tr>
+</table>
+</form>
+
+<h2>Дополнительные разделы</h2>
+<ul id='sidebar_sections'>
+	<div id='sidebar_empty_tip' class='input_note' <%= " style='display: none'" unless current_user.sidebar_sections.size.zero? %>>
+		Вы еще не добавили ни одного раздела... впишите имя нового раздела в форму ниже чтобы создать новый.
+	</div>
+	<%= render :partial => 'section', :collection => current_site.sidebar_sections %>
+</ul>
+
+<h2>Добавить новый раздел</h2>
+<%= render :partial => 'section_form', :locals => { :section => SidebarSection.new } %>
+<div class='input_note'>
+	Впишите здесь имя раздела. Новый раздел появится прямо под разделом "Друзья"
+</div>
+
+<script type='text/javascript'>
+/**
+ * 1. click on visible -- fade out
+ * 2. click on invisible when all invisible -- blinddown
+ * 3. click on invisible when other visible  -- fade visible, appear clicked
+ */
+function onclick_show_form(section, prefix) {
+	var elements = $$('.new_form_' + section);
+	var visible = elements.find(function(element) { return element.visible(); });
+	var invisible = elements.find(function(element) { return !element.visible(); })
+	var clicked = $(prefix + '_' + section);
+	var clicked_a = $(prefix + '_a_' + section);
+	
+	$A(d('new_link_' + section)).each(function(element) { element.removeClassName('new-form-section-active'); });
+
+	if(clicked.visible()) {
+		new Effect.BlindUp(prefix + '_' + section, { duration: 0.3 });
+	} else if(!visible) {
+		new Effect.BlindDown(prefix + '_' + section, { duration: 0.3 });
+		clicked_a.addClassName('new-form-section-active');
+	} else {
+		clicked_a.addClassName('new-form-section-active');
+		new Effect.Fade(visible, { duration: 0.2, to: 0.1, afterFinish: function() { new Effect.Appear(clicked, { duration: 0.3, afterFinish: function() { new Effect.Fade(visible, { duration: 0.1, from: 0.1 }); } }); }});
+	}
+}
+</script>

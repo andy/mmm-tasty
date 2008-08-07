@@ -1,0 +1,8 @@
+<div class='bookmarklet' id='<%= bookmarklet.dom_id %>'>
+	<a class='bookmarklet' href="javascript:d=document,s='';if(d.getSelection)s=d.getSelection();if(d.selection)s=d.selection.createRange().text;if(window.getSelection)s=window.getSelection();void(window.open('http://www.mmm-tasty.ru/bookmarklet/new?v=1<%= "&tags=#{CGI::escape(bookmarklet.tags)}" if bookmarklet.tags %><%= "&type=#{bookmarklet.entry_type}" if bookmarklet.entry_type != 'any' %><%= "&utosave=true" if bookmarklet.autosave %><%= "&vis=#{bookmarklet.visibility}" if bookmarklet.visibility %>&url='+encodeURIComponent(d.location)+'&title='+encodeURIComponent(d.title)+'&c='+encodeURIComponent(s),'n','menubar=no,toolbar=no,location=no,directories=no,status=no,scrollbars=yes,resizable=yes,width=790,height=700,left=50,top=50'))"><%= h bookmarklet.name %></a>
+
+	<% if bookmarklet.is_owner?(current_user) %>
+		<%= link_to image_tag('edit.gif'), settings_mobile_url(:action => :bookmarklets, :id => bookmarklet.id) %>
+		<%= link_to_remote image_tag('delete.gif'), :url => settings_mobile_url(:action => :bookmarklet_destroy, :id => bookmarklet.id), :method => :delete %>
+	<% end %>
+</div>

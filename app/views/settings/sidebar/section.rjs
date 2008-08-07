@@ -1,0 +1,11 @@
+page.call :clear_all_errors
+if @section.valid?
+  page['new-name-sidebar-section'].value = ''
+  page.insert_html :bottom, :sidebar_sections, :partial => 'section'
+  page.visual_effect :highlight, @section.dom_id
+  page['sidebar_empty_tip'].hide() if current_user.sidebar_sections.size == 1
+else
+  @section.errors.each do |section, message|
+    page.call :error_message_on, @section.new_record? ? 'new-name-sidebar-section' : @section.dom_id(:name), message
+  end
+end

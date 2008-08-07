@@ -1,0 +1,7 @@
+<span class='year'>2007</span>
+<% calendar.each do |day, entries| %>
+	<span class='month'><%= day.to_rmonth_s.capitalize %></span>
+	<% entries.each do |entry| %>
+		<%= link_to "#{entry.created_at.day}", current_site ? day_url(:year => entry.created_at.year, :month => entry.created_at.month, :day => entry.created_at.mday, :only_path => true) : { :entry_id => entry.id }, :class => entry.created_at.same_day?(time) ? 'day highlight' : 'day' %>
+	<% end %>
+<% end %>

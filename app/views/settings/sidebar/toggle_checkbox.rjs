@@ -1,0 +1,2 @@
+page["sidebar_#{@name}"].checked = !@tlog_settings.send("sidebar_#{@name}?")
+page.visual_effect :highlight, "sidebar_#{@name}_td", :duration => 0.3

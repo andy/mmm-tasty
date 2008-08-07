@@ -1,0 +1,12 @@
+<% unless message.sender.nil? %>
+<div class='message' id='<%= message.dom_id %>'>
+	<% if message.is_private? %>
+		<div class='rel'><%= image_tag 'lock.gif', :class => 'private_message' %></div>
+	<% end %>
+	<p><%= h message.body %>
+		<span class='message_user'>&mdash; <%= link_to_tlog message.sender, nil %></span>
+		<span class='message_created_at' title='<%= message.created_at.to_timestamp_s %>'><%= message.created_at.distance_between_in_words(Time.now, ' назад') %></span>
+		<%= link_to_remote(image_tag('delete.gif'), { :url => message_url(message), :method => :delete }, :title => 'удалить это сообщение') if message.is_owner?(current_user) %>
+	</p>
+</div>
+<% end %>

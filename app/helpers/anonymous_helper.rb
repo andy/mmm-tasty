@@ -1,0 +1,2 @@
+module AnonymousHelper
+end

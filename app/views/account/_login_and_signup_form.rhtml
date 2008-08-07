@@ -1,0 +1,14 @@
+<div class='form_string'>
+	<label for="user_email">e-mail или openid <em>(http://)</em>:
+		<%= f.text_field :email %>
+		<%= tasty_error_message_on('user', 'email') %>
+	</label>
+</div>
+<div class='form_string'>
+	<label for="user_password">пароль:
+		<%= f.password_field :password %>
+		<%= tasty_error_message_on('user', 'password') %>
+	</label>
+</div>
+<%= observe_field 'user_email', :frequency => 0.25, :function => 'login_openid_switcher(value);' %>
+<%= javascript_tag 'Event.observe(window, "load", function(event) { login_openid_switcher($F("user_email")); }, false);' %>

@@ -1,0 +1,12 @@
+
+<h2>Скажи, кто для тебя <%= h @user.url %>?</h2>
+<% remote_form_for :relationship, :url => settings_social_url(:action => :title), :method => :put do |f| %>
+	<%= hidden_field_tag :user_id, @user.id %>
+	<div>
+		<label>
+			Описание: <%= text_field_tag :title, @relationship.title, :size => 40 %>
+		</label>
+	</div>
+	
+	<%= submit_tag 'Сохранить' %> или <a href='#' rel='deactivate' class='lbAction' id='lbDeactivate'>отменить</a>
+<% end %>

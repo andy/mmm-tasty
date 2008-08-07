@@ -1,0 +1,9 @@
+<h2>Что поадминим<% if current_user %>, <%= h current_user.username %><% end %>?</h2>
+<ul id='f_level'>
+	<% menu_item 'Режим', 'server', %w(server css) do %>
+		<%= menu_item 'сервер', 'server' %>
+		<%= menu_item 'css', 'css' %>
+	<% end %>
+	<%= menu_item 'Шаблоны', 'templates' %>
+	<%= menu_item 'Выйти', main_url(:action => 'index') %>
+</ul>

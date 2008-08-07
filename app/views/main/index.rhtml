@@ -1,0 +1,26 @@
+<% @title = 'главная страница' %>
+<%- @sidebar_left_short = true -%>
+<div class="main_info_holder"><p class="main_info"><%= link_to "<i>Тлоги</i>", main_url(:action => 'about') %> &mdash; <span class="main_hightlight">это как блоги, только проще.<br/> Это нечто удобное и быстрое, для самовыражения,</span> а
+<nobr><i>Mmm... tasty</i></nobr> &mdash; это инструмент для создания тлогов.</p></div>
+
+<div class='onair main_quotes'>
+	<h2>Отзывы наших пользователей</h2>
+
+	<% Feedback.random(:limit => 6, :conditions => { :is_public => true }).each do |feedback|
+		feedback = QuoteEntry.new :data_part_1 => feedback.message, :data_part_2 => link_to_tlog(feedback.user)
+	%>
+		<%= render 'entries/entry_display', :entry => feedback, :show_username => false %>
+	<% end %>
+</div>
+
+<% content_for :sidebar_left do %>
+	<h2 class='center'><span>Тлоги</span></h2>
+	<div class='users'>
+		<% User.popular(6).each do |user| %>
+			<div>
+				<%= link_to_tlog user, :link => :avatar, :empty => :blank %>
+				<p><%= link_to_tlog user %></p>
+			</div>
+		<% end %>	
+	</div>
+<% end %>

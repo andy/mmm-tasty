@@ -1,0 +1,1 @@
+page.replace_html @section.dom_id(:toggle_is_open), image_tag(@section.is_open? ? 'sidebar_open.gif' : 'sidebar_closed.gif')

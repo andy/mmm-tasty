@@ -1,0 +1,31 @@
+<% @title = EntryRating::RATINGS[@filter.rating.to_sym][:header] %>
+<% content_for :head do %>
+	<!-- content_for :head -->
+	<%= auto_discovery_link_tag(:rss, main_feed_url(:action => :last, :rating => @filter.rating, :kind => @filter.kind)) %>
+	<!-- /content_for :head -->
+<% end %>
+
+<div class='filter'>
+	<!-- <h2><%= EntryRating::RATINGS[@filter.rating.to_sym][:header] %></h2> -->
+	<form method='get' action='<%= main_url(:action => 'last_redirect') %>'>
+		<%= select :filter, :rating, EntryRating::RATINGS_FOR_SELECT %>
+		<%= select :filter, :kind, Entry::KINDS_FOR_SELECT %>
+		<%= submit_tag "обновить", :name => nil, :class => 'button_1' %>
+	</form>
+</div>
+
+<% if @entry_ratings.blank? %>
+	<p class='last_is_empty_note'>
+		По Вашему запросу не было найдено ни одной записи.
+	</p>
+<% else %>
+	<div class='onair'>
+		<%- google_ad_position = 1 + rand(3) %>
+		<% @entry_ratings.each_with_index do |entry_rating, index| %>
+			<%#= render 'globals/google_inline_text_ad' if index == google_ad_position %>
+			<%= render 'entries/entry_display', { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
+		<% end %>
+
+		<%= render 'globals/pagination', { :pageable => @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } } %>	
+	</div>
+<% end %>

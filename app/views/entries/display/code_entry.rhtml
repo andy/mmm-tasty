@@ -1,0 +1,5 @@
+<% if entry.data_part_2 %>
+	<h2><%= h entry.data_part_2 %></h2>
+<% end %>
+<%= CodeRay.scan(entry.data_part_1, :ruby).div(:tab_width => 2).sub(/^<div class="CodeRay">/, "<div class='CodeRay' id='coderay_div_#{entry.id}'>") %>
+<!-- script type='text/javascript'>new DragScrollable("<%= "coderay_div_#{entry.id}" %>");</script -->

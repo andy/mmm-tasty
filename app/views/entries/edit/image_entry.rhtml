@@ -1,0 +1,50 @@
+<div id='entry_helper'>
+	При добавлении картинки она <span class='highlight'>автоматически сожмется</span> до нужного размера.<br/><br/>Картинка, указанная ссылкой, пережимается средствами HTML и это далеко не везде выглядит прекрасно. Поэтому, если качество для Вас принципиально, Вы можете залить картинку с диска.
+</div>
+
+<% if entry.new_record? || entry.attachments.empty? %>
+	<% display_link = entry.new_record? || !entry.data_part_1.blank? %>
+	<div id='choise_1'<%= ' style="display: none"' unless display_link %>>
+		<label for='entry_data_part_1'>Ссылка на файл с картинкой <em>(должна начинаться с http://)</em>:</label><br/>
+		<%= text_field 'entry', 'data_part_1' %>
+		<%= tasty_error_message_on 'entry', 'data_part_1' %>
+		<div class='choise_control'>
+			<%= link_to_function "Картинка есть у Вас на диске?", "$('choise_2', 'choise_1').invoke('toggle'); $('generate_preview').disable();" %>
+		</div>
+	</div>
+
+	<div id='choise_2'<%= ' style="display: none"' if display_link %>>
+		<label for='attachment_uploaded_data'>Файл с картинкой <em>(не более 4-х мегабайт)</em>:</label><br/>
+		<%= file_field 'attachment', :uploaded_data %>
+		<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
+		<div class='choise_control'>
+			<%= link_to_function "Использовать ссылку", "$('choise_2', 'choise_1').invoke('toggle'); $('generate_preview').enable();" %>
+		</div>
+	</div>
+	<% if !display_link %>
+	<script type='text/javascript'>
+		Event.observe ( window, 'load', function(event) { $("generate_preview").disabled = true; } );
+	</script>
+	<% end %>
+<% end %>
+
+<div class='small_link' id='link_comment_enable'<%= "style='display: none;'" unless @entry.data_part_3.blank? %>>
+	<%= link_to_function 'Сделать картинку ссылкой...', 'Element.hide("link_comment_enable"); Element.show("link_comment_disable"); $("entry_data_part_3").disabled = false; new Effect.BlindDown("image_link_data", { duration: 0.3 });' %>
+</div>
+<div class='small_link' id='link_comment_disable'<%= "style='display: none;'" if @entry.data_part_3.blank? %>>
+	<%= link_to_function 'Убрать ссылку...', 'Element.hide("link_comment_disable"); Element.show("link_comment_enable"); $("entry_data_part_3").disabled = true; new Effect.BlindUp("image_link_data", { duration: 0.3 });'%>
+</div>
+
+<div id='image_link_data' <%= "style='display: none;'" if @entry.data_part_3.blank? %>>
+	<label for='entry_data_part_3'>Ссылка <em>(необязательное поле)</em>:</label><br/>
+	<%= text_field 'entry', 'data_part_3' %>
+	<%= tasty_error_message_on 'entry', 'data_part_3' %>
+</div>
+
+<div>
+	<label for='entry_data_part_2'>Описание <em>(необязательное поле)</em>:</label><br/>
+	<%= text_area 'entry', 'data_part_2', :rows => 6, :class => 'resizeable' %> <br/>
+	<%= tasty_error_message_on 'entry', 'data_part_2' %>
+</div>
+
+

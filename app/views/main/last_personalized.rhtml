@@ -1,0 +1,38 @@
+<% @title = "ваш личный прямой эфир, #{h current_user.url}" %>
+<% content_for :head do %>
+	<!-- content_for :head -->
+	<%= auto_discovery_link_tag(:rss, tlog_feed_protected_url(:host => host_for_tlog(current_user), :key => @last_personalized_key, :action => :last_personalized)) %>
+	<!-- /content_for :head -->
+<% end %>
+<% if @entries.blank? %>
+	<div class='onair'>
+		<p>Здесь, пока, пусто. Видимо, вы еще не подписаны ни на один тлог.</p>
+	</div>
+<% else %>
+	<div class='onair'>
+		<%= render('globals/pagination', { :pageable => @entries, :css_class => 'top_nav_paginator' }) if @page > 1 %>
+
+		<%- google_ad_position = 1 + rand(2) %>
+		<% @entries.each_with_index do |entry, index| %>
+			<%#= render 'globals/google_inline_text_ad' if index == google_ad_position %>
+			<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_username => true } %>
+		<% end %>
+
+		<%= render 'globals/pagination', { :pageable => @entries } %>	
+	</div>
+<% end %>
+
+<% content_for :sidebar_right do %>
+	<div class='section'>
+		<h2><span>Немного навигации</span></h2>
+		<div class='vertical_nav'>
+			<%= link_to 'общий прямой эфир', { :action => :live, :page => nil }, :class => (params[:action] == 'live') ? 'highlight' : nil %><br/>
+			<%= link_to 'персональная лента', { :action => :last_personalized, :page => nil }, :class => (params[:action] == 'last_personalized') ? 'highlight' : nil %>
+		</div>
+	</div>
+	
+	<div class='section'>
+		<h2><span>И капля информации</span></h2>
+		<p>Персональная лента - это ваш собственный прямой эфир, который можно настроить вот <%= link_to 'здесь', settings_url(:host => host_for_tlog(current_user), :action => 'social') %>. Вам показываются записи тех же людей, которые у вас есть в "сердечке".</p>
+	</div>
+<% end %>

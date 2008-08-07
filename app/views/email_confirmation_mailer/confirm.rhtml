@@ -1,0 +1,8 @@
+Здравствуйте!
+
+  Для того чтобы подтвердить Ваш емейл адрес (<%= @email %>) на проекте Mmm...tasty,
+  необходимо пройти по этой ссылке:
+
+  <%= confirm_code_url(:host => 'www.mmm-tasty.ru', :code => @user.read_confirmation_code) %>
+
+Спасибо!

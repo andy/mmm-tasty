@@ -1,0 +1,12 @@
+<div class='video_embed'>
+	<% if embed %>
+		<%= entry.white_list? ? white_list_video_entry(entry.to_embed(:no_js => true)) : entry.to_embed(:no_js => true) %>
+	<% else %>
+		<%= entry.white_list? ? white_list_video_entry(entry.to_embed) : entry.to_embed %>
+	<% end %>
+</div>
+<div class='video_comment'>
+	<% if entry.data_part_2 %>
+		<%= white_list_entry entry.data_part_2 %>
+	<% end %>
+</div>

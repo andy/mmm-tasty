@@ -1,0 +1,59 @@
+<% @title = 'социальные настройки' %>
+<% content_for :head do %>
+	<%= javascript_include_tag 'dragdrop' %>
+<% end %>
+<% content_for :header do %>
+	<%= image_tag('ctulhu.gif', :size => '18x22') %> Друзья
+<% end %>
+
+<% if @light %>
+	<%= link_to "&#x2190; вернуться назад", :action => :index %><br><br>	
+<% end %>
+
+<p class='settings_warning'>
+	На этой странице работает <span class='highlight'>drag &amp; drop</span>!
+	<span class='ctulhu_note'>Используйте значок <%= image_tag 'ctulhu.gif' %> для перетаскивания друзей.</span>
+	<% unless @light %>
+	Если у Вас тормозит перетаскивание используйте <%= link_to "легкую версию этой страницы", :action => :light %>
+	<% end %>
+	<%= "<br><br>" if @light %>
+</p>
+
+<table id='friends_table'>
+	<tr>
+		<th style='width: 33%'>
+			<h2>публичные</h2>
+			<p>будут показываться в боковой панели Вашего тлога. их увидят все</p>
+		</th>
+		<th style='width: 33%'>
+			<h2>общие</h2>
+			<p>те, кого вы хотите читать, но по каким-то причинам не хотите отображать в боковой панели</p>
+		</th>
+		<th style='width: 33%'>
+			<h2>машинные</h2>
+			<p>тлоги определенные ЭВМ как интересные для Вас</p>
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<ul id='public_friends'><%= render :partial => 'user', :collection => current_user.public_friends, :locals => { :css_class => 'public-friendly-friend' } %></ul>
+		</td>
+		<td>
+			<ul id='friends'><%= render :partial => 'user', :collection => current_user.friends, :locals => { :css_class => 'friendly-friend' } %></ul>
+		</td>
+		<td>
+			<ul id='guessed'><%= render :partial => 'user', :collection => current_user.guessed_friends[0..20], :locals => { :css_class => 'guessed-friend' } %></ul>
+		</td>
+	</tr>
+</table>
+
+<% form_remote_tag :url => url_for(:action => 'add') do %>
+	<div class='social_manipulator'>
+		Добавить <input id='new_user_url' type='text' name='url' value='' /> в <%= select_tag 'friendship_status', options_for_select({ 'публичные' => 2, 'общие' => 1 }, 2) %> <input type='submit' value='+' class='button' />
+	</div>
+	<%= tasty_error_message_on :new_user, :url %>
+<% end %>
+
+<%= sortable_element('public_friends', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => { :action => 'sort' }) %>
+<%= sortable_element('friends', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => { :action => 'sort' }) %>
+<%= sortable_element('guessed', :overlap => 'vertical', :handle => 'ctulhu', :dropOnEmpty => true, :constraint => '', :containment => ['public_friends', 'friends', 'guessed'], :url => { :action => 'sort' }) %>

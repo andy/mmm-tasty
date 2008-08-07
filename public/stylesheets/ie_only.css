@@ -1,0 +1,122 @@
+/* FOR IE6 ONLY DETERMINE HERE AND REDERMINE IN RECENT */
+
+#pref_friends {
+	position:absolute;
+	left:-200px;
+	*margin-top:3px!important;
+}
+*html div.pref_png {
+	width:0px;
+	height:0px;
+	background:url("/images/pref_bg_ie.png") top left; 
+}
+*html .wrapper_pref div {
+	padding-bottom:0px;
+}
+/*#pref_friends {
+	left:-200px!important;
+	margin-top:3px!important;
+}*/
+*html div.pref_png {
+
+}
+*html #pref_friends {
+	top:-3px;
+	overflow:hidden;
+}
+*html #sidebar_hide {
+	display:none;
+}
+*html #pref_friends div {
+	overflow:hidden;
+}
+/*a.username {
+	position:relative;
+	top:1px!important;
+	margin:0 4px 0 4px;
+	white-space:nowrap;
+}*/
+*html img.home {
+	position:relative;
+	bottom:-1px!important;
+	
+}
+/*
+.unregistered img.home {
+	position:relative;
+	bottom:-2px!important;
+	margin:0 4px;
+}*/
+#pref_user a {
+	position:relative;
+	bottom:-3px;
+}
+/*form.big label input {
+	line-height:1.2em!important;
+}
+
+form.big .at_input {
+	line-height:1.3em!important;
+}
+
+form.big div.tip {
+	 font-size:70%;
+	 position:absolute!important;
+	 top:-1px!important;
+}*/
+
+/*div.post_comments {
+	border-top:1px solid #a1a1a1;
+	margin-left:-18px;
+	margin-right:-18px;
+	background:#f2f2f2;
+	padding:0 40px 20px 132px;
+	margin-top:30px;
+	font-size:100%;
+}*/
+
+/* html div.service_comments, * html  div.service_link, * html  div.service_edit {
+	right:14px;
+	display:block;
+}*/
+
+/*
+div.right ul li {
+	margin:-3px 0;
+}*/
+
+/*ul.helpful_links li {
+	display:block;
+	height:20px
+}*/
+
+/*.has_comments {
+	display:block!important;
+}
+*/
+* html .comment_delete {
+	visibility:visible;	
+}
+
+* html .img_reply {
+	visibility:visible;	
+}
+
+* html .img_reply_active {
+	right:-6x!important;   
+}
+
+/* html .vote_up, * html .vote_down {
+	display:block!important;
+	text-decoration:none;
+}*/ 
+div.post_author {
+    left:-258px;
+}
+*html .sidebar_is_closed .sidebar {
+	left:75px !important;
+}
+*html .sidebar_is_closed .show_sidebar {
+	left:120px!important;
+}
+

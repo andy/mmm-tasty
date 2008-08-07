@@ -1,0 +1,29 @@
+<% @title = "результаты поиска по запросу \"#{h params[:query]}\"" %>
+
+<div class='filter'>
+	<p>
+		Вы искали <span class='highlight large'><%= h params[:query] %></span>		
+		<% if @entries.empty? %>
+			, но мы, к сожалению, ничего не нашли
+		<% end %>
+		<% unless @entries.empty? %>
+			и нашли <span class='strong'><%= @entries.total.pluralize("запись", "записи", "записей", true) %></span>
+		<% end %>
+	</p>
+</div>
+
+<%= "<div class='onair'>" unless current_site %>
+<%= render('globals/pagination', { :pageable => @entries, :css_class => 'top_nav_paginator', :url_options => { :query => params[:query] } }) if @page > 1 %>
+
+<% @entries.each do |entry| %>
+	<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_username => !current_site, :show_datetime => !!current_site } %>
+<% end %>
+
+<%= render 'globals/pagination', { :pageable => @entries, :url_options => { :query => params[:query] } } %>
+<%= "</div>" unless current_site %>
+
+<% if current_site %>
+	<% content_for :sidebar do %>
+	 	<%= render 'tlog/_sidebar' %>
+	<% end %>
+<% end %>

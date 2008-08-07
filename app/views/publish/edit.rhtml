@@ -1,0 +1,14 @@
+<% content_for :header do %>
+	<div class='post_name'>
+		<% if params[:back] && params[:back] == 'to_entry_page' %>
+			<%= link_to '&#x2190;', url_for_entry(@entry, :fragment => @entry.dom_id), :title => "Обратно в тлог на страницу #{@entry.page_for(current_user)}" %>
+		<% else %>
+			<%= link_to "&#x2190;", publish_url(bookmarklet_url_options), :title => 'К выбору типа записи' %>
+		<% end %>
+		&nbsp;<%= @entry.new_record? ? 'Добавить' : 'Редактировать' %> <%= @entry.to_russian :whom %>
+	</div>
+<% end %>
+
+<div>
+	<%= render 'entries/entry_edit', { :entry => @entry } %>
+</div>

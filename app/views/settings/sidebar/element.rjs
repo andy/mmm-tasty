@@ -1,0 +1,11 @@
+page.call :clear_all_errors
+if @element.valid?  
+  page.insert_html :bottom, @section.dom_id(:elements), :partial => 'element'
+  page[@section.dom_id(@element[:type])].value = ''
+  page.visual_effect :highlight, @element.dom_id
+  page.draggable @element.dom_id(:ctulhu), :revert => true
+else
+  @element.errors.each do |element, message|
+    page.call :error_message_on, (@element.new_record? ? @section : @element).dom_id((@element[:type] == 'SidebarLinkElement') ? :sidebar_link_element : :sidebar_element), message
+  end
+end

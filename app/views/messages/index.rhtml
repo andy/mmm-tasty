@@ -1,0 +1,11 @@
+<% @title = "все #{current_site.gender('его', 'её')} сообщения#{", страница #{params[:page].to_i}" if params[:page]}" %>
+<div id='tlog_messages'>
+	<%= render :partial => 'message', :collection => @messages %>
+</div>
+<div id='message_create'></div>
+
+<%= render 'globals/pagination', :pageable => @messages %>
+
+<div class='return_from_permalink'>
+	<%= link_to "&#x2190; обратно в #{current_site.gender("его", "её")} тлог", url_for_tlog(current_site) %>
+</div>

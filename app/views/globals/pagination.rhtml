@@ -1,0 +1,20 @@
+<!-- template globals/pagination -->
+<% if pageable.respond_to?(:page_count) && pageable.page_count > 1 %>
+	<%-
+		# все в обратную сторону
+		reverse ||= false unless local_assigns.has_key?(:reverse) && reverse
+		url_options ||= {} unless local_assigns.has_key?(:url_options) && url_options
+	-%>
+	<div class='entry_pagination<%= " #{css_class}" if local_assigns.has_key?(:css_class) %>'>
+		<%= link_to('&#x2190; ранее', url_for({ :controller => params[:controller], :action => params[:action], :page => reverse ? pageable.page_count - pageable.next_page + 1: pageable.next_page }.update(url_options)), :class => 'entry_paginate_prev') if pageable.next_page? %>
+		<%=
+			if pageable.previous_page?
+				if pageable.previous_page == 1
+					link_to 'сейчас &#x2192;', url_for({ :controller => params[:controller], :action => params[:action], :page => nil }.update(url_options)), :class => 'entry_paginate_next'
+ 				else
+					link_to 'позже &#x2192;', url_for({:controller => params[:controller], :action => params[:action], :page => reverse ? pageable.page_count - pageable.previous_page + 1 : pageable.previous_page}.update(url_options)), :class => 'entry_paginate_next'
+				end
+			end %>
+	</div>
+<% end %>
+<!-- /template globals/pagination -->

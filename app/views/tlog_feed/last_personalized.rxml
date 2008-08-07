@@ -1,0 +1,39 @@
+xml.instruct! :xml, :version => '1.0', :encoding=> 'UTF-8'
+
+xml.rss :version => '2.0' do
+  xml.channel do
+    xml.title "Ваш личный прямой эфир, #{current_site.url}"
+    xml.link main_url(:host => 'www.mmm-tasty.ru', :action => 'last_personalized')
+    xml.description "Ваш личный прямой эфир, #{current_site.url}"
+    xml.language 'ru-RU'
+    xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries && @entries.first
+    xml.generator "mmm...rss (http://www.mmm-tasty.ru/)"
+    xml.ttl 5
+    if current_site.avatar
+      xml.image do
+        xml.url image_path(current_site.avatar.public_filename)
+        xml.title "Ваш личный прямой эфир, #{current_site.url}"
+        xml.link url_for_tlog(current_site)
+      end
+    end
+  
+    if @entries
+      @entries.each do |entry|
+        xml.item do
+          xml.title strip_tags(entry.author.url + " - " + white_list_entry(entry.excerpt.to_s))
+          xml.link url_for_tlog(entry.author) + entry_path(entry)
+          xml.description render('entries/entry_embed', { :entry => entry })
+          xml.guid url_for_tlog(entry.author) + entry_path(entry)
+          xml.pubDate entry.created_at.to_s(:rfc822)
+        
+          # <enclosure ...>. Не делаем для картинок, потому что они и так уже включены в код и
+          #  некоторые рсс-читалки будут показывать картинку дважды
+          if entry[:type] != 'ImageEntry' && !entry.attachments.empty?
+            att = entry.attachments.first
+            xml.enclosure :url => "#{url_for_tlog(entry.author) + att.public_filename}", :length => att.size, :type => att.content_type
+          end
+        end
+      end
+    end
+  end
+end

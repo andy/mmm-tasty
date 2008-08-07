@@ -1,0 +1,26 @@
+<% if !current_user %>
+	<div id='anonymous_comments_disabled'>
+		Комментарии могут оставлять только зарегистрированные пользователи. <%= link_to 'Зарегистрируйтесь', signup_url(:host => 'www.mmm-tasty.ru')  %>, либо <%= link_to 'войдите в свой аккаунт', login_url(:host => 'www.mmm-tasty.ru') %> чтобы оставить комментарий.
+	</div>
+<% else %>
+<div id='comment_preview'></div>
+
+<div class='post_comment_form' id='post_comment_form'>
+	<% remote_form_for :comment,
+			:url => anonymous_path(:action => :comment, :id => @entry.id),
+			:before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('comment_submit_button', 'Отправляем ...');",
+			:complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('comment_submit_button', 'Отправить комментарий');",
+			:html => { :class => 'small', :id => @entry.dom_id(:form) } do |f| %>
+		<input type='hidden' name='reply_to' id='comment_reply_to' value='' />
+			<div id='post_comment_form_greeting'>Что скажете, <%= link_to_tlog(current_user) %>?</div>
+			<label for='comment_comment' class='comment_comment'>
+				<%= f.text_area :comment, :class => 'comment_body resizeable' %>
+				<%= tasty_error_message_on 'comment', 'comment' %>
+			</label>
+			<div id='allowed_html_tags'>разрешенные теги: b i big small a img</div>
+			<%= submit_to_remote "button", "Предпросмотр", :url => anonymous_path(:action => :preview, :id => @entry.id), :before => "$('#{@entry.dom_id(:ajax_spinner)}').show(); remote_request_started('generate_preview', 'Подготавливаем ...');", :complete => "$('#{@entry.dom_id(:ajax_spinner)}').hide(); remote_request_finished('generate_preview', 'Предпросмотр');", :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
+		<%= submit_tag 'Отправить комментарий', :id => 'comment_submit_button', :class => 'comment_send' %>
+		<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @entry.dom_id(:ajax_spinner) %>
+	<% end %>
+</div>
+<% end %>

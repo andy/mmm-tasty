@@ -1,0 +1,38 @@
+Request Routing Plugin for Ruby on Rails
+========================================
+(c) Dan Webb 2006 (dan@vivabit.com)
+
+Plugin that allows you to define routing conditions that test 
+methods/properties of the request object such as subdomain, domain,
+port.  You can test them either against a value or with a Regexp
+(assuming the method returns a string)
+
+*UPDATE* Now works with the new routing code as implemented in edge rails.  Note the
+change in API: use :conditions instead of :requirements.
+
+== Installation
+
+    ruby script/plugin install http://svn.vivabit.net/external/rubylibs/request_routing/
+
+== Usage
+
+In routes.rb you can specify use the :requirements hash with request properties:
+
+    map.connect '', :controller => 'main', :conditions => { :subdomain => 'www' }
+
+    map.connect 'admin', :controller => 'admin', :conditions => { :remote_ip => /^127\.0\.0\.[0-9]$/ }
+
+You can also, of course, use the conditions hash in map.with_options calls.
+
+The allowed properties are:
+
+		:subdomain  (only checks the first subdomain)
+		:domain (only accurate for single tld domain names at the moment)
+		:method (a symbol)
+		:port (a number)
+		:remote_ip 
+		:content_type (content type of the post body)
+		:accepts 
+		:request_uri (the entire request uri)
+		:protocol (either http:// or https://)
+

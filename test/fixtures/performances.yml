@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  controller: MyString
+  action: MyString
+  function: MyString
+  calls: 1
+  duration: 1.5
+two:
+  id: 2
+  controller: MyString
+  action: MyString
+  function: MyString
+  calls: 1
+  duration: 1.5

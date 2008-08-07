@@ -1,0 +1,28 @@
+<div id='post_comment_preview'>
+	<h2>предпросмотр
+		<span><%= button_to_function 'Отправить комментарий', "$('#{@entry.dom_id(:form)}').submit(); return false;", :class => 'button' %></span>
+	</h2>
+	<div class="post_comment post_comment_new" id="<%= dom_id(@comment) %>">				
+		<div class='rel'>
+			<div class='post_comment_avatar'>
+				<% if !@comment.user.nil? && @comment.user.avatar %>
+					<%= link_to avatar_image_tag(@comment.user), url_for_tlog(@comment.user) %>
+				<% end %>
+			</div>
+			<div class="post_comment_controls">
+				<%= image_tag('blank.gif', :size => '12x13') %>
+			</div>
+		</div>
+		<div class='comment_text'>
+			<div class='post_comment_author'><%= link_to_comment_author(@comment, current_site && @comment.user_id == current_site.id) %></div>
+			<div class='post_comment_time'>предпросмотр</div>
+			<div class='post_comment_text<%= ' author_reply' if @comment.user_id == current_site.id %>'>
+				<% if @comment.user_id == 0 %>
+					<%= @comment.fetch_cached_or_run_block { |text| white_list_anonymous_comment text } %>
+				<% else %>
+					<%= @comment.fetch_cached_or_run_block { |text| white_list_comment text } %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

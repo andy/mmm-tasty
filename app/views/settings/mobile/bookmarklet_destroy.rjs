@@ -1,0 +1,7 @@
+if current_user.bookmarklets.count == 0
+  page.visual_effect :highlight, @bookmarklets.dom_id, { :duration => 0.3 }
+  page.visual_effect :fade, :my_bookmarklets, { :duration => 0.3 }
+else
+  page.visual_effect :highlight, @bookmarklet.dom_id, { :duration => 0.3 }
+  page.visual_effect :fade, @bookmarklet.dom_id, { :duration => 0.3 }
+end

@@ -1,0 +1,17 @@
+<% @title = 'платные услуги на сайте' %>
+
+<% content_for :header do %>
+	Платные настройки
+<% end %>
+
+
+<form method='post' action='<%= settings_premium_path %>' class='small'>
+
+  <p>
+    С этой страницы Вы можете оплатить некоторые услуги на сайте, которые доступны только после оплаты
+  </p>
+
+	<div class='submit_button'>
+		<input type='submit' value='Сохранить' class='button' />
+	</div>
+</form>

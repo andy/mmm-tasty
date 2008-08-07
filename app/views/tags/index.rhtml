@@ -1,0 +1,13 @@
+<% @title = current_site ? "личное облако тегов пользователь#{current_site.gender('я', 'ницы')} #{h current_site.url}" : "облако тегов от всех пользователей тейсти" %>
+
+<div class='filter'>
+	<p><%= current_site ? "Это <span class='highlight large'>все теги</span>, которые можно найти в #{current_site.gender('его', 'её')} тлоге, на одной странице" : 'Теги всех пользователей' %></p>
+</div>
+
+<div class='tags_cloud'>
+	<% "<div class='onair'>" unless current_site %>
+		<% @tags.each do |tag, weight, count| %>
+			<%= link_to tag, tag_view_url(:tags => tag), { :style => "font-size: #{weight}px;", :title => "#{count.pluralize('запись', 'записи', 'записей', true)} с этим тегом" } %>
+		<% end %>	
+	<% "</div>" unless current_site %>
+</div>

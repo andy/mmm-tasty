@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<!-- layout account -->
+<html>
+<head>
+	<%= render 'globals/head' %>
+</head>
+<body class="bg_main">
+	<div class='l_2'>
+	<div id="wrapper" class="layout_2">
+		<div class="rounded_top iePNG">&nbsp;</div>
+		<div class="rounded_center iePNG">
+			<div class="content_layout_2">
+				<div class="padd_left">
+					<span class="header"><%= yield :header %></span>
+					<% if @title %>
+						<span class="system_where"><%= @title %></span>
+					<% end %>
+					<%= flash_div %>
+					<%= yield %>
+				</div>
+			</div>
+		</div>
+		<div class="rounded_bottom iePNG">&nbsp;</div>
+	</div>
+	<%= render 'globals/foot' %>
+	</div>
+	<%= render 'globals/top_nav' %>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<%-
+	inline_tags ||= false unless local_assigns.has_key?(:inline_tags) && inline_tags
+	inline_friends ||= false unless local_assigns.has_key?(:inline_friends) && inline_friends
+-%>
+<!-- tlog/_sidebar -->
+<div class="sidebar_section" id='sidebar_avatar'>
+	<div class='sidebar_section_content' id='sidebar_avatar_content'>
+		<% if params[:action] == 'index' && @page == 1 %>
+			<%= avatar_image_tag current_site %>
+		<% else %>
+			<%= link_to_tlog current_site, :link => :avatar if current_site.avatar %>
+		<% end %>
+		
+		<% if current_user && !is_owner? %>
+			<%# код из _relationship.rhtml, один в один %>
+			<%- relationship = current_user.relationship_with(current_site) -%>
+			<div id='sidebar_relationship'<%= ' class="subscribed"' if relationship.friendship_status >= Relationship::DEFAULT %>>
+				<%= link_to_remote relationship.say_it(current_site, current_user), :url => relationship_entries_url -%>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<% unless current_site.tlog_settings.about.blank? %>
+	<div class='sidebar_section' id='sidebar_about'>
+		<%= link_to_function "О #{current_site.gender('нём', 'ней')}", "sidebar_toggle('about')", :class => 'sidebar_toggle', :id => 'sidebar_about_link' %>
+		<div class='sidebar_section_content' id='sidebar_about_content' style='display: none'>
+				<%= white_list_entry(current_site.tlog_settings.about) %>
+				
+				<% unless current_site.faves.size.zero? %>
+					<div id='about_submenu'><%= link_to "#{current_site.gender('его', 'её')} избранное, #{current_site.faves.size.pluralize('штука', 'штуки', 'штук', true)}", faves_url %></div>
+				<% end %>
+		</div>
+	</div>
+<% end %>
+
+<% unless current_site.entries_count.zero? %>
+	<% unless current_site.tlog_settings.sidebar_hide_search? %>
+		<div class='sidebar_section' id='sidebar_search'>
+			<%= link_to_function 'Поиск', "sidebar_toggle('search')", :title => "в #{current_site.gender("его", "её")} тлоге", :class => "sidebar_toggle #{'highlight' if params[:query]}", :id => 'sidebar_search_link' %>		
+			<div class='sidebar_section_content' id='sidebar_search_content' <%= " style='display: none'" unless params[:query] %>>
+				<form method='get' action='<%= search_url %>'>
+					<%= text_field_tag 'query', params[:query], :autosave => "com.tlog.#{(current_site.domain || current_site.url).downcase.underscore}", :results => 10, :id => nil, :class => 'sidebar_search_input' %>
+				</form>
+			</div>
+		</div>
+	<% end %>
+
+	<% if inline_tags || !current_site.tlog_settings.sidebar_hide_tags?  %>
+		<div class='sidebar_section' id='sidebar_tag_cloud'>
+			<%= link_to_function 'Теги', "sidebar_toggle('tag_cloud')", :id => 'sidebar_tag_cloud_link', :style => inline_tags ? nil : 'display: none', :class => "sidebar_toggle #{'highlight' if inline_tags}" %>
+			<% unless inline_tags %>
+				<%= link_to_remote('Теги', {
+						:update => 'sidebar_tag_cloud_content',
+						:url => tags_entries_url,
+						:before => '$("tag_cloud_spinner").show(); urchinTracker("/sidebar/tag_cloud")',
+						:success => 'new Effect.BlindDown("sidebar_tag_cloud_content", { duration: 0.3 }); $("sidebar_tag_cloud_remote").hide(); Element.addClassName("sidebar_tag_cloud_link", "highlight"); $("sidebar_tag_cloud_link").show();',
+						:complete => '$("tag_cloud_spinner").hide()',
+						:method => 'get'
+					}, :id => 'sidebar_tag_cloud_remote', :class => 'sidebar_toggle') %>
+			<% end %>
+			<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :id => 'tag_cloud_spinner', :style => 'display: none' %>
+			<div class='sidebar_section_content' id='sidebar_tag_cloud_content'<%= ' style="display: none"' unless inline_tags %>>
+				<%= render('tlog/_tags', { :highlight_tags => inline_tags }) if inline_tags %>
+			</div>
+		</div>
+	<% end %>
+	
+	<% if params[:action] == 'day' || !current_site.tlog_settings.sidebar_hide_calendar? %>
+		<div class='sidebar_section' id='sidebar_calendar'>
+			<%= link_to_function 'Календарь', "sidebar_toggle('calendar')" , :class => "sidebar_toggle #{'highlight' if params[:action] == 'day'}", :id => 'sidebar_calendar_link' %>
+			<div class='sidebar_section_content' id='sidebar_calendar_content' <%= "style='display: none'" unless params[:action] == 'day' %>>
+				<%= render 'globals/calendar', :calendar => current_site.calendar(@time), :time => (@time || Time.now) %>
+			</div>
+		</div>
+	<% end %>
+<% end %>
+
+<% unless standalone %>
+	<% cache(:controller => '/tlog', :action => 'index', :content_for => 'public_friends') do %>
+		<% if current_site.public_friends.size > 0 %>
+			<div class='sidebar_section' id='sidebar_public_friends'>
+				<%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %>
+				<div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' unless inline_friends %>>
+					<% current_site.public_friends.each do |user| %>
+						<%= link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+	
+	<% unless current_site.tlog_settings.sidebar_hide_messages? %>
+		<div class='sidebar_section' id='sidebar_messages'>
+			<%= link_to_function 'Сообщения', "sidebar_toggle('messages')", :class => 'sidebar_toggle', :id => 'sidebar_messages_link' %>
+			<div class='sidebar_section_content' id='sidebar_messages_content' style='display: none'>
+				<%= render :partial => 'messages/sidebar' %>
+			</div>
+		</div>
+	<% end %>
+<% end %>
+
+<% cache(:controller => '/tlog', :action => 'index', :content_for => 'sidebar_sections') do %>
+	<% current_site.sidebar_sections.each do |section| %>
+		<div class='sidebar_section' id='<%= section.dom_id %>'>
+			<%= link_to_function section.name, "sidebar_toggle('section_#{section.id}')", :class => "sidebar_toggle #{'highlight' if section.is_open?}", :id => section.dom_id(nil, :link) %>
+			<div class='sidebar_section_content' id='<%= section.dom_id(nil, :content) %>' <%= ' style="display: none"' unless section.is_open? %>>
+				<% section.elements.each do |element| %>				
+					<p><%= render element.template_path, { :element => element } %></p>
+				<% end %>
+			</div>
+		</div>
+	<% end %>
+<% end %>
+
+<div class='sidebar_section' id='sidebar_hide_holder'>
+	<%= link_to_function '&#x2190; спрятать', 'new Effect.Move("tlog_sidebar", { x: -216, duration: 0.3, afterFinish: function() { $("show_sidebar").show(); $("tlog_sidebar_content").hide(); new Effect.Move("show_sidebar", { x: 25, duration: 0.2 }) } });', :id => 'sidebar_hide' %>
+</div>
+<script type='text/javascript'>if(window.opera) { $('sidebar_hide_holder').hide(); } // buggy opera</script>
+<!-- /tlog/_sidebar -->

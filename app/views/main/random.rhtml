@@ -1,0 +1,55 @@
+<% @title = "день из жизни #{h @user.url}" %>
+
+<div class='onair'>
+	<% @entries.each do |entry| %>
+		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true } %>
+	<% end %>
+</div>
+
+<% content_for :sidebar_left do %>
+	<div class='section'>
+		<h2><span><%= link_to image_tag('reload.gif'), main_url(:action => :random), :title => 'другой день, другой пользователь', :class => 'reload' %>&nbsp;День из жизни <%= link_to_tlog(@user) %></span></h2>
+		<% if @user.avatar %>
+			<div class='avatar_holder'><%= link_to_tlog @user, :link => :avatar %></div>
+		<% end %>
+
+		<p class='brief'>
+			<%= h @user.url %> в тейсти уже примерно
+			<span class='strong'><%= @user.created_at.distance_between_in_words(Time.now) %></span>
+			и за все это вермя успел<%= @user.gender('', 'а') %> написать
+			<span class='strong'><%= @user.entries_count_for(current_user) %></span>
+			<%= @user.entries_count_for(current_user).pluralize("запись", "записи", "записей", false) %>
+		</p>
+	</div>
+
+	<% unless @user.tlog_settings.about.blank? %>
+		<div class='section sidebar_about'>
+			<h2><span><%= h @user.url %> о себе</span></h2>
+			<%- about = @user.tlog_settings.about -%>
+			<% if about.length > 60 %>
+				<div id='about_brief'>
+					<p><%= h strip_tags(white_list_entry(about)).truncate(60).to_s %></p>
+					<%= link_to_function 'далее&nbsp;&#x2192;', "$('about_brief', 'about_full').invoke('toggle');", :class => 'about_more' %>
+				</div>
+				<div id='about_full' style='display: none'>
+					<%= white_list_entry(about) %>
+					<%= link_to_function 'убрать', "$('about_brief', 'about_full').invoke('toggle');", :class => 'about_more' %>
+				</div>
+			<% else %>
+				<div id='about_full'><%= white_list_entry(about) %></div>
+			<% end %>
+		</div>
+	<% end %>
+	
+	<div class='section sidebar_calendar'>
+		<h2><span>другие дни</span></h2>
+		<%= render 'globals/calendar', :calendar => @calendar, :time => @time %>
+	</div>
+
+	<div class='section sidebar_others'>
+		<h2><span>этот день у других...</span></h2>
+		<% @others.each do |user| %>
+			<%= link_to h(user.url), { :entry_id => user.day_first_entry_id }, :class => (@user.id == user.id) ? 'highlight' : nil %>
+		<% end %>
+	</div>
+<% end %>

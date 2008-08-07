@@ -1,0 +1,47 @@
+<% @title = "ваши настройки, #{current_user.username}" %>
+
+<% content_for :header do %>
+	Какой тлог вы хотите?
+<% end %>
+
+<form method='post' action='<%= settings_url %>' class='small'>
+	<ul id='tlog_func'>
+		<li id='is_hidden'>
+			<label for='tlog_settings_is_daylog_false'>
+				<%= radio_button 'tlog_settings', 'is_daylog', false %>
+				<span class='short'>обычный</span>
+			</label>
+			<p>Обычный тлог &mdash; это стандартная лента записей, где последняя запись показывается в самом верху, как на новостных сайтах, как в обычных блогах, как везде. На главной странице показываются последние 15 записей, есть календарик и прочие механизмы навигации.</p>
+		</li>
+		<li id='is_public'>
+			<label for='tlog_settings_is_daylog_true'>
+				<%= radio_button 'tlog_settings', 'is_daylog', true %>
+				<span class='short'>тлогодень</span>
+			</label>
+			<p>Тлогодень &mdash; это формат тлога где <strong>каждая страница представляет собой только один день вашей жизни</strong>, а не просто последние 15 записей сплошной лентой, как в случае с <strong>обычным</strong> тлогом. И если сегодня вы сделаете одну запись, то на главной странице вашего тлога будет показываться только эта запись. Один день &mdash; одна страница!</p>
+		</li>
+	</ul>
+	
+	<h2>Дополнительные настройки</h2>
+	<table class='form'>
+		<tr>
+			<td class='label'><label for='tlog_settings_default_visibility'>Видимость записей по-умолчанию</label></td>
+			<td class='input'>
+				<%= select :tlog_settings, :default_visibility, Entry::VISIBILITY_FOR_SELECT_NEW %>
+				<div class='input_note'>Каждый раз, когда вы создаете новую запись, ей будет присваиваться видимость указанная здесь. Но это лишь видимость по-умолчанию и её всегда можно изменить индивидуально для каждой записи.</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='label'></td>
+			<td class='input'>
+				<%= check_box :tlog_settings, :comments_enabled, :class => 'checkbox' %>
+				<label for='tlog_settings_comments_enabled'>включить комментарии в тлоге</label>
+				<div class='input_note'>По странной причине, комментарии включаются или выключаются только у новых записей, а у старых записей ничего не меняется.</div>
+			</td>
+		</tr>
+	</table>
+
+	<div class='submit_button'>
+		<input type='submit' value='Сохранить' class='button' />
+	</div>
+</form>

@@ -1,0 +1,35 @@
+<%-
+@element = element
+section = element.section
+-%>
+
+<% if element.new_record? || element[:type] == 'SidebarLinkElement' %>
+	<div id='<%= element.new_record? ? section.dom_id(:new_link) : element.dom_id(:edit) %>' class='<%= section.dom_id(:new_form) %>' style='display: none'>
+		<form method='post' action='<%= settings_sidebar_url(:action => element.new_record? ? 'element' : 'element_update') %>'>
+			<% if element.new_record? %>
+				<input type='hidden' name='element[type]' value='link' />
+				<input type='hidden' name='section_id' value='<%= section.id %>' />
+			<% else %>
+				<input type='hidden' name='element_id' value='<%= element.id %>' />
+			<% end %>
+			<%= text_field :element, :content, :id => element.new_record? ? section.dom_id(:sidebar_link_element) : element.dom_id(:sidebar_link_element), :class => 'element_content', :value => element.new_record? ? nil : element.content %>
+			<%= submit_to_remote nil, '+', :url => settings_sidebar_url(:action => element.new_record? ? 'element' : 'element_update') %>
+			<%= tasty_error_message_on :element, :content, :id => element.new_record? ? section.dom_id(:sidebar_link_element) : element.dom_id(:sidebar_link_element) %>
+		</form>
+	</div>
+<% end %>
+
+<% if element.new_record? || element[:type] == 'SidebarElement' || element[:type].blank? %>
+	<div id='<%= element.new_record? ? section.dom_id(:new) : element.dom_id(:edit) %>' class='<%= section.dom_id(:new_form) %>' style='display: none'>
+		<form method='post' action='<%= settings_sidebar_url(:action => element.new_record? ? 'element' : 'element_update') %>'>
+			<% if element.new_record? %>
+				<input type='hidden' name='section_id' value='<%= section.id %>' />
+			<% else %>
+				<input type='hidden' name='element_id' value='<%= element.id %>' />
+			<% end %>
+			<%= text_area :element, :content, :rows => nil, :cols => nil, :id => element.new_record? ? section.dom_id(:sidebar_element) : element.dom_id(:sidebar_element), :class => 'element_content', :value => element.new_record? ? nil : element.content %>
+			<%= tasty_error_message_on :element, :content, :id => element.new_record? ? section.dom_id(:sidebar_element) : element.dom_id(:sidebar_element) %>
+			<%= submit_to_remote nil, '+', :url => settings_sidebar_url(:action => element.new_record? ? 'element' : 'element_update') %>
+		</form>
+	</div>
+<% end %>

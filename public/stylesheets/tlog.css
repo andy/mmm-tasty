@@ -1,0 +1,48 @@
+/* text of tlog */
+.post_content *, .comment_text *, .top_comments_text, div#post_comment_form_greeting, #allowed_html_tags, span.quote_entry_body, .filter {
+    color:#414141!important;
+}
+.post_text { border-color:#414141!important; }
+/* tlog background */
+.rounded_main_center, .person_1, .person_2, .person_3, .person_4, .emd_tag a {
+		background:#FFFFFF!important;
+}
+/* sidebar text */
+#tlog_menu_url a, #tlog_menu_url, #tlog_menu_title, #footer a, #footer p, div.sidebar a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label, #sidebar_hide {
+	color:#FFFFFF!important;
+}
+/* sidebar bg */
+#tlog_menu_url a, #tlog_menu_url, #tlog_menu_title, #footer a, #footer p, div.sidebar
+a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label {
+		background:transparent!important;
+}
+/* date color */
+.service_date span span, div.service_date, .entry_pagination a, .entry_pagination  {
+    color:#858585!important;
+    border-color:#858585!important;
+}
+/* highlight color */
+#sidebar_tag_cloud_content a:hover, #sidebar_calendar_content a:hover, #sidebar_public_friends_content a:hover, .about_more, #sidebar_hide, .highlight {
+     background-color:#FF5300!important;
+}
+/* link */
+.onair a, div.post_link_entry a.big_link {
+     color:#FF5300!important;
+     border-color:#FF5300!important;
+
+}
+.post_comment_author .highlight, .entry_metadata_link {
+	background-color:#FF5300!important;
+}
+/* username inverted link */
+.post_comment_author a.highlight {
+		color:#FFFFFF!important;
+}
+/* voter background color */
+.entry_rating {
+		background-color:#BCBCBC!important;
+}
+/* voter text color */
+.entry_rating {
+	color:#FFFFFF!important;
+} 

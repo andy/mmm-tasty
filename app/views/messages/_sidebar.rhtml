@@ -1,0 +1,20 @@
+<div id='messages'>
+	<%- @messages = Message.find_for_user(:user => current_user, :site => current_site, :limit => 2) -%>
+	<% if @messages.size > 0 %>
+		<%= render :partial => 'messages/message', :collection => @messages %>
+	<% elsif !current_user || !current_user.is_confirmed? %>
+		<p>тут абсолютно пусто</p>
+	<% end %>
+</div>
+
+<%= link_to 'все сообщения &#x2192;', messages_path, :id => 'messages_other', :class => 'messages_other', :style => (current_site.messages.size <= 2 ? 'display: none' : nil) %>
+
+<% if current_user && current_user.is_confirmed? %>
+	<div id='message_create'>
+		<form method='post' action='<%= messages_url %>'>
+			<%= text_area :message, :body, :rows => 4, :cols => 15 %> <br/>
+			<%= check_box :message, :is_private, :class => 'checkbox' %><label for='message_is_private' id='message_is_private_label'>личное</label><br/>
+			<%= submit_to_remote nil, 'отправить', :url => messages_url, :html => { :class => 'button_send' } %>
+		</form>
+	</div>
+<% end %>

@@ -1,0 +1,16 @@
+<div class='rel' id='pref_friends_rel'><div id='pref_friends'><div id='pref_friends_i'>
+	<div class='pref_friends_control'>
+		<%= link_to_function '&nbsp;&nbsp;&nbsp;&nbsp;', 'new Effect.Fade("pref_friends_rel", { duration: 0.3 }); $("pref_fav_local_heart_sel").hide(); $("pref_fav_local_heart").show();', :class => 'pref_ctl_close iePNG', :title => 'закрыть' %>
+	</div>
+	<% current_user.all_friends.each do |user| %>
+		<div class='pref_friends_user<%= " pref_friendship_status_#{user.friendship_status}" %>' id='<%= user.dom_id(:rel_div) %>'>
+			<a href='<%= url_for_tlog(user) %>' class='pref_link_tlog' id='<%= user.dom_id(:rel_link) %>' onclick='urchinTracker("/top_nav/heart/tlog"); return true;'><%= h user.url %></a>
+			<% if user.last_viewed_entries_count.to_i != user.entries_count_for(current_user) %>
+				<span class='pref_new_entry' title='количество новых записей'>+<%= user.entries_count_for(current_user) - user.last_viewed_entries_count.to_i %></span>
+			<% end %>
+		</div>
+	<% end %>
+	<div class='pref_friends_control'>
+		<%= link_to '&nbsp; настроить', settings_social_url(:host => host_for_tlog(current_user)), :class => 'pref_ctl_settings', :title => 'тонкие настройки списка друзей' %>
+	</div>
+</div></div></div>

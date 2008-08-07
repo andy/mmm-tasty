@@ -1,0 +1,4 @@
+<div id='feedbacks'>
+	<h2><span>Что для них тейсти?</span></h2>
+	<%= render :partial => 'feedbacks/feedback', :collection => Feedback.random(:limit => 6) %>
+</div>

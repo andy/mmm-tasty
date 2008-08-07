@@ -1,0 +1,17 @@
+<div id='entry_helper'>
+	То что вы здесь напишете попадет только в раздел <a href='http://www.mmm-tasty.ru/main/anonymous'>анонимки</a> на главной странице тейсти... без вашего имени и ссылок на ваш тлог. И вычислить вас будет невозможно.
+	<br/><br/>
+	Вобщем, здесь можно <span class='highlight'>изливать душу</span>, даже если ваш тлог читают друзья, родители или начальник службы безопасности компании в которой вы работаете.
+</div>
+
+<div>
+	<label for='entry_data_part_2'>Заголовок <em>(необязательное поле):</em></label><br/>
+	<%= text_field 'entry', 'data_part_2' %>
+	<%= tasty_error_message_on 'entry', 'data_part_2' %>
+</div>
+
+<div>
+	<label for='entry_data_part_1'>Текст: </label><br/>
+	<%= text_area 'entry', 'data_part_1', :rows => 6, :class => 'resizeable' %>
+	<%= tasty_error_message_on 'entry', 'data_part_1' %>
+</div>

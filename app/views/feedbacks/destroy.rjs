@@ -1,0 +1,3 @@
+page.visual_effect :highlight, @feedback.dom_id, { :duration => 0.3 }
+page.visual_effect :fade, @feedback.dom_id, { :duration => 0.3 }
+page.show :feedback_create

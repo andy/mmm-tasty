@@ -1,0 +1,2 @@
+page.visual_effect :switch_off, @section.dom_id
+page['sidebar_empty_tip'].show() if current_user.sidebar_sections.size == 0

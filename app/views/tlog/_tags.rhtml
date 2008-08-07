@@ -1,0 +1,7 @@
+<% highlight_tags ||= [] unless local_assigns.has_key?(:highlight_tags) && highlight_tags %>
+<% tags = Tag.cloud { current_site.top_categories({ :max_rows => 50, :include_private => is_owner? }) } %>
+<% tags.each do |tag, weight, count| %>
+	<%= link_to tag, tag_view_url(:tags => tag), { :rel => 'tag', :style => "font-size: #{0.86 + weight.to_f/30.0}em;", :class => highlight_tags.include?(tag) ? 'tag_highlight' : nil, :title => "#{count.pluralize('запись', 'записи', 'записей', true)}" } %>
+<% end %>
+<%= link_to 'все его теги &#x2192;', tags_url(:action => 'cloud') if tags && tags.size == 45 %>
+&nbsp;

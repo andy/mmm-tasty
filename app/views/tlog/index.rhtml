@@ -1,0 +1,21 @@
+<% @title = current_site.tlog_settings.title %>
+<% content_for :head do %>
+	<!-- content_for :head -->
+	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
+	<!-- /content_for :head -->
+<% end %>
+
+<% cache(:content_for => 'layout', :is_public => is_owner? ? 'false' : 'true', :page => @page_for_cache) do %>
+	<%= render :partial => 'lenta' %>
+<% end %>
+
+<script type='text/javascript'>
+// <[!CDATA[
+	<%= "var comments_views_update = #{@comment_views.to_json}" if @comment_views %>
+	<%= "var entry_ratings_update = #{@entry_ratings.to_json}" if @entry_ratings %>
+//	]]>
+</script>
+
+<% content_for :sidebar do %>
+	<%= render 'tlog/_sidebar' %>	
+<% end %>

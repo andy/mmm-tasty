@@ -1,0 +1,24 @@
+<div>
+	<label for='entry_data_part_1'>Ссылка: </label><br/>
+	<%= text_field 'entry', 'data_part_1' %>
+	<%= tasty_error_message_on 'entry', 'data_part_1' %>
+</div>
+
+<div>
+	<label for='entry_data_part_2'>Текст для ссылки <em>(необязательное поле)</em>: </label><br/>
+	<%= text_field 'entry', 'data_part_2' %>
+	<%= tasty_error_message_on 'entry', 'data_part_2' %>
+</div>
+
+<div class='small_link' id='link_comment_enable'<%= "style='display: none;'" unless @entry.data_part_3.blank? %>>
+	<%= link_to_function 'Добавить описание...', 'Element.hide("link_comment_enable"); Element.show("link_comment_disable"); $("entry_data_part_3").disabled = false; new Effect.BlindDown("link_comment_box", { duration: 0.3 });' %>
+</div>
+<div class='small_link' id='link_comment_disable'<%= "style='display: none;'" if @entry.data_part_3.blank? %>>
+	<%= link_to_function 'Убрать описание...', 'Element.hide("link_comment_disable"); Element.show("link_comment_enable"); $("entry_data_part_3").disabled = true; new Effect.BlindUp("link_comment_box", { duration: 0.3 });'%>
+</div>
+
+<div id='link_comment_box'<%= "style='display: none;'" if @entry.data_part_3.blank? %>>
+	<label for='entry_data_part_3'>Описание <em>(необязательное поле)</em>: </label><br/>
+	<%= text_area 'entry', 'data_part_3', :rows => 5, :class => 'resizeable' %>
+	<%= tasty_error_message_on 'entry', 'data_part_3' %>	
+</div>

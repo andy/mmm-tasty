@@ -1,0 +1,47 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+andy_one:
+  id: 1
+  user_id: 1
+  type: TextEntry
+  data_part_1: |
+    Дип-скай объект прочно выслеживает близкий математический горизонт, это довольно часто наблюдается у сверхновых звезд второго типа. Соединение на следующий год, когда было лунное затмение и сгорел древний храм Афины в Афинах (при эфоре Питии и афинском архонте Каллии), жизненно дает астероидный маятник Фуко – это скорее индикатор, чем примета. Полнолуние ищет космический секстант, об этом в минувшую субботу сообщил заместитель администратора NASA. Гелиоцентрическое расстояние иллюстрирует эффективный диаметp, учитывая, что в одном парсеке 3,26 световых года.
+  data_part_2: «Почему наблюдаема Лисичка?»
+  created_at: <%= Time.now.to_s(:db) %>
+  modified_at: NULL
+andy_two:
+  id: 2
+  user_id: 1
+  type: TextEntry
+  data_part_1:
+  data_part_2: NULL
+  data_part_3: NULL
+  created_at: <%= Time.now.to_s(:db) %>
+  modified_at: NULL
+andy_three:
+  id: 3
+  user_id: 1
+  type: QuoteEntry
+  data_part_1: |
+    You can never know the thruth. In fact, there is no <b>Truth</b>
+  data_part_2: The Matrix
+  data_part_3: NULL
+  created_at: <%= Time.now.to_s(:db) %>
+  modified_at: NULL
+andy_four:
+  id: 4
+  user_id: 1
+  type: LinkEntry
+  data_part_1: http://www.tlogs.ru/
+  data_part_2: The New Way For Sharing Thoughts
+  data_part_3: NULL
+  created_at: <%= Time.now.to_s(:db) %>
+  modified_at: NULL
+andy_five:
+  id: 5
+  user_id: 1
+  type: TextEntry
+  data_part_1: I am really reallly really bored. Comment on me, please.
+  data_part_2: NULL
+  data_part_3: NULL
+  created_at: <%= Time.now.to_s(:db) %>
+  modified_at: NULL

@@ -1,0 +1,12 @@
+page.call :clear_all_errors
+if @section.valid?
+  page[@section.dom_id(:h2_form)].hide();
+  page.replace_html @section.dom_id(:h2_name), @section.name
+  page[@section.dom_id(:h2_name)].show();
+  page.visual_effect :highlight, @section.dom_id(:h2_name)
+else
+  @section.errors.each do |section, message|
+    page.call :error_message_on, @section.new_record? ? 'new-name-sidebar-section' : @section.dom_id(:name), message
+  end
+end
+  
