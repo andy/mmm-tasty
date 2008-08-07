@@ -1,3 +1,5 @@
 .DS_Store
 .svn
 public/uc
+tmp
+db/openid-store
