@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'development'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.1.0' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -16,7 +16,7 @@ Rails::Initializer.run do |config|
   # Only load the plugins named here, by default all plugins in vendor/plugins are loaded
   # config.plugins = %W( action_cache acts_as_attachment acts_as_sphinx acts_as_taggable_on_steroids app_config dynamic_session_exp paginating_find request_routing simply_helpful white_list )
   
-  config.action_controller.session = { :session_key => "tasty", :secret => "4735fb1a8734d17051e4d6538f85f24ea0305be996f6ac4e7a48ef1b6bbc2135e2478d6c83aa7dc713e6e57e196f13a947ab7bc357381b724196e24f4dff2c9b" }
+  config.action_controller.session = { :session_key => "tasty", :secret => "" }
 
   # The list of connection adapters to load. (By default, all connection adapters are loaded. You can set this to be just the adapter(s) you will use to reduce your application’s load time.)
   # config.connection_adapters = %W( mysql )
