@@ -30,7 +30,7 @@ ActionController::Routing::Routes.draw do |map|
 
     map.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
     
-    www.resources :feedbacks
+    www.resources :feedbacks, :member => { :publish => :post, :discard => :post }
 
     www.catch_all '*anything', :controller => 'global', :action => 'not_found'
   end

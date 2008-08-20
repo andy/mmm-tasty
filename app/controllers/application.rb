@@ -169,6 +169,10 @@ class ApplicationController < ActionController::Base
       render :controller => 'tlog', :action => 'tlog_404', :layout => '404', :status => 404
       false
     end
+    
+    def require_admin
+      require_current_user && current_user.is_admin?
+    end
 
     def require_confirmed_current_user
       redirect_to(:host => "www.mmm-tasty.ru", :controller => '/confirm', :action => :required) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)

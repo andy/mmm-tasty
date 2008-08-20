@@ -74,7 +74,10 @@ class MainController < ApplicationController
     end
 
     @page = params[:page].to_i.reverse_page(total.to_pages)
-    @entries = Entry.find :all, :conditions => sql_conditions, :page => { :current => @page, :size => Entry::PAGE_SIZE, :count => total }, :include => [:author, :rating, :attachments], :order => 'entries.id DESC'
+
+    # grab id-s only, this is an mysql optimization
+    @entry_ids = Entry.find :all, :select => 'entries.id', :conditions => sql_conditions, :page => { :current => @page, :size => Entry::PAGE_SIZE, :count => total }, :order => 'entries.id DESC'
+    @entries = Entry.find_all_by_id @entry_ids.map(&:id), :include => [:author, :rating, :attachments], :order => 'entries.id DESC'
   end
   
   def last_personalized

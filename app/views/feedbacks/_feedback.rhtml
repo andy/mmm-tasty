@@ -1,6 +1,15 @@
 <div class='feedback' id='<%= feedback.dom_id %>'>
 	<p><%= h feedback.message %>
 		<span class='feedback_user'>&mdash; <%= link_to_tlog feedback.user, nil, :class => 'highlight' %></span>
-	<%= link_to_remote(image_tag('delete.gif'), { :url => feedback_url(feedback), :method => :delete }, :title => 'удалить свой отзыв') if feedback.is_owner?(current_user) %>
+	<%= link_to_remote(image_tag('delete.gif'), { :url => feedback_path(feedback), :method => :delete }, :title => 'удалить свой отзыв') if feedback.is_owner?(current_user) %>
+
 	</p>
+  <%# ссылки, при модерации %>
+	<% if current_user && current_user.is_admin? && !feedback.is_moderated? %>
+	  <div class='feedback_buttons'>
+	    <%= content_tag :span, feedback.created_at.distance_between_in_words(Time.now, ' назад') %>
+  	  <%= link_to_remote 'опубликовать', :url => publish_feedback_path(feedback) %>
+  	  <%= link_to_remote 'слить', :url => discard_feedback_path(feedback) %>
+  	</div>
+	<% end %>
 </div>

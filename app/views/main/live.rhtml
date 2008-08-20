@@ -1,7 +1,7 @@
 <% @title = 'прямой эфир как он есть' %>
 
 <div class='onair'>
-	<%= render('globals/pagination', { :pageable => @entries, :reverse => true, :css_class => 'top_nav_paginator' }) if @page > 1 %>
+	<%= render('globals/pagination', { :pageable => @entry_ids, :reverse => true, :css_class => 'top_nav_paginator' }) if @page > 1 %>
 
 	<%- google_ad_position = 1 + rand(3) %>
 	<% @entries.each_with_index do |entry, index| %>
@@ -9,7 +9,7 @@
 		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_username => true, :show_tags => false } %>
 	<% end %>
 
-	<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>	
+	<%= render 'globals/pagination', { :pageable => @entry_ids, :reverse => true } %>	
 </div>
 
 
