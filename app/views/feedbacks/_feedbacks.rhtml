@@ -1,4 +1,4 @@
 <div id='feedbacks'>
 	<h2><span>Что для них тейсти?</span></h2>
-	<%= render :partial => 'feedbacks/feedback', :collection => Feedback.published.random.all(:limit => 6) %>
+	<%= render :partial => 'feedbacks/feedback', :collection => Feedback.published.random.all(:include => [:user], :limit => 6) %>
 </div>
