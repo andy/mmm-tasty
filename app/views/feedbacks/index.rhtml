@@ -1,2 +1,5 @@
 
-<%= render :partial => 'feedback', :collection => @feedbacks %>
+<div class='onair'>
+  <%= content_tag :h2, 'Похоже, что все уже опубликовано' if @feedback.blank? %>
+  <%= render :partial => 'feedback', :collection => @feedbacks %>
+</div>
