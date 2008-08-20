@@ -95,14 +95,15 @@ function run_comments_views_update( ) {
     return;
 
   comments_views_update.each( function(object) {
-    var attr = object.attributes;
-    var text = attr.comments_count;
-    if (attr.last_comment_viewed > 0 && attr.last_comment_viewed != attr.comments_count) {
-      text = attr.last_comment_viewed + '+' + (attr.comments_count - attr.last_comment_viewed);
-    } else if (current_user > 0 && !attr.last_comment_viewed && attr.comments_count > 0 ) {
-      text = '+' + attr.comments_count
+    // var attr = object.attributes;
+    var text = object.comments_count;
+
+    if (object.last_comment_viewed > 0 && object.last_comment_viewed != object.comments_count) {
+      text = object.last_comment_viewed + '+' + (object.comments_count - object.last_comment_viewed);
+    } else if (current_user > 0 && !object.last_comment_viewed && object.comments_count > 0 ) {
+      text = '+' + object.comments_count
     }
-    var element = $('entry_comments_count_' + attr.id);
+    var element = $('entry_comments_count_' + object.id);
     if (element)
       Element.update(element, text);
   });
@@ -114,12 +115,8 @@ function run_entry_ratings_update( ) {
     return;
     
   entry_ratings_update.each ( function(object) {
-    var attr = object.attributes;
-    var text = attr.value;
-    
-    var element = $('entry_rating_' + attr.id);
-    if (element)
-      Element.update(element, text);
+    var element = $('entry_rating_' + object.id);
+    if (element) Element.update(element, object.value);
   });
 }
 
@@ -299,4 +296,25 @@ if(/MSIE/.test(navigator.userAgent) && !window.opera) {
     var classes = new Array('post_body');
     makeHover(classes);
   });
+}
+
+/* hide all flash object on page */
+function toggle_flash(visibility) {
+  var embeds = document.getElementsByTagName('embed');
+  for(i = 0; i < embeds.length; i++) {
+    embeds[i].style.visibility = visibility;
+  }
+
+  var objects = document.getElementsByTagName('object');
+  for(i = 0; i < objects.length; i++) {
+    objects[i].style.visibility = visibility;
+  }
+}
+
+function hide_flash() {
+  toggle_flash('hidden');
+}
+
+function show_flash() {
+  toggle_flash('visible')
 }

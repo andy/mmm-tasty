@@ -75,7 +75,10 @@ class CommentsController < ApplicationController
         wants.html { redirect_to entry_url(@entry); }
         wants.js { render :update do |page|
           page.call :clear_all_errors
-          page.redirect_to entry_url(@entry)          
+          page.call 'window.location.reload'
+
+          ## this does not work in safari:
+          # redirect_to entry_url(@entry)          
         end }
       end
     else

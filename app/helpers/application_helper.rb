@@ -151,7 +151,8 @@ END
     to = options.delete(:to) || :tlog
     return user.domain if to == :domain && user.is_a?(User) && !user.domain.blank?
     url = user.url rescue user
-    "#{url}.mmm-tasty.ru"
+    the_url = "#{url}.mmm-tasty.ru"
+    the_url += ":#{request.port}" unless request.port == 80
   end
   
   def url_for_tlog(user=nil, options = {})

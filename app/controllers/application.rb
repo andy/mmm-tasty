@@ -1,15 +1,8 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
-  # Pick a unique cookie name to distinguish our session data from others'
   session :session_key => 'tasty'
   
   filter_parameter_logging :password
-  # выключаем сесии для ботов
-  session :off, :if => proc { |request| request.user_agent =~ /^(Googlebot|ApacheBench\/|WebAlta Crawler|YandexSomething\/|YandexBlog\/|Yandex\/|Feedfetcher-Google|msnbot\/|msnbot-media\/|StackRambler\/|Netvibes|NewsFire\/|Snarfer\/|TMCrawler|LiveJournal\.com|FeedTools\/|labrin_|Gigabot\/|Mail.Ru\/|TurtleScanner\/|ia_archiver|sogou spider|Yeti\/)/i }
 
-  # after_filter { CachedModel.cache_reset }
   # before_filter :prelaunch_megasecrecy
 
   # меряем производительность только на реальном сайте

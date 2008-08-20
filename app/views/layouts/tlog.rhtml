@@ -4,9 +4,7 @@
 <html>
 <head>
 	<%= render 'globals/head' %>
-	<% cache(:controller => '/tlog', :action => 'style', :revision => current_site.tlog_settings.css_revision) do %>
-		<%= render :partial => 'tlog/style' %>
-	<% end %>
+	<%= render :partial => 'tlog/style' %>
 </head>
 <body id='the_tlog_body'>
 	<div class='tlog'>

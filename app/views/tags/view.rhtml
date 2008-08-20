@@ -16,7 +16,7 @@
 
 	<%- prev_entry = nil -%>
 	<% @entries.each do |entry| %>
-		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_username => !current_site, :show_datetime => !!current_site, :show_tags => (current_site && is_owner?) } %>
+		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_username => !current_site, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false), :show_tags => (current_site && is_owner?) } %>
 		<% prev_entry = entry %>
 	<% end %>
 

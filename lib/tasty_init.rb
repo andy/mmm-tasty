@@ -2,23 +2,11 @@ require 'openid'
 require 'openid/extensions/sreg'
 require 'openid/store/filesystem'
 require 'mp3info'
-# require 'format'
-# require 'video'
-# require 'string_ext'
 require 'coderay'
 require 'convoray'
-# require 'paginator'
-
-# require 'ruport'
 
 require 'memcache_util'
 CACHE = MemCache.new '127.0.0.1:3001', :namespace => RAILS_ENV
-
-# http://dev.robotcoop.com/Libraries/cached_model/
-# require 'cached_model'
-# CachedModel::use_memcache = false
-# CachedModel::ttl = 1.hour
-# CachedModel::use_local_cache = true
 
 # http://rails.techno-weenie.net/tip/2005/12/23/make_fixtures
 ActiveRecord::Base.class_eval do
@@ -33,10 +21,6 @@ ActiveRecord::Base.class_eval do
     # prefix ||= self.class.name.underscore
     # prefix != :bare ? "#{prefix.to_s.dasherize}-#{display_id}" : display_id
     ([prefix.blank? ? nil : prefix, self.class.name.underscore, display_id, postfix.blank? ? nil : postfix].compact * '_').tr('/-.', '_')
-  end
-
-  def referenced_cache_key
-    "[#{[id, self.class.name] * ':'}]"
   end
 end
 
@@ -110,11 +94,7 @@ end
 class Array
   def shuffle
     self.sort { Kernel::rand(3) - 1 }
-  end
-  
-  # def to_query
-  #   self.collect {|t| t.class == Fixnum ? t : "'#{t.sequelize}'"}.join(', ')
-  # end
+  end  
 end
 
 # убираем param, который присутсвует в оригинальной версии. потому что иначе получается битый html когда
@@ -128,11 +108,5 @@ module HTML
         @name =~ /^(img|br|hr|link|meta|area|base|basefont|
                     col|frame|input|isindex)$/ox
     end
-  end
-end
-
-class Float  
-  def to_csv
-    "\"#{self.to_s.tr('.',',')}\""
   end
 end

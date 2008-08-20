@@ -1,7 +1,7 @@
 class Avatar < ActiveRecord::Base
   belongs_to :user
 
-  acts_as_attachment :storage => :file_system, :max_size => 4.megabytes, :content_type => :image, :resize_to => '64x64>', :file_system_path => 'public/uc/avt'
+  has_attachment :storage => :file_system, :max_size => 4.megabytes, :content_type => :image, :resize_to => '64x64>', :file_system_path => 'public/uc/avt'
   validates_as_attachment
   
   # acts_as_list :scope => :user

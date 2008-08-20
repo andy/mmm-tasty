@@ -1,12 +1,23 @@
 <% @title = 'настройки внешнего вида тлога' %>
 <% content_for :head do %>
-	<%= stylesheet_link_tag 'colorpicker' %>
-	<%= javascript_include_tag 'dragdrop', 'builder', 'slider', 'yahoo.color.js', 'colorpicker' %>
+  <!-- http://developer.yahoo.com/yui/articles/hosting/ -->
+  <!-- css --> 
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/assets/skins/sam/skin.css"> 
+  <!-- js --> 
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/container/container-min.js"></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-min.js"></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-min.js"></script>
+
+  <!-- <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script> 
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-debug.js"></script> 
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-debug.js"></script> 
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/container/container-debug.js"></script> 
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/logger/logger-debug.js"></script> -->
 <% end %>
 <% content_for :header do %>
 	оформление тлога
 <% end %>
-
 
 <form method='post' action='<%= settings_url(:action => 'design') %>' enctype="multipart/form-data" class='small'>
 	<h2>Фоновая картинка</h2>
@@ -75,38 +86,38 @@
 		</tr>
 		<tr>
 			<td class='label'>фоновый</td>
-			<td><%= text_field 'design', 'color_bg' %></td>
+			<td><%= text_field 'design', 'color_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 			<td></td>
 			<td class='label border'>даты</td>
-			<td><%= text_field 'design', 'color_date' %></td>
+			<td><%= text_field 'design', 'color_date', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
 		<tr>
 			<td class='label'>фон ленты тлога</td>
-			<td><%= text_field 'design', 'color_tlog_bg' %></td>
+			<td><%= text_field 'design', 'color_tlog_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 			<td><%= check_box 'design', 'color_tlog_bg_is_transparent', :class => 'checkbox' %></td>
 			<td class='label border'>текст в тлоге</td>
-			<td><%= text_field 'design', 'color_tlog_text' %></td>
+			<td><%= text_field 'design', 'color_tlog_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
 		<tr>
 			<td class='label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
-			<td><%= text_field 'design', 'color_sidebar_bg' %></td>
+			<td><%= text_field 'design', 'color_sidebar_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox' %></td>
 			<td class='label border'>текст боковой панели</td>
-			<td><%= text_field 'design', 'color_sidebar_text' %></td>
+			<td><%= text_field 'design', 'color_sidebar_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
 		<tr>
 			<td class='label'>фон голосовалки</td>
-			<td><%= text_field 'design', 'color_voter_bg' %></td>
+			<td><%= text_field 'design', 'color_voter_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 			<td><%= check_box 'design', 'color_voter_bg_is_transparent', :class => 'checkbox' %></td>
 			<td class='label border'>текст голосовалки</td>
-			<td><%= text_field 'design', 'color_voter_text' %></td>
+			<td><%= text_field 'design', 'color_voter_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
 		<tr>
 			<td class='label'>подсветка<br><span class='input_note'>поднадька, поданька</span></td>
-			<td><%= text_field 'design', 'color_highlight' %></td>
+			<td><%= text_field 'design', 'color_highlight', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 			<td></td>
 			<td class='label border'>текст ссылки</td>
-			<td><%= text_field 'design', 'color_link' %></td>
+			<td><%= text_field 'design', 'color_link', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
 	</table>
 	
@@ -165,8 +176,147 @@
 	</div>
 </form>
 
+<% content_for :body do %>
+  <div id='y-panel' class='yui-skin-sam yui-picker-panel'>
+    <div class='hd'>Выберите цвет:</div>
+    <div class='bd y-panel-bd'>
+      <div id='y-picker' class='yui-picker'></div>
+    </div>
+    <div class='ft'>
+      <input type='submit' value='окей' class='button' id='y-panel-ok'>
+      или <a href='#' id='y-panel-cancel'>отменить</a>
+    </div>
+  </div>
+<% end %>
+
 <script type='text/javascript'>
-if(/MSIE/.test(navigator.userAgent) != true || window.opera) {
+var TlogColorPicker = Class.create({
+  initialize: function(elements) {
+    this.yuc = YAHOO.util.Color;
+    
+    this.panel = new YAHOO.widget.Panel('y-panel', {
+      width: '400px',
+      visible: false,
+      constraintoviewport: true,
+      close: true, 
+      draggable: true,
+      underlay: 'shadow',
+      keylisteners: YAHOO.util.KeyListener(document.body, [YAHOO.util.KeyListener.KEY.ESC, YAHOO.util.KeyListener.KEY.ENTER], this.onKeyPress.bind(this))
+    });
+    
+    this.panel.renderEvent.subscribe(function() {
+      if(!this.picker) { 
+        this.picker = new YAHOO.widget.ColorPicker('y-picker', {
+          images: {
+            PICKER_THUMB: '<%= image_path('colorpicker/picker_thumb.png') %>',
+            HUE_THUMB: '<%= image_path('colorpicker/hue_thumb.png') %>'
+          },
+          txt: {
+            ILLEGAL_HEX: "введено неправильное значение",
+            SHOW_CONTROLS: 'показать цифры',
+            HIDE_CONTROLS: 'спрятать цифры',
+            R: 'R',
+            G: 'G',
+            B: 'B',
+            HEX: '#'
+          },
+          showhexsummary: false,
+          showhexcontrols: true,
+          container: this.panel
+        });
+      }
+    });
+    this.panel.render();
+    
+    // install our handlers
+    self = this;
+    elements.each(function(element) {
+      element.observe('click', self.onClick.bindAsEventListener(self));
+      self.colorize(element, element.value);
+    });
+    
+    // handle panel events
+    Event.observe('y-panel-ok', 'click', this.hide.bindAsEventListener(this));
+    Event.observe('y-panel-cancel', 'click', this.cancel.bindAsEventListener(this));
+  },
+  onClick: function(event) {
+    this.element = event.element();
+
+    var offsets = this.element.positionedOffset();
+    this.panel.cfg.setProperty('x', offsets[0] + ((offsets[0] + 520) > document.viewport.getWidth()) ? -420 : 80)
+    this.panel.cfg.setProperty('y', offsets[1] - 80);
+    
+    // save original color, used when user presses cancel link
+    this.original_color = this.element.value;
+
+    // show panel and initialize picker
+    this.panel.show();
+
+    this.panel.picker.setValue(this.yuc.hex2rgb(this.element.value), true);
+    this.panel.picker.on('rgbChange', this.onChange.bind(this));
+  },
+  onChange: function(o) {
+    this.element.value = this.yuc.rgb2hex(o.newValue);
+    this.colorize(this.element, this.element.value)
+  },
+  colorize: function(element, hex_color) {
+    if(element.id.match(/(_text|link|date)/)) {
+      element.style.color = '#' + hex_color;
+      if(this.yuc.rgb2hsv(this.yuc.hex2rgb(hex_color))[2] < 0.5) {
+        element.style.backgroundColor = 'white';
+      } else {
+        element.style.backgroundColor = 'black';
+      }
+      
+      $$('.' + element.id).each(function(e) {
+        e.style.color = '#' + hex_color;
+      });
+    } else {
+      element.style.backgroundColor = '#' + hex_color;
+      if(this.yuc.rgb2hsv(this.yuc.hex2rgb(hex_color))[2] < 0.5) {
+        element.style.color = 'white';
+      } else {
+        element.style.color = 'black';
+      }
+      $$('.' + element.id).each(function(e) {
+        e.style.backgroundColor = '#' + hex_color;
+      });
+    }
+  },
+  cancel: function(event) {
+    this.element.value = this.original_color;
+    this.colorize(this.element, this.element.value);
+    this.hide();
+
+    event.stop();
+  },
+  onKeyPress: function(key, event) {
+    alert(key);
+    alert(event);
+    
+    this.hide();
+
+    event.stop();
+  },
+  // handleKeyPress: function() {
+  //   this.unhandleKeyPress();
+  //   this.keypress_handler = this.onKeyPress.bindAsEventListener(this);
+  //   document.observe('keypress', this.keypress_handler);
+  // },
+  // unhandleKeyPress: function() {
+  //   if(this.keypress_handler) {
+  //     document.stopObserving('keypress', this.keypress_handler);
+  //   }
+  // },
+  hide: function() {
+    this.panel.hide();
+  }
+});
+
+YAHOO.util.Event.onDOMReady(function() {
+  new TlogColorPicker($$('.tlog_color_picker'));
+});
+/*
 	['bg', 'tlog_bg', 'tlog_text', 'sidebar_bg', 'sidebar_text', 'link', 'highlight', 'date', 'voter_bg', 'voter_text'].each(function(color) {
 		var fieldName = 'design_color_' + color;
 		var rgb = YAHOO.util.Color.hex2rgb( $(fieldName).value );
@@ -198,5 +348,5 @@ if(/MSIE/.test(navigator.userAgent) != true || window.opera) {
 		}
 	});
 });
-}
+*/
 </script>

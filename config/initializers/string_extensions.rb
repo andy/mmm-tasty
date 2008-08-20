@@ -30,6 +30,10 @@ class String
   #   "'#{self.sequelize}'"
   # end
   
+  def sql_quote
+    ActiveRecord::Base.connection.quote(self)
+  end
+  
   class << self
     def random
       Digest::SHA1.hexdigest Time.now.to_s.split(//).sort_by { rand }.join

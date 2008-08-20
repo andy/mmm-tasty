@@ -40,8 +40,6 @@ class MailFetcher < Daemon::Base
       end
       pop.finish
       
-      # CachedModel.cache_reset
-
       sleep(@config[:interval] || 60)
     end
   end

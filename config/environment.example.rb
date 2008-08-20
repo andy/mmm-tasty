@@ -47,15 +47,15 @@ Rails::Initializer.run do |config|
   config.action_mailer.default_charset = "utf-8"
   
   # See Rails::Configuration for more options  
-  # config.app_config.domain = 'mmm-tasty.ru'
-  # config.app_config.www = 'www.mmm-tasty.ru'
+  
+  config.gem 'image_science', :version => '>= 1.1.3'
+  config.gem 'will_paginate', :version => '>= 2.2.2'
 end
 
 require 'tasty_init'
 
 # ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:tmpdir => File.join(RAILS_ROOT, '/tmp'))
 ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS.update(:session_domain => '.mmm-tasty.ru')
-ActionController::Base.asset_host = 'http://www.mmm-tasty.ru'
 ActionView::Base.field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
 ActiveRecord::Errors::default_error_messages[:invalid] = 'неправильное значение'

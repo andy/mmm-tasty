@@ -190,7 +190,7 @@ class Entry < ActiveRecord::Base
     page_options = DEFAULT_PAGE_OPTIONS.merge(page_options)
     offset = (page_options[:page] - 1) * page_options[:limit]
     
-    conditions = "tags.name IN (#{categories.to_query})" 
+    conditions = "tags.name IN (#{categories.map(&:sql_quote)})" 
     conditions += " AND entries.user_id = #{find_options[:owner].id}" if find_options[:owner]
     conditions += ' AND entries.is_private = 0' unless find_options[:include_private] 
     
@@ -246,7 +246,7 @@ class Entry < ActiveRecord::Base
     options = DEFAULT_FIND_OPTIONS.merge(options)
 
     conditions = []
-    conditions << "tags.name IN (#{tags.to_query})"
+    conditions << "tags.name IN (#{tags.map(&:sql_quote)})"
     conditions << 'entries.is_private = 0' unless options[:include_private]
     conditions << "entries.user_id = #{options[:owner].id}" if options[:owner]
 
