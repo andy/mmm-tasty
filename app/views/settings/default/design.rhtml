@@ -2,18 +2,13 @@
 <% content_for :head do %>
   <!-- http://developer.yahoo.com/yui/articles/hosting/ -->
   <!-- css --> 
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/assets/skins/sam/skin.css"> 
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/colorpicker/assets/skins/sam/colorpicker.css"> 
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/container/assets/skins/sam/container.css"> 
   <!-- js --> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script> 
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-min.js"></script> 
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-min.js"></script> 
   <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/container/container-min.js"></script>
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-min.js"></script>
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-min.js"></script>
-
-  <!-- <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-debug.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-debug.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/container/container-debug.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/logger/logger-debug.js"></script> -->
 <% end %>
 <% content_for :header do %>
 	оформление тлога
@@ -101,7 +96,7 @@
 		<tr>
 			<td class='label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
 			<td><%= text_field 'design', 'color_sidebar_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox' %></td>
+			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox', :onclick => 'if($F(this).checked()) { $("design_color_sidebar_bg").disable(); } else { $("design_color_sidebar_bg").enable() }; return true;' %></td>
 			<td class='label border'>текст боковой панели</td>
 			<td><%= text_field 'design', 'color_sidebar_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
@@ -193,6 +188,7 @@
 var TlogColorPicker = Class.create({
   initialize: function(elements) {
     this.yuc = YAHOO.util.Color;
+    this.repositionable = true;
     
     this.panel = new YAHOO.widget.Panel('y-panel', {
       width: '400px',
@@ -200,16 +196,18 @@ var TlogColorPicker = Class.create({
       constraintoviewport: true,
       close: true, 
       draggable: true,
+      dragonly: true,
       underlay: 'shadow',
-      keylisteners: YAHOO.util.KeyListener(document.body, [YAHOO.util.KeyListener.KEY.ESC, YAHOO.util.KeyListener.KEY.ENTER], this.onKeyPress.bind(this))
+      keylisteners: YAHOO.util.KeyListener(document.body, [YAHOO.util.KeyListener.KEY.ESC, YAHOO.util.KeyListener.KEY.ENTER], this.onKeyPress.bind(this)),
+      effect: { effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.3 }
     });
     
     this.panel.renderEvent.subscribe(function() {
       if(!this.picker) { 
         this.picker = new YAHOO.widget.ColorPicker('y-picker', {
           images: {
-            PICKER_THUMB: '<%= image_path('colorpicker/picker_thumb.png') %>',
-            HUE_THUMB: '<%= image_path('colorpicker/hue_thumb.png') %>'
+            PICKER_THUMB: '<%= image_path('colorpicker/select.gif') %>',
+            HUE_THUMB: '<%= image_path('colorpicker/hline.png') %>'
           },
           txt: {
             ILLEGAL_HEX: "введено неправильное значение",
@@ -226,7 +224,8 @@ var TlogColorPicker = Class.create({
         });
       }
     });
-    this.panel.render();
+    this.panel.dragEvent.subscribe(this.onDrag.bind(this));
+    this.panel.render(document.body);
     
     // install our handlers
     self = this;
@@ -239,13 +238,24 @@ var TlogColorPicker = Class.create({
     Event.observe('y-panel-ok', 'click', this.hide.bindAsEventListener(this));
     Event.observe('y-panel-cancel', 'click', this.cancel.bindAsEventListener(this));
   },
+  onDrag: function(type, arguments) {
+    this.repositionable = false;
+  },
   onClick: function(event) {
     this.element = event.element();
 
-    var offsets = this.element.positionedOffset();
-    this.panel.cfg.setProperty('x', offsets[0] + ((offsets[0] + 520) > document.viewport.getWidth()) ? -420 : 80)
-    this.panel.cfg.setProperty('y', offsets[1] - 80);
-    
+    if(this.repositionable) {
+      var offsets = this.element.positionedOffset();
+
+      if(offsets[0] + 520 > document.viewport.getWidth()) {
+        this.panel.cfg.setProperty('x', offsets[0] - 420);
+      } else {
+        this.panel.cfg.setProperty('x', offsets[0] + 80 );
+      }
+      // this.panel.cfg.setProperty('x', offsets[0] + (offsets[0] + 520 > document.viewport.getWidth()) ? -420 : 80)
+      this.panel.cfg.setProperty('y', offsets[1] - 80);
+    }
+
     // save original color, used when user presses cancel link
     this.original_color = this.element.value;
 
@@ -310,43 +320,11 @@ var TlogColorPicker = Class.create({
   // },
   hide: function() {
     this.panel.hide();
+    this.repositionable = true;
   }
 });
 
 YAHOO.util.Event.onDOMReady(function() {
   new TlogColorPicker($$('.tlog_color_picker'));
 });
-/*
-	['bg', 'tlog_bg', 'tlog_text', 'sidebar_bg', 'sidebar_text', 'link', 'highlight', 'date', 'voter_bg', 'voter_text'].each(function(color) {
-		var fieldName = 'design_color_' + color;
-		var rgb = YAHOO.util.Color.hex2rgb( $(fieldName).value );
-		if (YAHOO.util.Color.isValidRGB(rgb)) {
-			var nodes = $$('.' + fieldName);
-			if(fieldName.match(/(_text|link|date)/)) {
-				nodes.each(function(node) {
-					node.style.color = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";					
-				});				
-			} else {
-				nodes.each(function(node) {
-					node.style.backgroundColor = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
-				});
-			}
-		}
-		
-		new Control.ColorPicker(fieldName, { IMAGE_BASE: 'http://www.mmm-tasty.ru/images/colorpicker/', field: fieldName, onUpdate: function(value) {
-			var rgb = YAHOO.util.Color.hex2rgb( this.field.value );
-			var nodes = $$('.' + this.options.field);
-			if(this.options.field.match(/(_text|link|date)/)) {
-				nodes.each(function(node) {
-					node.style.color = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";					
-				});				
-			} else {
-				nodes.each(function(node) {
-					node.style.backgroundColor = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
-				});
-			}
-		}
-	});
-});
-*/
 </script>
