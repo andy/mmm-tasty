@@ -2,9 +2,9 @@ xml.instruct! :xml, :version => '1.0', :encoding=>'UTF-8'
 
 xml.rss :version => '2.0' do
   xml.channel do
-    xml.title "Ммм... тейсти - прямой эфир со всего тейсти"
+    xml.title { xml.cdata!("Ммм... тейсти - прямой эфир со всего тейсти") }
     xml.link main_url(:host => 'www.mmm-tasty.ru', :action => 'last')
-    xml.description "прямой эфир со всего тейсти"
+    xml.description { xml.cdata!("прямой эфир со всего тейсти") }
     xml.language 'ru-RU'
     xml.pubDate "#{@entries.first.created_at.to_s(:rfc822)}" if @entries.first
     xml.generator "mmm...rss (http://www.mmm-tasty.ru/)"
@@ -12,9 +12,9 @@ xml.rss :version => '2.0' do
   
     @entries.each do |entry|
       xml.item do
-        xml.title "#{entry.author.url} - #{white_list_entry(entry.excerpt)}"
+        xml.title { xml.cdata!("#{entry.author.url} - #{white_list_entry(entry.excerpt)}") }
         xml.link "#{url_for_tlog(entry.author) + entry_path(entry)}"
-        xml.description render('entries/entry_embed', { :entry => entry })
+        xml.description { xml.cdata!(render('entries/entry_embed', { :entry => entry })) }
         xml.guid "#{url_for_tlog(entry.author) + entry_path(entry)}"
         xml.pubDate entry.created_at.to_s(:rfc822)
         

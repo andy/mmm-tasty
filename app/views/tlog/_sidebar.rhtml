@@ -77,17 +77,15 @@
 <% end %>
 
 <% unless standalone %>
-	<% cache(:controller => '/tlog', :action => 'index', :content_for => 'public_friends') do %>
-		<% if current_site.public_friends.size > 0 %>
-			<div class='sidebar_section' id='sidebar_public_friends'>
-				<%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %>
-				<div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' unless inline_friends %>>
-					<% current_site.public_friends.each do |user| %>
-						<%= link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %>
-					<% end %>
-				</div>
+	<% if current_site.public_friends.size > 0 %>
+		<div class='sidebar_section' id='sidebar_public_friends'>
+			<%= link_to_function 'Друзья', "sidebar_toggle('public_friends')", :class => 'sidebar_toggle', :id => 'sidebar_public_friends_link' %>
+			<div class='sidebar_section_content' id='sidebar_public_friends_content'<%= ' style="display: none"' unless inline_friends %>>
+				<% current_site.public_friends.each do |user| %>
+					<%= link_to_tlog(user, nil, :title => user.title, :rel => 'friend') %>
+				<% end %>
 			</div>
-		<% end %>
+		</div>
 	<% end %>
 	
 	<% unless current_site.tlog_settings.sidebar_hide_messages? %>

@@ -2,9 +2,9 @@ xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 
 xml.rss :version => '2.0' do
   xml.channel do
-    xml.title host_for_tlog(current_site, { :use_domain => true }) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))
+    xml.title { xml.cdata!(host_for_tlog(current_site, { :use_domain => true }) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))) }
     xml.link url_for_tlog(current_site)
-    xml.description strip_tags(current_site.tlog_settings.about)
+    xml.description { xml.cdata!(strip_tags(current_site.tlog_settings.about)) }
     xml.language 'ru-RU'
     xml.pubDate @entries.first.created_at.to_s(:rfc822) if @entries && @entries.first
     xml.generator "mmm...rss (http://www.mmm-tasty.ru/)"
@@ -12,7 +12,7 @@ xml.rss :version => '2.0' do
     if current_site.avatar
       xml.image do
         xml.url image_path(current_site.avatar.public_filename)
-        xml.title host_for_tlog(current_site, { :use_domain => true }) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))
+        xml.title { xml.cdata!(host_for_tlog(current_site, { :use_domain => true }) + (current_site.tlog_settings.title.blank? ? '' : (" - " + h(current_site.tlog_settings.title)))) }
         xml.link url_for_tlog(current_site)
       end
     end
@@ -20,9 +20,9 @@ xml.rss :version => '2.0' do
     if @entries
       @entries.each do |entry|
         xml.item do        
-          xml.title strip_tags(white_list_entry(entry.excerpt.to_s))
+          xml.title { xml.cdata!(strip_tags(white_list_entry(entry.excerpt.to_s))) }
           xml.link url_for_tlog(current_site) + entry_path(entry)
-          xml.description render('entries/entry_embed', { :entry => entry })
+          xml.description { xml.cdata!(render('entries/entry_embed', { :entry => entry })) }
           xml.guid url_for_tlog(current_site) + entry_path(entry)
           xml.pubDate entry.created_at.to_s(:rfc822)
         

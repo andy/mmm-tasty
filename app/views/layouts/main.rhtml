@@ -6,21 +6,13 @@
 		</form>
 	</div>
 	
-	<% if @adsense_enabled %>
+	<% if @adsense_enabled && false %>
 		<h2><span>Реклама</span></h2>
-		<div class='ad_new'>
-			раньше здесь была <br>
-			скучная реклама от гугла <br>
-			а теперь здесь ссылка <br>
-			на отличный хостинг <br>
-			где работает тейсти <br> <br>
-			<a href='http://upstream.ru/services/hosting.phtml' rel='follow'>Размещение вашего сайта от 150 руб в месяц: PHP, Perl, POP3/SMTP, Webmail</a>
-		</div>
 
-		<h2><span>Книги</span></h2>
-		<div class='ad_bookmate'>
-			<iframe src='http://bookmate.ru/widget/iframe' width='175px' scrolling='no' height='620px' border='0'> </iframe>
-		</div>
+    <h2><span>Книги</span></h2>
+    <div class='ad_bookmate'>
+      <iframe src='http://www.bookmate.ru/widget/iframe' width='175px' scrolling='no' height='620px' border='0'> </iframe>
+    </div>
 	<% end %>
 	<% if @adsense_enabled_old %>
 		<h2><span>Реклама</span></h2>
@@ -65,7 +57,7 @@
 			<ul>
 				<%= menu_item 'Что это?', :about %>
 				<%= menu_item 'Новости', :news %>
-				<%= menu_item 'Люди', :users, %w(main/users main/new_users) %>
+				<%= menu_item 'Люди', :new_users, %w(main/users main/new_users) %>
 				<%= menu_item 'Лучшее', :last %>
 				<%= menu_item 'Анонимки', :anonymous, %w(anonymous/*) %>
 				<%= menu_item 'Прямой эфир', :live, %w(main/live main/last_personalized) %>

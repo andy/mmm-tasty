@@ -42,6 +42,9 @@ class ApplicationController < ActionController::Base
   protected
     def preload_essential_models
       Entry
+      User
+      Avatar
+      Comment
     end
     
     def preload_current_site
@@ -78,7 +81,7 @@ class ApplicationController < ActionController::Base
         # 1.c
         redirect_to("http://#{subdomains.split('.').last}.mmm-tasty.ru") and return false if subdomains.count('.') == 1 && subdomains.split('.').first == 'www'
         # 1.d
-        @current_site = User.find_by_url(subdomains, :include => [:tlog_settings]) if subdomains.count('.') == 0
+        @current_site = User.find_by_url(subdomains, :include => [:tlog_settings, :avatar]) if subdomains.count('.') == 0
         #   d.1
         # NOTE: не будет работать, потому что ВСЕ запросы будут перенаправляться на домен, а нам этого не нужно
         # redirect_to("http://#{@current_site.domain}/") if @current_site && !@current_site.domain.blank?          

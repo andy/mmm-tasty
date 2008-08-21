@@ -104,7 +104,7 @@ class User < ActiveRecord::Base
   
   def self.popular(limit = 6)
     user_ids = User.find_by_sql("SELECT user_id AS id,count(*) AS c FROM relationships WHERE friendship_status > 0 GROUP BY user_id ORDER BY c DESC LIMIT 100")
-    User.find(user_ids.map(&:id).shuffle[0...limit])
+    User.find_all_by_id(user_ids.map(&:id).shuffle[0...limit], :include => [:avatar, :tlog_settings])
   end
   
   def is_openid?
@@ -124,9 +124,12 @@ class User < ActiveRecord::Base
   # User.find(1).calendar.each do |day, entries|
   def calendar(date=nil)
     date ||= Date.today
-    time = date.to_time
-    calendar = Entry.find_by_sql(['SELECT id, created_at, DATE_FORMAT(created_at, "%d-%m-%y") day, count(*) as count FROM entries WHERE user_id = ? AND created_at < ? AND created_at > ? GROUP BY day ORDER BY created_at ASC', self.id, time.since(1.month).at_end_of_month.to_s(:db), time.ago(1.month).at_beginning_of_month.to_s(:db)])
-    calendar.group_by { |entry| entry.created_at.month }.sort_by { |a| a }
+
+    Rails.cache.fetch("calendar_#{self.id}_#{self.entries_count}_#{date.to_date}", :expires_in => 1.day) do
+      time = date.to_time
+      calendar = Entry.find_by_sql(['SELECT id, created_at, DATE_FORMAT(created_at, "%d-%m-%y") day, count(*) as count FROM entries WHERE user_id = ? AND created_at < ? AND created_at > ? GROUP BY day ORDER BY created_at ASC', self.id, time.since(1.month).at_end_of_month.to_s(:db), time.ago(1.month).at_beginning_of_month.to_s(:db)])
+      calendar.group_by { |entry| entry.created_at.month }.sort_by { |a| a }
+    end
   end
 
   # возвращает список текущих записей для пользователя, возможные параметры:
@@ -143,7 +146,7 @@ class User < ActiveRecord::Base
     conditions << "entries.created_at BETWEEN '#{options[:time].strftime("%Y-%m-%d")}' AND '#{options[:time].tomorrow.strftime("%Y-%m-%d")}'" if options[:time]
     conditions = conditions.blank? ? nil : conditions.join(' AND ')
 
-    find_options = { :order => 'entries.id DESC', :include => [:attachments, :rating], :conditions => conditions }
+    find_options = { :order => 'entries.id DESC', :include => [:author, :attachments, :rating], :conditions => conditions }
     find_options[:page] = { :current => options[:page], :size => options[:page_size], :count => self.entries_count } unless options[:time]
 
     entries.find(:all, find_options)
@@ -186,6 +189,7 @@ class User < ActiveRecord::Base
 
   def update_confirmation!(email=nil)
     email ||= self.email
+    self.settings_will_change!
     self.settings[:email_confirmation_code] = [ email, self.confirmation_code_for(email) ]
     self.update_attribute(:settings, self.settings) unless self.new_record?
   end
@@ -199,6 +203,7 @@ class User < ActiveRecord::Base
   end
   
   def clear_confirmation
+    self.settings_will_change!
     self.settings.delete(:email_confirmation_code)
   end
 
@@ -236,6 +241,17 @@ class User < ActiveRecord::Base
   # сила голоса пользователя. Пока что абсолютно равоне для всех
   def vote_power
     1
+  end
+
+  # выставляем пользователю ключ (и создаем новый если его не было еще)
+  def last_personalized_key
+    self.settings[:last_personalized_key] ||= begin
+      key = String.random
+      self.settings_will_change!
+      self.settings[:last_personalized_key] = key
+      self.save
+      key
+    end
   end
 
   private

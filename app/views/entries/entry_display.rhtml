@@ -47,12 +47,12 @@ if show_datetime -%>
 	<% end -%>
 	
 	<%- if show_comments_bubble -%>
-		<%- if entry.comments_enabled? || entry.comments.size > 0 -%>
-			<div class='service_comments<%= ' has_comments' if entry.comments.size > 0 %>'>
-				<div class="comment_cloud iePNG<%= ' has_comments' if entry.comments.size > 0 %>"><a href="<%= (current_site && current_site.id == entry.id) ? "#{entry_path(entry)}#new" : "#{url_for_tlog(entry.author)}#{entry_path(entry)}#new" %>" title='читать комментарии / комментировать'><span id='entry_comments_count_<%= entry.id %>'><%= entry.comments.size %></span></a></div>
+		<%- if entry.comments_enabled? || entry.comments_count > 0 -%>
+			<div class='service_comments<%= ' has_comments' unless entry.comments_count.zero? %>'>
+				<div class="comment_cloud iePNG<%= ' has_comments' unless entry.comments_count.zero? %>"><a href="<%= (current_site && current_site.id == entry.id) ? "#{entry_path(entry)}#new" : "#{url_for_tlog(entry.author)}#{entry_path(entry)}#new" %>" title='комментарии к этой записи'><span id='entry_comments_count_<%= entry.id %>'><%= entry.comments_count %></span></a></div>
 			</div>
 		<%- else -%>
-			<div class='service_link'><a href="<%= current_site ? "#{entry_path(entry)}" : "#{url_for_tlog(entry.author)}#{entry_path(entry)}" %>" title='постоянная ссылка только на эту запись'>link</a></div>
+			<div class='service_link'><a href="<%= current_site ? "#{entry_path(entry)}" : "#{url_for_tlog(entry.author)}#{entry_path(entry)}" %>" title='постоянная ссылка на эту запись'>link</a></div>
 		<%- end -%>
 	<%- end -%>
 	<% unless params[:controller] == 'publish' || !entry.id %>
@@ -68,11 +68,11 @@ if show_datetime -%>
 				<div class='private_entry'><%= image_tag 'key.png', :title => 'закрытая запись, видная только вам' %></div>
 			</div>
 		<% end %>
-		<div class='service_edit enable_for_owner_<%= entry.user_id %>' style='display: none;'><%= link_to "edit", ((current_site && (current_site.id == entry.user_id)) ? publish_path(:action => entry.class.to_s.underscore.split('_').first, :id => entry, :back => 'to_entry_page') : publish_url(:host => host_for_tlog(entry.author), :action => entry.class.to_s.underscore.split('_').first, :id => entry, :back => 'to_entry_page')), :rel => 'nofollow' %></div>
+		<div class='service_edit enable_for_owner_<%= entry.user_id %>' style='display: none;'><%= link_to "edit", ((current_site && (current_site.id == entry.user_id)) ? publish_path(:action => entry.class.to_s.underscore.split('_').first, :id => entry, :back => 'to_entry_page') : publish_url(:host => host_for_tlog(entry.author), :action => entry.class.to_s.underscore.split('_').first, :id => entry, :back => 'to_entry_page')), :rel => 'nofollow', :title => 'редактировать эту запись' %></div>
 		<% if params[:controller] == 'faves' && current_user && current_site.id == current_user.id %>
-			<div class='service_edit'><%= link_to_remote image_tag('delete.gif'), :url => "/faves/#{entry.id}", :method => :delete, :id => entry.dom_id(:defave), :rel => 'nofollow' %></div>
+			<div class='service_edit'><%= link_to_remote image_tag('delete.gif'), { :url => "/faves/#{entry.id}", :method => :delete }, :id => entry.dom_id(:defave), :title => 'удалить из избранного' %></div>
 		<% elsif params[:controller] != 'faves' %>
-			<div class='service_edit enable_for_current_user disable_for_owner_<%= entry.user_id %>' style='display: none'><%= link_to_remote 'fave!', { :url => global_fave_url(:id => entry.id) }, :id => entry.dom_id(:fave), :rel => 'nofollow' %></div>
+			<div class='service_edit enable_for_current_user disable_for_owner_<%= entry.user_id %>' style='display: none'><%= link_to_remote 'fave!', { :url => global_fave_url(:id => entry.id) }, :id => entry.dom_id(:fave), :title => 'добавить в избранное' %></div>
 		<% end %>
 	<% end %>
 	<div class='post_content'>

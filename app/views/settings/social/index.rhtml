@@ -16,9 +16,13 @@
 	<% unless @light %>
 	Если у Вас тормозит перетаскивание используйте <%= link_to "легкую версию этой страницы", :action => :light %>
 	<% end %>
+	
 	<%= "<br><br>" if @light %>
 </p>
 
+<p class='settings_warning'>
+  Кстати, читать все записи ваших друзей можно <%= link_to 'прямо с сайта', main_url(:host => 'www.mmm-tasty.ru', :action => 'last_personalized') %>, либо через <%= link_to 'RSS', tlog_feed_protected_url(:host => host_for_tlog(current_user), :key => current_user.last_personalized_key, :action => :last_personalized), :title => 'подписаться через RSS', :class => 'rss' %>
+</p>
 <table id='friends_table'>
 	<tr>
 		<th style='width: 33%'>

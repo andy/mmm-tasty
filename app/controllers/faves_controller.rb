@@ -7,7 +7,7 @@ class FavesController < ApplicationController
   
   def index
     @page = params[:page].to_i.reverse_page(current_site.faves.size.to_pages)
-    @faves = Fave.find :all, :page => { :current => @page, :size => 15, :count => current_site.faves.size }, :include => [:entry], :order => 'faves.id DESC', :conditions => { :user_id => current_site.id }
+    @faves = Fave.find :all, :page => { :current => @page, :size => 15, :count => current_site.faves.size }, :include => { :entry => [:attachments, :author, :rating] }, :order => 'faves.id DESC', :conditions => { :user_id => current_site.id }
   end
   
   # попадаем сюда через global/fave

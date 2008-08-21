@@ -15,7 +15,7 @@
 <% content_for :sidebar_left do %>
 	<h2 class='center'><span>Авторы</span></h2>
 	<div class='users'>
-		<% User.find([2, 1]).each do |user| %>
+		<% User.find([2, 1], :include => [:avatar]).each do |user| %>
 			<div>
 				<%= link_to_tlog user, :link => :avatar, :empty => :blank %>
 				<p><%= link_to_tlog user %></p>

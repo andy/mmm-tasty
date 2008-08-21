@@ -17,9 +17,9 @@
     <%#= menu_item 'телефонная', settings_mobile_url(:host => host_for_tlog, :action => :sms), %w(settings/mobile/sms) %>
 		<%= menu_item 'браузерная', settings_mobile_url(:host => host_for_tlog, :action => :bookmarklets, :id => nil), %w(settings/mobile/bookmarklets) %>
 	<% end %>
-	<% menu_item 'Платность', :premium, %w(settings/premium/index settings/premium/domain) do %>
-	  <%= menu_item 'оплата', :premium, %w(settings/premium/index) %>
-	  <%= menu_item 'домен', settings_premium_url(:host => host_for_tlog, :action => :domain), %w(settings/premium/domain) %>
-	<% end %>
+	<%# menu_item 'Платность', :premium, %w(settings/premium/index settings/premium/domain) do %>
+	  <%#= menu_item 'оплата', :premium, %w(settings/premium/index) %>
+	  <%#= menu_item 'домен', settings_premium_url(:host => host_for_tlog, :action => :domain), %w(settings/premium/domain) %>
+	<%# end %>
 	<%= menu_item 'Выйти', url_for_tlog %>
 </ul>

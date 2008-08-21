@@ -1,25 +1,29 @@
 <% @title = @entry.excerpt || @entry.to_russian %>
 <% content_for :head do %>
 	<!-- content_for :head -->
-	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
-	<% if @entry.next_id %>
-		<link rel="next" title="Next" href="/entries/<%= @entry.next_id %>" />
-	<% end %>
-	<% if @entry.prev_id %>
-		<link rel="prev" title="Previous" href="/entries/<%= @entry.prev_id %>" />
-	<% end %>
+	<% cache :content_for => :head, :date => Date.today do %>
+  	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
+  	<% if @entry.next_id %>
+  		<link rel="next" title="Next" href="/entries/<%= @entry.next_id %>" />
+  	<% end %>
+  	<% if @entry.prev_id %>
+  		<link rel="prev" title="Previous" href="/entries/<%= @entry.prev_id %>" />
+  	<% end %>
+  <% end %>
 	<!-- /content_for :head -->
 <% end %>
-<%= render 'entries/entry_display', { :entry => @entry, :show_datetime => true, :show_tags => is_owner? } %>
 
+<% cache :owner => is_owner?, :date => Date.today, :updated_at => @entry.updated_at.to_i do %>
+  <%= render 'entries/entry_display', { :entry => @entry, :show_datetime => true, :show_tags => is_owner? } %>
+<% end %>
 <a name="comments"></a>
-<% if @entry.comments_enabled? || @entry.comments.size > 0 %>
+<% if @entry.comments_enabled? || @entry.comments_count > 0 %>
 	<div class="post_comments">
 		<div class="top_comments_text">
-			<% if @entry.comments.size == 0 %>
+			<% if @entry.comments_count.zero? %>
 				Комментариев еще нет
 			<% else %>
-				Комментарии (<span id='top_comment_number'><%= @entry.comments.size %></span>):
+				Комментарии (<span id='top_comment_number'><%= @entry.comments_count %></span>):
 			<% end %>
 		</div>
 		
@@ -31,12 +35,12 @@
 				</div>
 			</div>
 		<% end %>
-				
-		<%= render :partial => 'comment', :collection => Comment.find(:all, :conditions => ['comments.entry_id = ?', @entry.id], :include => { :user => :avatar }, :order => 'comments.id') if @entry.comments.size %>
+
+		<%= render :partial => 'comment', :collection => @comments %>
 
 		<%= render :partial => 'comment_form' if @entry.comments_enabled? %>
 	</div>
-	<% if !@entry.comments_enabled? %>
+	<% unless @entry.comments_enabled? %>
 		<div class='return_from_permalink'>
 			комментарии были отключены владельцем тлога
 		</div>	

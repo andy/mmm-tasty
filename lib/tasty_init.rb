@@ -5,9 +5,6 @@ require 'mp3info'
 require 'coderay'
 require 'convoray'
 
-require 'memcache_util'
-CACHE = MemCache.new '127.0.0.1:3001', :namespace => RAILS_ENV
-
 # http://rails.techno-weenie.net/tip/2005/12/23/make_fixtures
 ActiveRecord::Base.class_eval do
   # person.dom_id #-> "person-5"
@@ -88,13 +85,6 @@ class Fixnum
   def to_b
     !!self.to_i
   end
-end
-
-
-class Array
-  def shuffle
-    self.sort { Kernel::rand(3) - 1 }
-  end  
 end
 
 # убираем param, который присутсвует в оригинальной версии. потому что иначе получается битый html когда

@@ -483,6 +483,7 @@ class ImageEntry < Entry
     write_attribute(:data_part_1, link)
     
     if link =~ Format::HTTP_LINK
+      self.metadata_will_change!
       self.metadata = {} if self.metadata.nil?
       self.metadata.merge!(get_metadata_for_linked_image(link))
     end
@@ -517,19 +518,14 @@ class ImageEntry < Entry
 
   private
     def get_metadata_for_linked_image(link)
-      require 'net/http'
-      require 'uri'
-      require 'RMagick'
-
-      cache_key = "entry_#{Digest::SHA1.hexdigest(link)}_linked_image_metadata"
-      cached_image_metadata = Cache.get(cache_key)
-      if cached_image_metadata.nil?
-        image = Magick::Image::from_blob(Net::HTTP.get(URI.parse(link))).first
-        cached_image_metadata = { :width => image.columns, :height => image.rows }
-        # cached_image_metadata = image.change_geometry('420x500>') { |width, height, img| { :width => width, :height => height } } rescue {}
-        Cache.put(cache_key, cached_image_metadata, 15.minutes)
+      Rails.cache.fetch("remote_image_#{Digest::SHA1.hexdigest(link)}", :expires_in => 15.minutes) do
+        image_attributes = { }
+        Tempfile.open("remote_image", File.join(RAILS_ROOT, 'tmp')) do |tempfile|
+          tempfile.write Net::HTTP.get(URI.parse(link))
+          image_attributes = ImageScience.with_image(tempfile.path) { |image| { :width => image.width, :height => image.height } }
+        end
+        image_attributes
       end
-      cached_image_metadata
     rescue
       logger.debug "could not get image metadata for this url: #{link}"
       { }
@@ -584,18 +580,20 @@ class VideoEntry < Entry
   
   # пытаемся подключить видео формат после того как видео было найдено
   def after_find
-    metadata = {} if metadata.nil?
-    if metadata[:video_module].blank?
-      metadata[:video_module] = Video::detect_by_link(self.data_part_1)
+    self.metadata = {} if self.metadata.nil?
+    if self.metadata[:video_module].blank?
+      self.metadata[:video_module] = Video::detect_by_link(self.data_part_1)
+      self.metadata_will_change!
     end
-    self.extend metadata[:video_module].blank? ? Video::Unknown : metadata[:video_module].constantize
+    self.extend self.metadata[:video_module].blank? ? Video::Unknown : self.metadata[:video_module].constantize
   end
   
   def data_part_1=(link)
     write_attribute(:data_part_1, link)
     unless link.blank?
-      metadata = {} if metadata.nil?      
-      metadata[:video_module] = Video::detect_by_link(link)
+      self.metadata = {} if self.metadata.nil?      
+      self.metadata[:video_module] = Video::detect_by_link(link)
+      self.metadata_will_change!
       self.extend metadata[:video_module].blank? ? Video::Unknown : metadata[:video_module].constantize
     end
   end

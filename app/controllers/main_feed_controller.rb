@@ -2,7 +2,6 @@ class MainFeedController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   layout nil
   session :off
-  caches_action :last
 
   def last
     ### такая же штука определена в main_controller.rb
@@ -23,6 +22,5 @@ class MainFeedController < ApplicationController
     @entries = @entry_ratings.map { |er| er.entry }
 
     response.headers['Content-Type'] = 'application/rss+xml'
-    response.time_to_live = 20.minutes
   end
 end

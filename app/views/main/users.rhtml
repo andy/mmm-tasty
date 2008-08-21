@@ -1,5 +1,5 @@
 <div class='onair'>
-	<%= render ('globals/pagination', :pageable => @users, :css_class => 'top_nav_paginator') if @page > 1  %>
+	<%= render 'globals/pagination', :pageable => @users, :css_class => 'top_nav_paginator' if @page > 1  %>
 </div>
 
 <table class='detailed_users'>

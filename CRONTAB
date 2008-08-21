@@ -5,7 +5,7 @@ MAILTO=andrew.zotov@gmail.com
 # SEARCH: reindex everything at night
 0 6 * * * cd /home/joe/tlogs/app/config && /home/joe/tlogs/sphinx/bin/indexer --rotate --all 1>/dev/null 2>&1
 # SESSIONS
-@hourly /home/joe/tlogs/mysql/bin/mysql --defaults-file=~/.my5p.cnf -e 'delete from sessions where now() - updated_at > 43200' tasty_production
+# @hourly /home/joe/tlogs/mysql/bin/mysql --defaults-file=~/.my5p.cnf -e 'delete from sessions where now() - updated_at > 43200' tasty_production
 # CACHE
-@daily rm -rf /home/joe/tlogs/app-dev/tmp/cache
-@daily rm -rf /home/joe/tlogs/app/tmp/cache
+# @daily rm -rf /home/joe/tlogs/app-dev/tmp/cache
+# @daily rm -rf /home/joe/tlogs/app/tmp/cache

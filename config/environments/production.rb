@@ -13,8 +13,8 @@ config.action_controller.perform_caching             = true
 config.action_view.cache_template_loading            = true
 config.log_level = :warn
 
-ActionController::Base.fragment_cache_store = :file_store, "/home/joe/tlogs/app/tmp/cache"
-#ActionController::Base.fragment_cache_store = :mem_cache_store, "127.0.0.1:3001"
+# Caching, woohoo!
+config.cache_store = :mem_cache_store, '127.0.0.1:3001', { :namespace => 'p' }
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
 # config.action_controller.asset_host                  = "http://assets.example.com"

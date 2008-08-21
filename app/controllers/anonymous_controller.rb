@@ -8,12 +8,7 @@ class AnonymousController < ApplicationController
     sql_conditions = 'type="AnonymousEntry"'
     
     # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
-    cache_key = "entry_count_anonymous"
-    total = Cache.get(cache_key)
-    if total.nil?
-      total = Entry.count :conditions => sql_conditions
-      Cache.put(cache_key, total, 1.minute)
-    end
+    total = Rails.cache.fetch('entry_count_anonymous', :expires_in => 10.minutes) { Entry.count :conditions => sql_conditions }
 
     @page = params[:page].to_i.reverse_page(total.to_pages)
     
