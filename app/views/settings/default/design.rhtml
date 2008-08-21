@@ -94,9 +94,9 @@
 			<td><%= text_field 'design', 'color_tlog_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
 		<tr>
-			<td class='label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
+			<td class='label design_color_sidebar_bg_label'>фон боковой панели<br><span class='input_note'>и даты, когда она сбоку</span></td>
 			<td><%= text_field 'design', 'color_sidebar_bg', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
-			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox', :onclick => 'if($F(this).checked()) { $("design_color_sidebar_bg").disable(); } else { $("design_color_sidebar_bg").enable() }; return true;' %></td>
+			<td><%= check_box 'design', 'color_sidebar_bg_is_transparent', :class => 'checkbox', :disabledonclick => 'design_check_box(this, "design_color_sidebar_bg");' %></td>
 			<td class='label border'>текст боковой панели</td>
 			<td><%= text_field 'design', 'color_sidebar_text', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
@@ -185,6 +185,26 @@
 <% end %>
 
 <script type='text/javascript'>
+function design_check_box(element, field) {
+  var field = $(field);
+
+  if(element.checked) {
+    field.disabled = true;
+    field.style.color = '#999';
+    field.style.backgroundColor = '#333'
+    $$('.' + field.id + '_label').each(function(e) {
+      e.style.color = '#999';
+    });
+  } else {
+    field.disabled = false;
+    field.style.color = '';
+    $$('.' + field.id + '_label').each(function(e) {
+      e.style.color = '';
+    });    
+  }
+}
+
+
 var TlogColorPicker = Class.create({
   initialize: function(elements) {
     this.yuc = YAHOO.util.Color;
