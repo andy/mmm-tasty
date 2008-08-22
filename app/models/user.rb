@@ -147,7 +147,7 @@ class User < ActiveRecord::Base
     conditions = conditions.blank? ? nil : conditions.join(' AND ')
 
     find_options = { :order => 'entries.id DESC', :include => [:author, :attachments, :rating], :conditions => conditions }
-    find_options[:page] = { :current => options[:page], :size => options[:page_size], :count => self.entries_count } unless options[:time]
+    find_options[:page] = { :current => options[:page], :size => options[:page_size], :count => include_private ? self.entries_count : self.public_entries_count } unless options[:time]
 
     entries.find(:all, find_options)
   end
