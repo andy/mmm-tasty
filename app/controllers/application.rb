@@ -23,6 +23,8 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+  
+  include ExceptionNotifiable if RAILS_ENV == 'production'
 
   # MAIN FILTERS
   attr_accessor   :current_site
