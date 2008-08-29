@@ -326,9 +326,9 @@ class TextEntry < Entry
   def entry_russian_dict; { :who => 'ммм... пост', :whom => 'ммм... пост' } end
   def excerpt
     if self.data_part_2.to_s.length > 0 
-      self.data_part_2.to_s
+      self.data_part_2.to_s.truncate(150).to_s
     else
-      self.data_part_1.to_s.truncate(50).to_s
+      self.data_part_1.to_s.truncate(150).to_s
     end
   end
   def self.new_from_bm(params)
@@ -356,9 +356,9 @@ class AnonymousEntry < Entry
   def entry_russian_dict; { :who => 'анонимка', :whom => 'анонимку' } end
   def excerpt
     if self.data_part_2.to_s.length > 0 
-      self.data_part_2.to_s
+      self.data_part_2.to_s.truncate(150).to_s
     else
-      self.data_part_1.to_s.truncate(50).to_s
+      self.data_part_1.to_s.truncate(150).to_s
     end
   end
   def self.new_from_bm(params)
@@ -385,7 +385,7 @@ class QuoteEntry < Entry
   
   def entry_russian_dict; { :who => 'цитата', :whom => 'цитату' } end
   def excerpt
-    self.data_part_1.to_s.truncate(50).to_s
+    self.data_part_1.to_s.truncate(150).to_s
   end
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:c], :data_part_2 => "<a href='#{params[:url]}'>#{params[:title] || params[:url]}</a>"
@@ -408,9 +408,9 @@ class LinkEntry < Entry
   def entry_russian_dict; { :who => 'ссылка', :whom => 'ссылку' } end
   def excerpt
     if self.data_part_2.to_s.length > 0
-      self.data_part_2.to_s.truncate(50).to_s
+      self.data_part_2.to_s.truncate(150).to_s
     elsif self.data_part_3.to_s.length > 0
-      self.data_part_3.to_s.truncate(50).to_s
+      self.data_part_3.to_s.truncate(150).to_s
     else
       'Ссылка'
     end
@@ -443,7 +443,7 @@ class ImageEntry < Entry
   before_validation :make_a_link_from_data_part_1_if_present
   def excerpt
     if self.data_part_2.to_s.length > 0
-      self.data_part_2.to_s.truncate(50).to_s
+      self.data_part_2.to_s.truncate(150).to_s
     else
       'Картинка'
     end
@@ -544,7 +544,7 @@ class SongEntry < Entry
   def can_have_attachments?; true; end
   
   def excerpt
-    self.data_part_2.to_s.truncate(50).to_s
+    self.data_part_2.to_s.truncate(150).to_s
   end
 
   before_validation :make_a_link_from_data_part_1_if_present
@@ -564,7 +564,7 @@ class VideoEntry < Entry
   before_validation :make_a_link_from_data_part_1_if_present
   
   def excerpt
-    self.data_part_2.to_s.truncate(50).to_s
+    self.data_part_2.to_s.truncate(150).to_s
   end
   
   def self.new_from_bm(params)
@@ -607,7 +607,7 @@ class ConvoEntry < Entry
   def entry_russian_dict; { :who => 'диалог', :whom => 'диалог' } end
   
   def excerpt
-    self.data_part_1.to_s.truncate(50).to_s
+    self.data_part_1.to_s.truncate(150).to_s
   end
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:c], :data_part_2 => params[:title]
@@ -622,6 +622,6 @@ class CodeEntry < Entry
   def entry_russian_dict; { :who => 'код', :whom => 'код' } end
   
   def excerpt
-    self.data_part_1.to_s.truncate(50).to_s
+    self.data_part_1.to_s.truncate(150).to_s
   end
 end

@@ -39,7 +39,7 @@
 <meta name="generator" content="http://www.mmm-tasty.ru/" />
 
 <% if @title %>
-	<title><%= h(current_site ? host_for_tlog(current_site, { :use_domain => true }) : 'ммм... тейсти') + ' &mdash; ' + strip_tags(@title) %></title>
+	<title><%= h(current_site ? '' : 'ммм... тейсти – ') + strip_tags(@title) %></title>
 <% end %>
 
 <%= yield :head %>
