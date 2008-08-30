@@ -153,6 +153,8 @@ END
     url = user.url rescue user
     the_url = "#{url}.mmm-tasty.ru"
     the_url += ":#{request.port}" unless request.port == 80
+    
+    the_url
   end
   
   def url_for_tlog(user=nil, options = {})
