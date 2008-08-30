@@ -1,3 +1,4 @@
+<%= css_class ||= '' %>
 <li class='user_rel' id="<%= "relationship_#{user.relationship_id}" %>">
 	<%= image_tag 'ctulhu.gif', :class => 'ctulhu', :title => 'я ктулху, меня можно таскать', :alt => 'drag' %>
 	<%= link_to_tlog user, nil, :class => "relationship #{css_class}", :id => "relationship_link_#{user.relationship_id}" %>
