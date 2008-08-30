@@ -86,7 +86,7 @@ class Settings::DefaultController < ApplicationController
   end
     
   def design
-    @design = current_site.tlog_design_settings
+    @design = current_site.tlog_design_settings || current_site.create_tlog_design_settings
     
     { "color_tlog_text"     => "414141",
       "color_sidebar_text"  => "FFFFFF",
