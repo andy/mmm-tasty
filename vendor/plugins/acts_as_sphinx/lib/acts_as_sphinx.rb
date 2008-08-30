@@ -111,7 +111,7 @@ module ActsAsSphinx
     def find_with_sphinx(query, options = {})
       local_options = options.delete(:sphinx)
       result = ask_sphinx(query, local_options || {})
-      records = result['matches'].empty? ? [] : find(result['matches'].keys, options)
+      records = result['matches'].empty? ? [] : find_all_by_id(result['matches'].keys, options)
       records = records.sort_by{|r| -result['matches'][r.id]['pos'] }
       %w[total total_found time].map(&:to_sym).each do |method|
         class << records; self end.send(:define_method, method) {result[method.to_s]}

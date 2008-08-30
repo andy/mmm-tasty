@@ -140,6 +140,8 @@ class User < ActiveRecord::Base
     options[:page]        = 1 if !options.has_key?(:page) || options[:page] <= 0
     options[:page_size]   = Entry::PAGE_SIZE if !options.has_key?(:page_size) || options[:page_size] <= 0
     include_private       = options[:include_private] || false
+    e_count               = include_private ? self.entries_count : self.public_entries_count
+    e_count               = 0 if e_count < 0
 
     conditions = []
     conditions << 'entries.is_private = 0' unless include_private
@@ -147,7 +149,7 @@ class User < ActiveRecord::Base
     conditions = conditions.blank? ? nil : conditions.join(' AND ')
 
     find_options = { :order => 'entries.id DESC', :include => [:author, :attachments, :rating], :conditions => conditions }
-    find_options[:page] = { :current => options[:page], :size => options[:page_size], :count => include_private ? self.entries_count : self.public_entries_count } unless options[:time]
+    find_options[:page] = { :current => options[:page], :size => options[:page_size], :count => e_count } unless options[:time]
 
     entries.find(:all, find_options)
   end
