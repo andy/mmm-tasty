@@ -36,7 +36,7 @@ class TlogController < ApplicationController
         @entry_ratings = current_site.recent_entries_with_ratings(options)
       end
     else
-      render_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/'>&#x2190; вернуться на главную</a>")
+      render_tasty_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/'>&#x2190; вернуться на главную</a>")
     end
   end
 
@@ -122,7 +122,7 @@ class TlogController < ApplicationController
       @entry = Entry.find_by_id_and_user_id params[:id], current_site.id
       if @entry.nil? || (@entry.is_anonymous? && !is_owner?)
         respond_to do |format|
-          format.html { render_404("Запрошенная Вами запись не найдена.<br/><br/><a href='http://#{current_site.url}.mmm-tasty.ru/'>&#x2190; вернуться в #{current_site.gender("его", "её")} тлог</a>") }
+          format.html { render_tasty_404("Запрошенная Вами запись не найдена.<br/><br/><a href='http://#{current_site.url}.mmm-tasty.ru/'>&#x2190; вернуться в #{current_site.gender("его", "её")} тлог</a>") }
           format.js { render :text => "record with id #{params[:id].to_i} was not found in this tlog" }
         end
         return false

@@ -526,7 +526,7 @@ class ImageEntry < Entry
           image_attributes = ImageScience.with_image(tempfile.path) { |image| { :width => image.width, :height => image.height } }
         end
         image_attributes
-      end
+      end || { }
     rescue
       logger.debug "could not get image metadata for this url: #{link}"
       { }

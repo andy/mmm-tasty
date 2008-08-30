@@ -18,9 +18,9 @@ class ConfirmController < ApplicationController
   # /confirm/code/13_4efeb9ce
   def code
     user = User.find(params[:code].split(/_/)[0].to_i) rescue nil
-    render_404('Ошибка. Указанный код подтверждения не был найден') and return unless user
+    render_tasty_404('Ошибка. Указанный код подтверждения не был найден') and return unless user
     email = user.validate_confirmation(params[:code])
-    render_404('Ошибка. Указанный код подтверждения не работает') and return unless email
+    render_tasty_404('Ошибка. Указанный код подтверждения не работает') and return unless email
 
     user.email = (email || user.email)
     was_confirmed = user.is_confirmed?
