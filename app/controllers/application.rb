@@ -3,9 +3,9 @@ class ApplicationController < ActionController::Base
   
   filter_parameter_logging :password
   
-  rescue_from ActionController::RoutingError do |exception|
-    render :template => '400.html'
-  end
+  # rescue_from ActionController::RoutingError do |exception|
+  #   render :template => '400.html'
+  # end
 
   # before_filter :prelaunch_megasecrecy
 
@@ -100,22 +100,14 @@ class ApplicationController < ActionController::Base
   
     def preload_current_user
       # from session
-      @current_user = if session[:user_id]
-                          begin
-                            User.find(session[:user_id])
-                          rescue ActiveRecord::RecordNotFound
-                            false
-                          end
-                        else
-                          nil
-                        end
+      @current_user = session[:user_id] ? (User.find_by_id(session[:user_id]) || false) : nil
                       
       logger.info "user #{@current_user.url} from session (id = #{@current_user.id})" if @current_user
 
       # from tsig
       @current_user ||= if !cookies['tsig'].blank?
                           id, sig = cookies['tsig'].unpack('m').first.unpack('LZ*')
-                          user = User.find(id) rescue false
+                          user = User.find_by_id(id) || false
                           if user && user.signature == sig
                             logger.info "user #{user.url} from tsig (id = #{user.id})"
                             session[:user_id] = user.id
@@ -124,6 +116,7 @@ class ApplicationController < ActionController::Base
                         else
                           false
                         end
+
       true
     end
     
