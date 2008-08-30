@@ -502,7 +502,7 @@ class ImageEntry < Entry
     elsif self.metadata && self.metadata.has_key?(:width)
       image_width, image_height = self.metadata[:width], self.metadata[:height]
     else
-      return ''
+      return { }
     end
 
     w_ratio = width > 0 ? width.to_f / image_width.to_f : 1
