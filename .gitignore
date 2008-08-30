@@ -4,3 +4,4 @@ public/uc
 tmp
 db/openid-store
 config/environment.rb
+config/sphinx.conf
