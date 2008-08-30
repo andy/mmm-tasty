@@ -2,6 +2,10 @@ class ApplicationController < ActionController::Base
   session :session_key => 'tasty'
   
   filter_parameter_logging :password
+  
+  rescue_from ActionController::RoutingError do |exception|
+    render :template => '400.html'
+  end
 
   # before_filter :prelaunch_megasecrecy
 
@@ -135,11 +139,6 @@ class ApplicationController < ActionController::Base
   
       render :template => 'globals/prelaunch_megasecrecy', :layout => false
       false
-    end
-    
-    # ошибка 404
-    def rescue_action_in_public(exception)
-      render :template => 'globals/not_found', :layout => '404'
     end
 
     # Является ли текущий пользователь владельцем сайта

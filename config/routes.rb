@@ -31,8 +31,6 @@ ActionController::Routing::Routes.draw do |map|
     map.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
     
     www.resources :feedbacks, :member => { :publish => :post, :discard => :post }
-
-    www.catch_all '*anything', :controller => 'global', :action => 'not_found'
   end
   
   # это домены пользователей: andy.mmm-tasty.ru, genue.mmm-tasty.ru и так далее
