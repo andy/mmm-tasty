@@ -54,7 +54,7 @@ class TlogController < ApplicationController
       end
     end
 
-    @comments = Rails.cache.fetch("comments_#{@entry.id}_#{@entry.comments_count}__", :expires_in => 1.day) { @entry.comments.find :all, :include => { :user => :avatar }, :order => 'comments.id' }
+    @comments = Rails.cache.fetch("comments_#{@entry.id}_#{@entry.comments_count}_#{@entry.updated_at.to_i}", :expires_in => 1.day) { @entry.comments.find :all, :include => { :user => :avatar }, :order => 'comments.id' }
 
     @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0
     @comment = Comment.new_from_cookie(cookies['comment_identity']) if !current_user && !cookies['comment_identity'].blank?

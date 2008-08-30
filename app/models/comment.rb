@@ -24,6 +24,11 @@ class Comment < ActiveRecord::Base
   after_destroy do |comment|
     # обновляем счетчик просмотренных комментариев но только для тех, кто уже видел комментарий который сейчас был удален
     comment.connection.update("UPDATE comment_views SET last_comment_viewed = last_comment_viewed - 1 WHERE entry_id = #{comment.entry.id} AND last_comment_viewed > #{comment.entry.comments.size - 1}")
+    comment.entry.update_attribute(:updated_at, Time.now)
+  end
+  
+  after_create do |comment|
+    comment.entry.update_attribute(:updated_at, Time.now)
   end
   
   @loaded_from_cookie = false
@@ -32,8 +37,9 @@ class Comment < ActiveRecord::Base
   # <%= comment.store_preprocessed_comment { |text| white_list_anonymous_comment text }
   def fetch_cached_or_run_block(&block)
     return self.comment_html unless self.comment_html.blank?
-    html = block.call self.comment
-    self.update_attribute(:comment_html, html)
+    self.comment_html = block.call self.comment
+    self.save unless self.new_record?
+
     self.comment_html
   end
   
