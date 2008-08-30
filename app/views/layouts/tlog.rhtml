@@ -6,7 +6,7 @@
 	<%= render 'globals/head' %>
 	<% cache :content_for => 'style', :revision => current_site.tlog_settings.css_revision do %>
   	<%= render :partial => 'tlog/style' %>
-	<% end %>
+	<% end if current_site.tlog_settings %>
 </head>
 <body id='the_tlog_body'>
 	<div class='tlog'>
