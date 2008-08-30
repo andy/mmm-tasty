@@ -19,7 +19,7 @@ config.action_view.debug_rjs                         = true
 
 
 # Caching, woohoo!
-config.cache_store = :mem_cache_store, '127.0.0.1:3001', { :namespace => 'd' }
+config.cache_store = :mem_cache_store, '127.0.0.1:11211', { :namespace => 'd' }
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
