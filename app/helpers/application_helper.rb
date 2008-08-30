@@ -152,7 +152,7 @@ END
     return user.domain if to == :domain && user.is_a?(User) && !user.domain.blank?
     url = user.url rescue user
     the_url = "#{url}.mmm-tasty.ru"
-    the_url += ":#{request.port}" unless request.port == 80
+    the_url += ":#{request.port}" if request && request.port != 80
     
     the_url
   end
