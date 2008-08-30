@@ -13,5 +13,5 @@
 	<% end %>
 <% end %>
 
-<%= content_tag :div, link_to(truncate(entry.data_part_3, 150), entry.data_part_3, :rel => 'nofollow'), :class => 'pic_link' unless entry.data_part_3.blank? %>
+<%= content_tag :div, link_to(truncate(entry.data_part_3, 50), entry.data_part_3, :rel => 'nofollow'), :class => 'pic_link' unless entry.data_part_3.blank? %>
 <%= content_tag :div, white_list_entry(entry.data_part_2), :class => 'pic_comment' unless entry.data_part_2.blank? %>
