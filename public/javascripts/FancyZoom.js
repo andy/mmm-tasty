@@ -41,7 +41,7 @@ var includeFade    = 1;    // Set to 1 to fade the image in / out as it zooms
 var minBorder      = 90;   // Amount of padding between large, scaled down images, and the window edges
 var shadowSettings = '0px 5px 25px rgba(0, 0, 0, '; // Blur, radius, color of shadow for compatible browsers
 
-var zoomImagesURI   = 'http://www.mmm-tasty.ru:8888/images/fancy-zoom/'; // Location of the zoom and shadow images
+var zoomImagesURI   = asset_host + '/images/fancy-zoom/'; // Location of the zoom and shadow images
 
 // Init. Do not add anything below this line, unless it's something awesome.
 
@@ -259,15 +259,15 @@ function zoomIn(from, shift) {
 
 		// If it's too big to fit in the window, shrink the width and height to fit (with ratio).
 
-		sizeRatio = endW / endH;
-		if (endW > myWidth - minBorder) {
-			endW = myWidth - minBorder;
-			endH = endW / sizeRatio;
-		}
-		if (endH > myHeight - minBorder) {
-			endH = myHeight - minBorder;
-			endW = endH * sizeRatio;
-		}
+    // sizeRatio = endW / endH;
+    // if (endW > myWidth - minBorder) {
+    //  endW = myWidth - minBorder;
+    //  endH = endW / sizeRatio;
+    // }
+    // if (endH > myHeight - minBorder) {
+    //  endH = myHeight - minBorder;
+    //  endW = endH * sizeRatio;
+    // }
 
 		zoomChangeX = ((myWidth / 2) - (endW / 2) - hostX);
 		zoomChangeY = (((myHeight / 2) - (endH / 2) - hostY) + myScroll);
