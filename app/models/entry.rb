@@ -491,12 +491,13 @@ class ImageEntry < Entry
   
   # функция вычисления симметричных размеров для текущей картинки. работает как для записей
   # с локальной картинкой, так и для записей только со ссылкой на картинку.
-  #
-  #  <img src='<%= entry.data_part_1 %>'<%= entry.geometry_string(320) %> />
-  #
-  # возвращает строку style
-  def geometry_string(width, height = 0)
-    if self.attachments && self.attachments.first
+  def geometry(options = {})
+    width = options[:width] || 420
+    height = options[:height] || 0
+    image = options[:image]
+    image ||= self.attachments.first if self.attachments
+    
+    if image
       image_width, image_height = self.attachments.first.width, self.attachments.first.height
     elsif self.metadata && self.metadata.has_key?(:width)
       image_width, image_height = self.metadata[:width], self.metadata[:height]
@@ -513,7 +514,7 @@ class ImageEntry < Entry
     width = ratio < 1 ? (image_width * ratio).to_i : image_width
     height = ratio < 1 ? (image_height * ratio).to_i : image_height
 
-    " style='width: #{width}px; height: #{height}px;'"
+    { :width => width, :height => height }
   end
 
   private

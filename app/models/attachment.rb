@@ -2,7 +2,7 @@ class Attachment < ActiveRecord::Base
   belongs_to :entry
   belongs_to :user
 
-  has_attachment :storage => :file_system, :max_size => 7.megabytes, :resize_to => '420x6000>', :file_system_path => 'public/uc/att'
+  has_attachment :storage => :file_system, :max_size => 7.megabytes, :resize_to => '700x6000>', :thumbnails => { :tlog => '420x6000>' }, :file_system_path => 'public/uc/att'
   validates_as_attachment
   
   serialize :metadata, Hash

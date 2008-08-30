@@ -76,11 +76,6 @@ if show_datetime -%>
 		<% end %>
 	<% end %>
 	<div class='post_content'>
-		<% begin %>
-			<%= render 'entries/display/' + entry.class.to_s.underscore, { :entry => entry, :mini => mini, :embed => embed } %>	
-		<% rescue %>
-			<div class='fatal_entry_error'>Ммм... произошла какая-то жуткая внутреняя ошибка, и сайт, почему-то, не смог обработать эту запись. Будет прекрасно если Вы сообщите нам об этом по адресу <%= mail_to 'feedback@mmm-tasty.ru', nil, :encode => 'javascript' %> и это действительно поможет, потому что так мы быстрее тут все починим. Спасибо!</div>
-			<% logger.error "FATAL ENTRY ERROR @@@ entry_id = #{entry.id}" %>
-		<% end %>
+		<%= render 'entries/display/' + entry.class.to_s.underscore, { :entry => entry, :mini => mini, :embed => embed } %>	
 	</div>
 </div>

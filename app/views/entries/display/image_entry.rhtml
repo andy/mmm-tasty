@@ -1,18 +1,17 @@
-<%-
-	mini ||= false unless local_assigns.has_key?(:mini) && mini
--%>
-<%= "<a href='#{h entry.data_part_3}' rel='nofollow'>" unless entry.data_part_3.blank? %>
-<% if entry.data_part_1 -%>
-		<img src='<%= h entry.data_part_1 %>'<%= entry.geometry_string(mini ? 200 : 420) %> />
-<% elsif !entry.attachments.empty? -%>
-	<img src='<%= image_path entry.attachments.first.public_filename %>'<%= entry.geometry_string(mini ? 200 : 420) %> />
-<% else -%>
-  image entry internal error
-<% end -%>
-<%= "</a>" unless entry.data_part_3.blank? %>
-
-<% if !entry.data_part_2.blank? %>
-	<div class='pic_comment'>
-		<%= white_list_entry entry.data_part_2 %>
-	</div>
+<%# если картинка ссылкой на удаленный ресурс %>
+<% if entry.data_part_1 %>
+  <%= image_tag entry.data_part_1, { :title => '', :alt => 'изображение' }.merge(entry.geometry) %>  
+<% elsif !entry.attachments.empty? %>
+  <%
+    image = entry.attachments.first
+    thumb = image.thumbnails.select { |i| i.thumbnail == 'tlog' }.first
+  %>
+  <% if thumb %>
+    <%= link_to image_tag(thumb.public_filename, { :title => '', :alt => 'изображение' }.merge(entry.geometry(:image => thumb))), image.public_filename, :rel => 'follow', :class => 'zoom' %>
+  <% else %>
+    <%= image_tag image.public_filename, { :title => '', :alt => 'изображение' }.merge(entry.geometry) %>
+	<% end %>
 <% end %>
+
+<%= content_tag :div, link_to(truncate(entry.data_part_3, 150), entry.data_part_3, :rel => 'nofollow'), :class => 'pic_link' unless entry.data_part_3.blank? %>
+<%= content_tag :div, white_list_entry(entry.data_part_2), :class => 'pic_comment' unless entry.data_part_2.blank? %>
