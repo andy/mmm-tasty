@@ -1,5 +1,6 @@
 <% @title = 'прямой эфир как он есть' %>
 <% content_for :head do %>
+  <%= auto_discovery_link_tag(:rss, main_feed_url(:action => :live)) %>
   <%= auto_discovery_link_tag(:rss, main_feed_url(:action => :photos), { :title => 'только фоторафии' }) %>
 <% end %>
 <div class='onair'>

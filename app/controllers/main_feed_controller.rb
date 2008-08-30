@@ -24,6 +24,13 @@ class MainFeedController < ApplicationController
     response.headers['Content-Type'] = 'application/rss+xml'
   end
   
+  def live
+    @entries = Entry.find :all, :conditions => 'entries.is_private = 0 AND entries.is_mainpageable = 1', :order => 'entries.id DESC', :include => [:author, :attachments], :limit => 15
+    response.headers['Content-Type'] = 'application/rss+xml'
+    
+    render :action => 'last'
+  end
+  
   def photos
     @page = (params[:page] || 1).to_i
     @entries = Entry.find :all, :conditions => "entries.is_private = 0 AND entries.is_mainpageable = 1 AND entries.type = 'ImageEntry'", :page => { :current => @page, :size => 50, :count => ((@page + 1) * 50) }, :order => 'entries.id DESC', :include => [:author, :attachments]
