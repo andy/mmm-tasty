@@ -8,6 +8,13 @@ class TlogFeedController < ApplicationController
     response.headers['Content-Type'] = 'application/rss+xml'
   end
   
+  def photos
+    @page = (params[:page] || 1).to_i
+    @entries = Entry.find :all, :conditions => "entries.user_id = #{current_site.id} AND entries.is_private = 0 AND entries.type = 'ImageEntry'", :page => { :current => @page, :size => 30, :count => ((@page * 30) + 1) }, :order => 'entries.id DESC', :include => [:author, :attachments]
+    response.headers['Content-Type'] = 'application/rss+xml'
+    render :action => 'media'
+  end
+  
   def last_personalized
     render(:text => 'invalid key, sorry', :status => 403) and return if current_site.last_personalized_key != params[:key]
     friend_ids = current_site.all_friend_r.map(&:user_id)    

@@ -26,16 +26,14 @@
 <%- end -%>
 <% end %>
 
-<%#= javascript_include_tag 'prototype', 'effects', 'application', 'audio-player', 'swfobject' %>
-<%#= javascript_include_tag 'default' %>
-<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'application', 'audio-player', 'swfobject', 'FancyZoom', 'FancyZoomHTML', :cache => true %>
-<script type='text/javascript'></script>
 
 <script type='text/javascript'>
   function urchinTracker(url) { return true; }
   var current_user = <%= current_user ? current_user.id : 0 %>;
   var asset_host = '<%= ActionController::Base.asset_host.call(nil, request) %>';
 </script>
+
+<%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'application', 'audio-player', 'swfobject', 'FancyZoom', 'FancyZoomHTML', :cache => true %>
 
 <link rel="shortcut icon" href="<%= image_path '/favicon.ico' %>" />
 <meta name="MSSmartTagsPreventParsing" content="true" />

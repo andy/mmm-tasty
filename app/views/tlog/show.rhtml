@@ -3,6 +3,7 @@
 	<!-- content_for :head -->
 	<% cache :content_for => :head, :date => Date.today do %>
   	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :rss)) %>
+  	<%= auto_discovery_link_tag(:rss, tlog_feed_url(:action => :photos), { :title => 'только фоторафии' }) %>
   	<% if @entry.next_id %>
   		<link rel="next" title="Next" href="/entries/<%= @entry.next_id %>" />
   	<% end %>

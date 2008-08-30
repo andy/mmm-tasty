@@ -32,8 +32,8 @@ xml.rss :version => '2.0' do
             att = entry.attachments.first
             xml.enclosure :url => "#{url_for_tlog(current_site)}#{att.public_filename}", :length => att.size, :type => att.content_type
           end
-        end
-      end
-    end
+        end # xml.item do
+      end # @entries.each
+    end # if @entries
   end
 end

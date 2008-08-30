@@ -1,5 +1,7 @@
 <% @title = 'прямой эфир как он есть' %>
-
+<% content_for :head do %>
+  <%= auto_discovery_link_tag(:rss, main_feed_url(:action => :photos), { :title => 'только фоторафии' }) %>
+<% end %>
 <div class='onair'>
 	<%= render('globals/pagination', { :pageable => @entry_ids, :reverse => true, :css_class => 'top_nav_paginator' }) if @page > 1 %>
 
