@@ -156,7 +156,7 @@ class ApplicationController < ActionController::Base
     
     def require_current_site
       return true if current_site && current_site.is_a?(User)
-      render :template => 'global/not_found', :status => 404
+      render :template => 'global/not_found', :layout => false, :status => 404
       false
     end
     

@@ -95,20 +95,23 @@ class CommentsController < ApplicationController
   def destroy
     # пока что мы позволяем удалять комменатрии только зарегистрированным пользователям
     if current_user
-      comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
-      comment.destroy if comment.is_owner?(current_user)
+      @comment = Comment.find_by_id_and_entry_id(params[:id], @entry.id)
+      @comment.destroy if @comment && @comment.is_owner?(current_user)
     end
-    
+
     respond_to do |wants|
-      wants.html { flash[:good] = 'Комментарий был удален'; redirect_to entry_url(comment.entry) }
+      wants.html { flash[:good] = 'Комментарий был удален'; redirect_to entry_url(@entry) }
       wants.js {
         render :update do |page|
-          page.replace_html 'top_comment_number', comment.entry.comments.size - 1
-          page.visual_effect(:highlight, dom_id(comment), :duration => 0.1, :endcolor => '"#eb7979"' )
-          page.visual_effect(:fade, dom_id(comment))
+          page.replace_html 'top_comment_number', @entry.comments.size - 1
+          if @comment
+            page.visual_effect(:highlight, dom_id(@comment), :duration => 0.1, :endcolor => '"#eb7979"' )
+            page.visual_effect(:fade, dom_id(@comment))
+          end
         end
       }
     end
+    
   end
   
   private
