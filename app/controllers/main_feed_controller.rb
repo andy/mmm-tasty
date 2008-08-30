@@ -2,6 +2,7 @@ class MainFeedController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
   layout nil
   session :off
+  caches_action :live, :last, :photos, :cache_path => Proc.new { |c| c.url_for(:expiring => (Time.now.to_i / 15.minutes).to_i, :page => c.params[:page]) }
 
   def last
     ### такая же штука определена в main_controller.rb
