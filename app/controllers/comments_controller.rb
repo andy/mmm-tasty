@@ -41,8 +41,6 @@ class CommentsController < ApplicationController
     
     if @comment.errors.empty?
       @comment.save!
-      
-      # @entry.comments << @comment
       current_user.comments(current_site) if current_user
 
       users = []

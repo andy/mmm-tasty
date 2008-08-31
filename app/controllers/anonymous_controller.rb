@@ -54,10 +54,11 @@ class AnonymousController < ApplicationController
     @comment = Comment.new(params[:comment])
     @comment.user = user
     @comment.request = request
+    @comment.entry_id = @entry.id
     @comment.valid?
     
     if @comment.errors.empty?
-      @entry.comments << @comment
+      @comment.save!
 
       users = []
       if !params[:reply_to].blank?
