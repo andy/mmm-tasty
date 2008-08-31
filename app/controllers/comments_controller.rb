@@ -36,10 +36,13 @@ class CommentsController < ApplicationController
     @comment = Comment.new(params[:comment])
     @comment.user = user
     @comment.request = request
+    @comment.entry_id = @entry.id
     @comment.valid?
     
     if @comment.errors.empty?
-      @entry.comments << @comment
+      @comment.save!
+      
+      # @entry.comments << @comment
       current_user.comments(current_site) if current_user
 
       users = []

@@ -6,7 +6,7 @@ class Comment < ActiveRecord::Base
 
   # internal validations
   validates_presence_of :entry_id
-  validates_associated :entry
+  # validates_associated :entry
   validates_presence_of :user_id, :if => Proc.new { |c| c.ext_username.blank? }
   
   # ext_username - имя пользователя. Обязательное поле если пользователь неавторизован
