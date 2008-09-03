@@ -157,8 +157,8 @@
 	</div>
 
 	<h2>Ваш CSS</h2>
-	<%= link_to_function 'Добавте Ваш собственный CSS-код', 'Effect.toggle("design_css", "blind", { duration: 0.3 });', :class => 'design_css_toggle' %>
-	<div id='design_css' style='display: none'>
+	<%= link_to_function 'Добавьте Ваш собственный CSS-код', 'Effect.toggle("design_css", "blind", { duration: 0.3 });', :class => 'design_css_toggle' %>
+	<div id='design_css'<%= " style='display: none'" if @design.user_css.blank? %>>
 		<div>
 			<%= text_area :design, :user_css, :rows => nil, :cols => nil, :class => 'resizeable' %>
 			<%= tasty_error_message_on 'design', 'user_css' %>

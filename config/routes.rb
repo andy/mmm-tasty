@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.global 'global/:action', :controller => 'global'
 
   # это главный сайт, mmm-tasty.ru или www.mmm-tasty.ru
-  map.with_options :conditions => { :subdomain => /^(www|)$/, :domain => 'mmm-tasty.ru' } do |www|
+  map.with_options :conditions => { :subdomain => /^(www|)$/, :domain => Regexp.new(::DOMAINS.join('|'))  } do |www|
     www.connect '', :controller => 'main', :action => 'index'
 
     www.main_feed 'main/feed/:action/:rating/:kind.xml', :controller => 'main_feed', :action => 'last', :rating => 'default', :kind => 'default', :requirements => { :rating => /[a-z]{3,20}/ }

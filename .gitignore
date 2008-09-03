@@ -3,5 +3,10 @@
 public/uc
 tmp
 db/openid-store
+db/*sqlite3
 config/environment.rb
 config/sphinx.conf
+config/mail_fetcher.yml
+config/database.yml
+log/*.log
+public/javascripts/all.js

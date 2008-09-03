@@ -1,0 +1,6 @@
+ActiveRecord::Errors::default_error_messages[:invalid] = 'неправильное значение'
+ActiveRecord::Errors::default_error_messages[:empty] = 'не может быть пустым'
+ActiveRecord::Errors::default_error_messages[:blank] = 'не может быть пустым'
+ActiveRecord::Errors::default_error_messages[:too_long] = 'значение слишком длинное (не более %d символов)'
+ActiveRecord::Errors::default_error_messages[:too_short] = 'значение слишком короткое (не меньше %d символов)'
+ActiveRecord::Errors::default_error_messages[:taken] = 'такое значение уже используется'

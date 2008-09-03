@@ -60,8 +60,6 @@ class ApplicationController < ActionController::Base
       # can be nil if web site is accessed by ip address or there was no 'Host:' header in request
       return true unless request.domain
       domain = request.host
-      
-      logger.debug "PCS: domain #{domain}"
 
       # 1. если в домене mmm-tasty.ru ...
       #    1.a   если адрес - www.mmm-tasty.ru / mmm-tasty.ru - выходим (true)
@@ -72,20 +70,19 @@ class ApplicationController < ActionController::Base
       # 2. иначе
       #    2.a   ищем пользователя по домену, выставляем current_site
       #    2.b   возвращаем 404
-
+      
+      root = ::DOMAINS.find { |key| domain.ends_with?(key) }
 
       # 1
-      if domain.ends_with?("mmm-tasty.ru")
-        subdomains = domain.sub(".mmm-tasty.ru", '')
-
-        logger.debug "PCS: subdomains: #{subdomains}"
+      if root && domain.ends_with?(root)
+        subdomains = domain.sub(".#{root}", '')
 
         # 1.a
-        return true if subdomains == 'www' || subdomains == 'mmm-tasty.ru'
+        return true if subdomains == 'www' || subdomains == root
         # 1.b
-        redirect_to("http://www.mmm-tasty.ru/") and return false if subdomains.count('.') == 0 && User::RESERVED.include?(subdomains)
+        redirect_to("http://www.#{root}/") and return false if subdomains.count('.') == 0 && User::RESERVED.include?(subdomains)
         # 1.c
-        redirect_to("http://#{subdomains.split('.').last}.mmm-tasty.ru") and return false if subdomains.count('.') == 1 && subdomains.split('.').first == 'www'
+        redirect_to("http://#{subdomains.split('.').last}.#{root}") and return false if subdomains.count('.') == 1 && subdomains.split('.').first == 'www'
         # 1.d
         @current_site = User.find_by_url(subdomains, :include => [:tlog_settings, :avatar]) if subdomains.count('.') == 0
         #   d.1
@@ -95,6 +92,7 @@ class ApplicationController < ActionController::Base
         @current_site = User.find_by_domain(domain)
         @standalone = true if @current_site
       end
+
       true
     end
   

@@ -1,6 +1,6 @@
 # настройки для собиральщика почты, script/mail_fetcher.rb
 production:
   server: localhost
-  username: post@mmm-tasty.ru
-  password: pop-saved-my-ass
+  username: email@localhost
+  password: password
   interval: 60

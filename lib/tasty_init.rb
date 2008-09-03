@@ -1,8 +1,5 @@
-require 'openid'
 require 'openid/extensions/sreg'
 require 'openid/store/filesystem'
-require 'mp3info'
-require 'coderay'
 require 'convoray'
 
 # http://rails.techno-weenie.net/tip/2005/12/23/make_fixtures
