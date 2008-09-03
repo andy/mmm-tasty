@@ -6,7 +6,7 @@
 	<!-- /content_for :head -->
 <% end %>
 
-<% cache :owner => is_owner?, :page => @page, :entries => current_site.entries_count, :date => Date.today do %>
+<% cache :owner => is_owner?, :page => @page, :entries => current_site.entries_count, :ts => current_site.entries_updated_at.to_i, :date => Date.today do %>
 	<%= render :partial => 'lenta' %>
 <% end %>
 

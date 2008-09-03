@@ -4,12 +4,6 @@ class IncomingEntryHandler < ActionMailer::Base
     :song => /^audio\/mp3$/i
   }
   
-  def expire_entry(entry)
-    # expire_action(:controller => '/tlog_feed', :action => 'rss')
-    # expire_fragment(:controller => '/tlog', :action => 'index', :content_for => 'layout', :is_public => 'false', :page => entry.page_for(entry.author, false))
-    # expire_fragment(:controller => '/tlog', :action => 'index', :content_for => 'layout', :is_public => 'true', :page => entry.page_for(nil, false))
-  end
-
   def receive(email)
     logger.warn "? Info: email object is #{email.inspect}"
     
@@ -80,7 +74,6 @@ class IncomingEntryHandler < ActionMailer::Base
               logger.warn "+ Created new #{entry.class}, id##{entry.id}"
               logger.warn "+   adding attachment..."
               attachment = Attachment.create :uploaded_data => attach, :user => user, :entry => entry
-              expire_entry(entry)
               logger.warn "+   okay, done, attachment id ##{attachment.id}"
             else
               logger.warn "- Failed to create new entry, validation errors, attachment dropped"
@@ -104,7 +97,6 @@ class IncomingEntryHandler < ActionMailer::Base
       entry.save
       if entry.valid?
         logger.warn "+ Created new #{entry.class}, id##{entry.id}"
-        expire_entry(entry)
       else
         logger.warn "+ Failed to create new entry, validation errors"
       end

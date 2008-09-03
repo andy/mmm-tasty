@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   EMAIL_SIGNATURE_SECRET = 'YO SHALL NOT KNOW EVER!@@@#!'
 
   attr_accessor :password
-  attr_accessible :openid, :email, :url, :password
+  attr_accessible :openid, :email, :url, :password, :entries_updated_at
 
 	has_many :entries, :dependent => :destroy
 	has_one :avatar, :dependent => :destroy

@@ -41,7 +41,7 @@
 <meta name="generator" content="http://www.mmm-tasty.ru/" />
 
 <% if @title %>
-	<title><%= h(current_site ? h(current_site.url) : 'ммм... тейсти – ') + strip_tags(@title) %></title>
+	<title><%= h(current_site ? h(current_site.url) : 'ммм... тейсти') + ' – ' + strip_tags(@title) %></title>
 <% end %>
 
 <%= yield :head %>

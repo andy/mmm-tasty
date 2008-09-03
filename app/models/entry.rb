@@ -18,12 +18,23 @@ class Entry < ActiveRecord::Base
     #  была видимая запись И если она не входила в число _новых_ записей для пользователя который просматривает. Поэтому, как 
     #  критерий мы испльзуем поле last_viewed_at для того чтобы определить входила ли запись в число новых 
     Relationship.update_all "last_viewed_entries_count = last_viewed_entries_count - 1", "user_id = #{entry.user_id} AND last_viewed_entries_count > 0 AND last_viewed_at > '#{entry.created_at.to_s(:db)}'" unless entry.is_private?
+
+    # обновляем таймстамп который используется для инвалидации кеша тлоговых страниц, но только в том случае
+    #  если меняются штуки отличные от комментариев
+    entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
   end
   
   after_create do |entry|
     # счетчик скрытых записей. нам так удобнее делать постраничную навигацию
     User.increment_counter(:private_entries_count, entry.user_id) if entry.is_private?
   end
+  
+  after_save do |entry|
+    # обновляем таймстамп который используется для инвалидации кеша тлоговых страниц, но только в том случае
+    #  если меняются штуки отличные от комментариев
+    entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
+  end
+  
 	
 	acts_as_sphinx
 	acts_as_taggable
@@ -310,7 +321,7 @@ class Entry < ActiveRecord::Base
   	    self.metadata = {}
       end
   	  true
-    end  
+    end    
 end
 
 

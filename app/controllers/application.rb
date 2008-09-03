@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  session :session_key => 'tasty'
-  
   filter_parameter_logging :password
   
   # rescue_from ActionController::RoutingError do |exception|
