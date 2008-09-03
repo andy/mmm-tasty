@@ -13,7 +13,7 @@
 		
 		<% if current_user && !is_owner? %>
 			<%# код из _relationship.rhtml, один в один %>
-			<%- relationship = current_user.relationship_with(current_site) -%>
+			<%- relationship = current_user.relationship_with(current_site, true) -%>
 			<div id='sidebar_relationship'<%= ' class="subscribed"' if relationship.friendship_status >= Relationship::DEFAULT %>>
 				<%= link_to_remote relationship.say_it(current_site, current_user), :url => relationship_entries_url -%>
 			</div>

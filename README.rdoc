@@ -13,7 +13,7 @@
 
  Скопируйте настройки по-умолчанию. При необходимости их можно поменять.
  $ cp config/database.example.yml config/database.yml
- $ cp config/environment.example.yml config/environment.rb
+ $ cp config/environment.example.rb config/environment.rb
 
  Установите нужные gemы
  $ rake gems:install
