@@ -16,3 +16,6 @@ div#y-panel_h.hd { font-size: 12px; background-color: #3c3c3c; background-image:
 
 /* settings/social */
 a.rss { padding-right: 18px; background:url(../images/feed-icon-14x14.png) no-repeat scroll 100% 50%; }
+
+/* comments formatting */
+div.comment_text p { margin-bottom: 1em; }

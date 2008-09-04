@@ -85,6 +85,7 @@ END
     WhiteListHelper.tags = %w( h1 h2 h3 h4 h5 b i pre strong em sub sup small big ul ol li br a img blockquote strike )
     WhiteListHelper.attributes = %w( href src width height alt cite datetime title class)
 
+    text ||= ''
     text = text.gsub(/ -- /, ' &mdash; ').gsub('... ', '&#133; ').gsub(/\.\.\.</, '&#133;<').gsub(/\.\.\.$/, '&#133;').strip
     html = auto_link text, :all, :target => '_blank' do |text|
       truncate(text, 30)
