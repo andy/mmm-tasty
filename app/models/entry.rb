@@ -9,6 +9,10 @@ class Entry < ActiveRecord::Base
   has_and_belongs_to_many :subscribers, :class_name => 'User', :join_table => 'entry_subscribers'
   # has_one :ad, :class_name => 'SocialAd', :dependent => :destroy
   
+  named_scope :anonymous, :conditions => { :type => 'AnonymousEntry' }
+  named_scope :for_view, :include => [:author, :attachments, :rating], :order => 'entries.id DESC'
+  named_scope :private, :conditions => 'entries.is_private = 1 AND entries.type != "AnonymousEntry"'
+  
   after_destroy do |entry|
     # удаляем всех подписчиков этой записи
     entry.subscribers.clear

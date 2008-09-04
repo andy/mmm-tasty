@@ -34,6 +34,25 @@
 	</div>
 <% end %>
 
+<% if is_owner? && current_site.entries_count > 0 %>
+  <% personal_keep_open = %w(private anonymous).include?(params[:action]) %>
+  <div class='sidebar_section' id='sidebar_personal'>
+		<%= link_to_function 'Личное', "sidebar_toggle('personal')", :title => "в вашем тлоге", :class => "sidebar_toggle #{'highlight' if personal_keep_open}", :id => 'sidebar_personal_link' %>		
+		<div class='sidebar_section_content' id='sidebar_personal_content' <%= " style='display: none'" unless personal_keep_open %>>
+		  <ul>
+		    <li>
+		      <%= link_to 'скрытые записи', private_entries_path, :class => ('highlight' if params[:action] == 'private') %>
+		      <%= content_tag :span, current_site.entries.private.count.pluralize('штука', 'штуки', 'штук', true) %>
+		    </li>
+		    <li>
+		      <%= link_to 'анонимки', anonymous_entries_path, :class => ('highlight' if params[:action] == 'anonymous') %>
+		      <%= content_tag :span, current_site.entries.anonymous.count.pluralize('штука', 'штуки', 'штук', true) %>
+		    </li>
+		  </ul>
+		</div>    
+  </div>
+<% end %>
+
 <% unless current_site.entries_count.zero? %>
 	<% unless current_site.tlog_settings.sidebar_hide_search? %>
 		<div class='sidebar_section' id='sidebar_search'>

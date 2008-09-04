@@ -54,6 +54,9 @@ ActionController::Routing::Routes.draw do |map|
     tlog.tlog_feed 'feed/:action.xml', :controller => 'tlog_feed'
     tlog.tlog_feed_protected 'feed/:key/:action.xml', :controller => 'tlog_feed'
 
+    tlog.private_entries 'private', :action => 'private'
+    tlog.anonymous_entries 'anonymous', :action => 'anonymous'
+
     tlog.resources :entries, :member => { :subscribe => :post, :unsubscribe => :post, :metadata => :get }, :collection => { :tags => :get, :relationship => :post } do |entry|
       entry.resources :comments, :new => { :preview => :post }
       entry.resources :tags, :controller => 'entry_tags', :name_prefix => 'entry_'

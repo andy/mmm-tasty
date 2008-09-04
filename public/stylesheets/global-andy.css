@@ -19,3 +19,8 @@ a.rss { padding-right: 18px; background:url(../images/feed-icon-14x14.png) no-re
 
 /* comments formatting */
 div.comment_text p { margin-bottom: 1em; }
+
+/* personal sidebar */
+div#sidebar_personal ul { list-style-type: none; margin: 0; padding: 0; }
+div#sidebar_personal ul li a.highlight { font-size: 1.1em; font-weight: bold; }
+div#sidebar_personal ul li span { font-size: 0.8em; }

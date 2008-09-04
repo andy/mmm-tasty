@@ -1,3 +1,4 @@
+<% reverse = true unless local_assigns.has_key?(:reverse) %>
 <% if @entries.size > 0 %>
 	<% prev_entry = nil -%>
 	<% @entries.each_with_index do |entry, index| -%>
@@ -8,7 +9,7 @@
 	<% if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
 		<%= render 'globals/day_pagination', { :entries => @entries } %>
 	<% else %>
-		<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>
+		<%= render 'globals/pagination', { :pageable => @entries, :reverse => reverse } %>
 	<% end %>
 	
 <% else %>

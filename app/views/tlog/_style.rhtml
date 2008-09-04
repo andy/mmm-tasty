@@ -85,7 +85,7 @@ a, div.sidebar p, div.sidebar span, .messages_other, #message_is_private_label<%
 <% end %>
 <% unless @design.color_highlight.blank? %>
 /* highlight color */
-#sidebar_tag_cloud_content a:hover, #sidebar_calendar_content a:hover, #sidebar_public_friends_content a:hover, .about_more, #sidebar_hide, .highlight {
+#sidebar_tag_cloud_content a:hover, #sidebar_calendar_content a:hover, #sidebar_personal_content a:hover, #sidebar_public_friends_content a:hover, .about_more, #sidebar_hide, .highlight {
 	background-color:#<%= @design.color_highlight %>!important;
 }
 <% end %>

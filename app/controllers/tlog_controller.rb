@@ -1,7 +1,7 @@
 class TlogController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_user, :require_confirmed_current_site
   before_filter :find_entry, :only => [:show, :metadata, :subscribe, :unsubscribe, :destroy]
-  before_filter :current_user_eq_current_site, :only => [:destroy]
+  before_filter :current_user_eq_current_site, :only => [:destroy, :private, :anonymous]
   helper :comments
 
   def index
@@ -19,15 +19,14 @@ class TlogController < ApplicationController
     if current_site.entries_count > 0 || is_owner?
       if current_site.tlog_settings.is_daylog?
         conditions = ["user_id = #{current_site.id}"]
-        conditions << "is_private = 0" unless is_owner?
+        conditions << "is_private = 0" # unless is_owner?
         @time = Entry.find_by_sql("SELECT id, created_at FROM entries WHERE #{conditions.join(' AND ')} ORDER BY entries.id DESC LIMIT 1").first.created_at rescue Time.now
         day()
       else
         # переворачиваем страницы, они теперь будут показываться в обратном порядке
-        total_pages = current_site.entries_count_for(current_user).to_pages
+        total_pages = current_site.public_entries_count.to_pages
         @page = params[:page].to_i.reverse_page( total_pages ) rescue 1
-        @page_for_cache = @page.reverse_page( total_pages )
-        options = { :page => @page, :include_private => is_owner? }
+        options = { :page => @page }
         @entries = current_site.recent_entries(options) # uses paginator, so entries are not really loaded
         @entries_array = @entries.to_a if @page > 1
         @comment_views = current_site.recent_entries_with_views_for(current_user, options)
@@ -36,6 +35,21 @@ class TlogController < ApplicationController
     else
       render_tasty_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/'>&#x2190; вернуться на главную</a>")
     end
+  end
+  
+  def private
+    redirect_to '/' and return unless is_owner?
+    
+    @title = 'ваши скрытые записи'
+    @entries = current_site.entries.private.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
+  end
+  
+  def anonymous
+    redirect_to '/' and return unless is_owner?
+    
+    @title = 'ваши анонимки'
+    @entries = current_site.entries.anonymous.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
+    render :action => 'private'
   end
 
   # Вывести текущую запись

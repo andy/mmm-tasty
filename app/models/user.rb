@@ -136,15 +136,20 @@ class User < ActiveRecord::Base
   #   page - текущая страница
   #   page_size - количество записей на странице
   #   include_private - включать ли закрытые записи
+  #   only_private - только скрытые записи
   def recent_entries(options = {})
     options[:page]        = 1 if !options.has_key?(:page) || options[:page] <= 0
     options[:page_size]   = Entry::PAGE_SIZE if !options.has_key?(:page_size) || options[:page_size] <= 0
     include_private       = options[:include_private] || false
-    e_count               = include_private ? self.entries_count : self.public_entries_count
+    only_private          = options[:only_private] || false
+    include_private     ||= true if only_private
+    
+    e_count               = only_private ? self.private_entries_count : (include_private ? self.entries_count : self.public_entries_count)
     e_count               = 0 if e_count < 0
 
     conditions = []
     conditions << 'entries.is_private = 0' unless include_private
+    conditions << 'entries.is_private = 1' if only_private
     conditions << "entries.created_at BETWEEN '#{options[:time].strftime("%Y-%m-%d")}' AND '#{options[:time].tomorrow.strftime("%Y-%m-%d")}'" if options[:time]
     conditions = conditions.blank? ? nil : conditions.join(' AND ')
 
