@@ -1,8 +1,6 @@
 class PublishController < ApplicationController
   before_filter :require_current_user, :current_user_eq_current_site, :filter_entry
 
-  cache_sweeper :entry_sweeper, :exclude => [:index, :preview]
-
   def index
   end
   

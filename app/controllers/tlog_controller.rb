@@ -4,8 +4,6 @@ class TlogController < ApplicationController
   before_filter :current_user_eq_current_site, :only => [:destroy]
   helper :comments
 
-  cache_sweeper :entry_sweeper, :only => [:destroy]
-
   def index
     # обновляем статистику для текущего пользователя
     if current_user && current_site.entries_count > 0 && !is_owner?

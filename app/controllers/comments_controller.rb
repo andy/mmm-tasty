@@ -1,8 +1,6 @@
 class CommentsController < ApplicationController
   before_filter :require_current_site, :find_entry
 
-  cache_sweeper :comment_sweeper, :only => [:create, :destroy]
-  
   def preview
     render :nothing => true and return unless request.post?
 
