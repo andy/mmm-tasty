@@ -8,5 +8,6 @@ config/environment.rb
 config/sphinx.conf
 config/mail_fetcher.yml
 config/database.yml
+config/thin.yml
 log/*.log
 public/javascripts/all.js
