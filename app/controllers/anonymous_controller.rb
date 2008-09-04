@@ -20,11 +20,13 @@ class AnonymousController < ApplicationController
   def show
     @adsense_enabled = true
     @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
+    
+    redirect_to :action => 'index' and return unless @entry
+
     @comment = Comment.new_from_cookie(cookies['comment_identity']) if !current_user && !cookies['comment_identity'].blank?
     @comment ||= Comment.new
     
-    @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0
-    
+    @last_comment_viewed = current_user ? CommentViews.view(@entry, current_user) : 0    
   end
   
   # удаляем комментарий
