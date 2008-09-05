@@ -6,16 +6,21 @@
 	<!-- /content_for :head -->
 <% end %>
 
-<% cache :page => @page, :stamp => current_site.entries_updated_at.to_i, :date => Date.today do %>
-	<%= render :partial => 'lenta' %>
-<% end %>
+<%# only use cache when surely rendering some content, otherwise we would display some owner-only messages to regular users %>
+<% if @entries.size > 0 %>
+  <% cache :page => @page, :stamp => current_site.entries_updated_at.to_i, :date => Date.today do %>
+  	<%= render :partial => 'lenta' %>
+  <% end %>
 
-<script type='text/javascript'>
-// <[!CDATA[
-	<%= "var comments_views_update = #{@comment_views.to_json}" if @comment_views %>
-	<%= "var entry_ratings_update = #{@entry_ratings.to_json}" if @entry_ratings %>
-//	]]>
-</script>
+  <script type='text/javascript'>
+  // <[!CDATA[
+  	<%= "var comments_views_update = #{@comment_views.to_json}" if @comment_views %>
+  	<%= "var entry_ratings_update = #{@entry_ratings.to_json}" if @entry_ratings %>
+  //	]]>
+  </script>
+<% else %>
+  <%= render :partial => 'lenta' %>
+<% end %>
 
 <% content_for :sidebar do %>
 	<%= render 'tlog/_sidebar' %>	
