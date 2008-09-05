@@ -88,15 +88,12 @@ class MainController < ApplicationController
   end
   
   def users
-    @page = 1
     @users = User.popular(6).shuffle
     @title = 'пользователи в абсолютно случайной последовательности'
   end
   
   def new_users
-    @page = params[:page].to_i rescue 1
-    @page = 1 if @page <= 0
-    @users = User.find(:all, :page => { :current => @page, :size => 6 }, :include => [:avatar, :tlog_settings], :order => 'users.id DESC', :conditions => 'is_confirmed = 1 AND entries_count > 0')
+    @users = User.paginate(:page => params[:page], :per_page => 6, :include => [:avatar, :tlog_settings], :order => 'users.id DESC', :conditions => 'users.is_confirmed = 1 AND users.entries_count > 0')
     @title = 'все пользователи тейсти'
     render :action => 'users'
   end

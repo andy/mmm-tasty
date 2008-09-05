@@ -1,6 +1,8 @@
-<div class='onair'>
-	<%= render 'globals/pagination', :pageable => @users, :css_class => 'top_nav_paginator' if @page > 1  %>
-</div>
+<% if params[:action] != 'users' %>
+  <div class='onair'>
+  	<%= render 'globals/pagination', :pageable => @users, :css_class => 'top_nav_paginator' if @users.previous_page %>
+  </div>
+<% end %>
 
 <table class='detailed_users'>
 	<% @users.each do |user| %>
@@ -17,9 +19,11 @@
 	<% end %>
 </table>
 
-<div class='onair'>
-	<%= render 'globals/pagination', :pageable => @users %>
-</div>
+<% if params[:action] != 'users' %>
+  <div class='onair'>
+  	<%= render 'globals/pagination', :pageable => @users %>
+  </div>
+<% end %>
 
 <% content_for :sidebar_left do %>
 	<h2><span>На кого посмотрим?</span></h2>
