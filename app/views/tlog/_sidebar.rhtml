@@ -53,7 +53,7 @@
   </div>
 <% end %>
 
-<% unless current_site.entries_count.zero? %>
+<% unless current_site.entries_count_for(current_user).zero? %>
 	<% unless current_site.tlog_settings.sidebar_hide_search? %>
 		<div class='sidebar_section' id='sidebar_search'>
 			<%= link_to_function 'Поиск', "sidebar_toggle('search')", :title => "в #{current_site.gender("его", "её")} тлоге", :class => "sidebar_toggle #{'highlight' if params[:query]}", :id => 'sidebar_search_link' %>		
