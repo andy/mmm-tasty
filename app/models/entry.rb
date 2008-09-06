@@ -114,7 +114,14 @@ class Entry < ActiveRecord::Base
     else
       conditions = "id >= #{self.id}"
       conditions += " AND user_id = #{self.user_id}"
-      conditions += " AND is_private = 0" unless (user && user.id == self.user_id)
+      conditions += if self.is_anonymous?
+          " AND type = 'AnonymousEntry'"
+        elsif self.is_private?
+          " AND is_private = 1 AND type != 'AnonymousEntry'"
+        else
+          " AND is_private = 0"
+        end
+      # conditions += " AND is_private = 0" unless (user && user.id == self.user_id)
       entry_offset = Entry.count(:conditions => conditions)
       total_pages = self.author.entries_count_for(user).to_pages
       entry_page = ((entry_offset / Entry::PAGE_SIZE.to_f).floor + 1).reverse_page(total_pages)

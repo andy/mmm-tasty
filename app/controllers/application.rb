@@ -197,9 +197,10 @@ class ApplicationController < ActionController::Base
 
     def url_for_tlog(user=nil, options = {})
       page = options.delete(:page) || 0
+      prefix = options.delete(:prefix) || nil
       fragment = options.delete(:fragment) || nil
       fragment = (page > 0 ? '#' : '/#') + fragment if fragment
-      "http://#{host_for_tlog(user, options)}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
+      "http://#{host_for_tlog(user, options)}#{prefix ? "/#{prefix}" : ''}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
     end
     
     def url_for_entry(entry, options = {})
@@ -208,7 +209,7 @@ class ApplicationController < ActionController::Base
       user = current_site ? current_site : entry.author
 
       if is_daylog
-        date = @entry.created_at.to_date
+        date = entry.created_at.to_date
         options[:host] = host_for_tlog(user, options)
         options[:year] = date.year
         options[:month] = date.month
@@ -218,7 +219,13 @@ class ApplicationController < ActionController::Base
         (date == Date.today) ? "http://#{options[:host]}#{fragment}" : "#{day_url(options)}#{fragment}"
       else 
         options[:page] = entry.page_for(current_user)
-        url_for_tlog(user, options) 
+        if entry.is_anonymous?
+          url_for_tlog(user, :prefix => 'anonymous')
+        elsif entry.is_private?
+          url_for_tlog(user, :prefix => 'private')
+        else
+          url_for_tlog(user, options) 
+        end
       end
     end
     helper_method :url_for_entry
