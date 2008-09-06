@@ -72,13 +72,12 @@
 				<%= link_to_remote('Теги', {
 						:update => 'sidebar_tag_cloud_content',
 						:url => tags_entries_url,
-						:before => '$("tag_cloud_spinner").show(); urchinTracker("/sidebar/tag_cloud")',
+						:before => 'blink("sidebar_tag_cloud_remote"); urchinTracker("/sidebar/tag_cloud")',
 						:success => 'new Effect.BlindDown("sidebar_tag_cloud_content", { duration: 0.3 }); $("sidebar_tag_cloud_remote").hide(); Element.addClassName("sidebar_tag_cloud_link", "highlight"); $("sidebar_tag_cloud_link").show();',
-						:complete => '$("tag_cloud_spinner").hide()',
+						:complete => 'unblink("sidebar_tag_cloud_remote")',
 						:method => 'get'
 					}, :id => 'sidebar_tag_cloud_remote', :class => 'sidebar_toggle') %>
 			<% end %>
-			<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :id => 'tag_cloud_spinner', :style => 'display: none' %>
 			<div class='sidebar_section_content' id='sidebar_tag_cloud_content'<%= ' style="display: none"' unless inline_tags %>>
 				<%= render('tlog/_tags', { :highlight_tags => inline_tags }) if inline_tags %>
 			</div>

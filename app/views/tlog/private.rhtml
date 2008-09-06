@@ -5,7 +5,17 @@
 	<!-- /content_for :head -->
 <% end %>
 
-<%= render :partial => 'lenta', :locals => { :reverse => false } %>
+<div class='filter'>
+  Все ваши <span class='highlight'><%= params[:action] == 'anonymous' ? 'анонимные' : 'скрытые' %></span> записи. Эта страница доступна только вам.
+</div>
+
+<% if @entries.size.zero? %>
+  <div class='help_intro'>
+    Тут, пока, пусто.
+  </div>
+<% else %>
+  <%= render :partial => 'lenta', :locals => { :reverse => false } %>
+<% end %>
 
 <% content_for :sidebar do %>
 	<%= render 'tlog/_sidebar' %>	

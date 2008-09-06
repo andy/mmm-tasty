@@ -1,2 +1,0 @@
-Вы <%= current_user.subscribed_to?(@user) ? 'подписаны' : 'не подписаны' %> на <%= @user.gender('его', 'её') %> тлог. <%= link_to_remote (current_user.subscribed_to?(@user) ? 'Отписаться?' : 'Подписаться?'), :url => global_url(:action => :relationship_toggle, :user_id => @user), :before => "$('#{@user.dom_id(:ajax_spinner)}').show();" %>
-<%= image_tag 'ajax-small-loader.gif', :size => '15x15', :style => 'display: none;', :id => @user.dom_id(:ajax_spinner) %>
