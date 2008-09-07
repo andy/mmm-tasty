@@ -157,7 +157,10 @@ class ApplicationController < ActionController::Base
     end
     
     def require_admin
-      require_current_user && current_user.is_admin?
+      return true if require_current_user && current_user.is_admin?
+      
+      render :text => 'pemission denied', :status => 403
+      return false
     end
 
     def require_confirmed_current_user
@@ -174,7 +177,9 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user_eq_current_site
-      current_user && current_site && current_user.id == current_site.id
+      return true if current_user && current_site && current_user.id == current_site.id
+      
+      render(:text => 'permission denied', :status => 403) and return false
     end
 
     def render_tasty_404(text, options = {})

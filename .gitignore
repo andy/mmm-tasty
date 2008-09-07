@@ -10,5 +10,6 @@ config/mail_fetcher.yml
 config/mongrel_cluster.yml
 config/database.yml
 config/thin.yml
+script/sync
 log/*.log
 public/javascripts/all.js
