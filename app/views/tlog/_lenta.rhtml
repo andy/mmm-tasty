@@ -10,7 +10,7 @@
 
 	<% previous_date = nil -%>
 	<% @entries.each_with_index do |entry, index| -%>
-		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date == entry.created_at.to_date), :index => index, :show_tags => is_owner? } %>
+		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date != entry.created_at.to_date), :index => index, :show_tags => is_owner? } %>
 		<% previous_date = entry.created_at.to_date -%>
 	<% end %>
 
