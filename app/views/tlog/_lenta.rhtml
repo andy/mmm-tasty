@@ -1,7 +1,7 @@
 <% reverse = true unless local_assigns.has_key?(:reverse) %>
 <% if @entries.size > 0 %>
 
-  <% if is_owner? && current_site.tlog_settings.past_disabled? && @page > 1 %>
+  <% if is_owner? && current_site.tlog_settings.past_disabled? && @page && @page > 1 %>
     <div class='filter'>
       <p>эта страница видна только вам (<%= link_to 'настроить', settings_path %>)</p>
     </div>
