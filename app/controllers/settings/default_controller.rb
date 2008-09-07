@@ -9,9 +9,10 @@ class Settings::DefaultController < ApplicationController
     @tlog_settings = current_user.tlog_settings
 
     if request.post?
-      @tlog_settings.is_daylog = params[:tlog_settings][:is_daylog] == 'true' ? true : false
+      @tlog_settings.is_daylog = params[:tlog_settings][:is_daylog]
       @tlog_settings.default_visibility = params[:tlog_settings][:default_visibility]
       @tlog_settings.comments_enabled = params[:tlog_settings][:comments_enabled]
+      @tlog_settings.past_disabled = params[:tlog_settings][:past_disabled]
 
       if @tlog_settings.save
         flash[:good] = 'Настройки сохранены'

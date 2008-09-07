@@ -18,19 +18,22 @@ class TlogController < ApplicationController
 
     if current_site.entries_count > 0 || is_owner?
       if current_site.tlog_settings.is_daylog?
-        conditions = ["user_id = #{current_site.id}"]
-        conditions << "is_private = 0" # unless is_owner?
-        @time = Entry.find_by_sql("SELECT id, created_at FROM entries WHERE #{conditions.join(' AND ')} ORDER BY entries.id DESC LIMIT 1").first.created_at rescue Time.now
+        @time = current_site.last_public_entry_at
         day()
       else
         # переворачиваем страницы, они теперь будут показываться в обратном порядке
         total_pages = current_site.public_entries_count.to_pages
         @page = params[:page].to_i.reverse_page( total_pages ) rescue 1
         options = { :page => @page }
-        @entries = current_site.recent_entries(options) # uses paginator, so entries are not really loaded
-        @entries_array = @entries.to_a if @page > 1
-        @comment_views = current_site.recent_entries_with_views_for(current_user, options)
-        @entry_ratings = current_site.recent_entries_with_ratings(options)
+        if @page == 1 || is_owner? || !current_site.tlog_settings.past_disabled?
+          @entries = current_site.recent_entries(options) # uses paginator, so entries are not really loaded
+          @entries_array = @entries.to_a if @page > 1
+          @comment_views = current_site.recent_entries_with_views_for(current_user, options)
+          @entry_ratings = current_site.recent_entries_with_ratings(options)
+        else
+          @past_disabled = true
+          @entries = []
+        end
       end
     else
       render_tasty_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/'>&#x2190; вернуться на главную</a>")
@@ -115,9 +118,14 @@ class TlogController < ApplicationController
   def day
     @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
     @title = current_site.tlog_settings.title
-    @options = { :include_private => is_owner?, :time => @time }
-
-    # подгружаем записи в самом темплейте day.rhtml чтобы попасть в кеш
+    
+    # если пользователь предпочел скрыть прошлое, делаем вид что такой страницы не существует
+    if current_site.tlog_settings.past_disabled? && @time.to_date != current_site.last_public_entry_at.to_date && !is_owner?
+      @past_disabled = true
+      @entries = []
+    else
+      @entries = current_site.recent_entries(:time => @time)
+    end
     render :action => 'day'
   end
   

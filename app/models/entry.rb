@@ -128,7 +128,7 @@ class Entry < ActiveRecord::Base
       (zero_if_last && entry_page == total_pages) ? 0 : entry_page
     end
   end
-  
+    
   def next(options = {})
     include_private = options.fetch(:include_private, false)
     @next ||= Entry.find_by_sql("SELECT id, created_at, user_id, comments_count, updated_at, is_voteable, is_private, is_mainpageable, comments_enabled FROM entries WHERE id > #{self.id} AND user_id = #{self.user_id}#{' AND is_private = 0 ' unless include_private} LIMIT 1").first rescue nil

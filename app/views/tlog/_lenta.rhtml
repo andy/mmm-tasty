@@ -1,21 +1,36 @@
 <% reverse = true unless local_assigns.has_key?(:reverse) %>
 <% if @entries.size > 0 %>
-	<% prev_entry = nil -%>
+
+  <% if is_owner? && current_site.tlog_settings.past_disabled? && @page > 1 %>
+    <div class='filter'>
+      <p>эта страница видна только вам (<%= link_to 'настроить', settings_path %>)</p>
+    </div>
+  <% end %>
+
+
+	<% previous_date = nil -%>
 	<% @entries.each_with_index do |entry, index| -%>
-		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_datetime => !(prev_entry.created_at.same_day?(entry.created_at) rescue false), :index => index, :show_tags => is_owner? } %>
-		<% prev_entry = entry -%>
+		<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_datetime => (previous_date.nil? || previous_date == entry.created_at.to_date), :index => index, :show_tags => is_owner? } %>
+		<% previous_date = entry.created_at.to_date -%>
 	<% end %>
 
-	<% if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
-		<%= render 'globals/day_pagination', { :entries => @entries } %>
-	<% else %>
-		<%= render 'globals/pagination', { :pageable => @entries, :reverse => reverse } %>
-	<% end %>
+  <%# показываем навигационные элементы если прошлое не выключено или если это владелец тлога %>
+  <% if is_owner? || !current_site.tlog_settings.past_disabled? %>
+  	<% if params[:action] == 'day' || current_site.tlog_settings.is_daylog? && params[:action] == 'index' %>
+  		<%= render 'globals/day_pagination', { :entries => @entries }  %>
+  	<% else %>
+  		<%= render 'globals/pagination', { :pageable => @entries, :reverse => reverse } %>
+  	<% end %>
+  <% end %>
 	
 <% else %>
 	<% if params[:action] == 'day' %>
 		<div class='help_intro'>
-			<h2>За этот день записей не найдено</h2>
+		  <% if @past_disabled %>
+		    <h2>Пользователь предпочел скрыть свои старые записи</h2>
+		  <% else %>
+  			<h2>За этот день записей не найдено</h2>
+			<% end %>
 		</div>
 	<% elsif is_owner? %>
 		<div class='help_intro'>
@@ -34,7 +49,11 @@
 		</div>
 	<% else %>
 	  <div class='help_intro'>
-	    <h2>Тут, пока, пусто.</h2>
+		  <% if @past_disabled %>
+		    <h2>Пользователь предпочел скрыть свои старые записи</h2>
+      <% else %>
+  	    <h2>Тут, пока, пусто.</h2>
+  	  <% end %>
 	  </div>
 	<% end %>
 <% end %>

@@ -8,7 +8,8 @@
 
 <%# only use cache when surely rendering some content, otherwise we would display some owner-only messages to regular users %>
 <% if @entries.size > 0 %>
-  <% cache :page => @page, :stamp => current_site.entries_updated_at.to_i, :date => Date.today do %>
+  <%# spec - только если мы показываем другую навигацию %>
+  <% cache :page => @page, :spec => (is_owner? && current_site.tlog_setings.past_disabled?), :stamp => current_site.entries_updated_at.to_i, :date => Date.today do %>
   	<%= render :partial => 'lenta' %>
   <% end %>
 

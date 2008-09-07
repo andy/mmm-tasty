@@ -84,7 +84,7 @@
 		</div>
 	<% end %>
 	
-	<% if params[:action] == 'day' || !current_site.tlog_settings.sidebar_hide_calendar? %>
+	<% if (is_owner? || !current_site.tlog_settings.past_disabled?) && (params[:action] == 'day' || !current_site.tlog_settings.sidebar_hide_calendar?) %>
 		<div class='sidebar_section' id='sidebar_calendar'>
 			<%= link_to_function 'Календарь', "sidebar_toggle('calendar')" , :class => "sidebar_toggle #{'highlight' if params[:action] == 'day'}", :id => 'sidebar_calendar_link' %>
 			<div class='sidebar_section_content' id='sidebar_calendar_content' <%= "style='display: none'" unless params[:action] == 'day' %>>
