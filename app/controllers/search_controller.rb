@@ -18,6 +18,9 @@ class SearchController < ApplicationController
     @page = params[:page].to_i rescue 1
     @page = 1 if @page <= 0
 
+    # gone too far
+    render :nothing => true and return if @page > 67
+
     options = {}
     if current_site
       options[:filter] = [['user_id', [current_site.id]]]
