@@ -36,6 +36,7 @@ class SearchController < ApplicationController
 
       @entries = Entry.find_with_sphinx(params[:query], :sphinx => options)
     else
+      @page = 0
       @entries = []
     end
     
