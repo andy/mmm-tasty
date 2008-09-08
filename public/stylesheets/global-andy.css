@@ -24,3 +24,7 @@ div.comment_text p { margin-bottom: 1em; }
 div#sidebar_personal ul { list-style-type: none; margin: 0; padding: 0; }
 div#sidebar_personal ul li a.highlight { font-size: 1.1em; font-weight: bold; }
 div#sidebar_personal ul li span { font-size: 0.8em; }
+
+/* sidebar about, paragraph fixes */
+div#sidebar_about_content p { display: block; padding-bottom: 1em; }
+div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }

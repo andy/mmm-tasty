@@ -28,7 +28,10 @@
 				<%= white_list_entry(current_site.tlog_settings.about) %>
 				
 				<% unless current_site.faves.size.zero? %>
-					<div id='about_submenu'><%= link_to "#{current_site.gender('его', 'её')} избранное, #{current_site.faves.size.pluralize('штука', 'штуки', 'штук', true)}", faves_url %></div>
+					<div id='about_submenu'>
+					  <%= link_to "избранное", faves_url %>
+					  <%= content_tag :span, current_site.faves.size.pluralize('штука', 'штуки', 'штук', true) %>
+					</div>
 				<% end %>
 		</div>
 	</div>
