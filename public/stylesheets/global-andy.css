@@ -28,3 +28,6 @@ div#sidebar_personal ul li span { font-size: 0.8em; }
 /* sidebar about, paragraph fixes */
 div#sidebar_about_content p { display: block; padding-bottom: 1em; }
 div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }
+
+/* anonymous entries page */
+.anonymous_entry_delete_link { margin-top: 20px!important; }

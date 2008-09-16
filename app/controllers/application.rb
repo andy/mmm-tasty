@@ -37,6 +37,8 @@ class ApplicationController < ActionController::Base
   
   attr_accessor   :standalone
   helper_method   :standalone
+  
+  helper_method :is_admin?
 
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
@@ -154,6 +156,10 @@ class ApplicationController < ActionController::Base
       return true if current_site && current_site.is_a?(User)
       render :template => 'global/tlog_not_found', :layout => false, :status => 404
       false
+    end
+    
+    def is_admin?
+      current_user && current_user.is_admin?
     end
     
     def require_admin

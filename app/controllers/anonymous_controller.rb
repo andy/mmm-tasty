@@ -1,11 +1,13 @@
 class AnonymousController < ApplicationController
+  before_filter :require_admin, :only => [:toggle]
+
   layout 'main'
   helper :main, :comments
 
   # смотрим список записей
   def index
     @adsense_enabled = true
-    sql_conditions = 'type="AnonymousEntry"'
+    sql_conditions = 'type="AnonymousEntry" AND is_disabled = 0'
     
     # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
     total = Rails.cache.fetch('entry_count_anonymous', :expires_in => 10.minutes) { Entry.count :conditions => sql_conditions }
@@ -16,12 +18,23 @@ class AnonymousController < ApplicationController
     @entries = Entry.find_all_by_id @entry_ids.map(&:id), :order => 'entries.id DESC'
   end
   
+  def toggle
+    @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
+    @entry.toggle!(:is_disabled)
+    Rails.cache.delete('entry_count_anonymous')
+    
+    render :update do |page|
+      page.visual_effect :highlight, dom_id(@entry, :toggle)
+    end
+  end
+  
   # смотрим запись
   def show
     @adsense_enabled = true
     @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
     
-    redirect_to :action => 'index' and return unless @entry
+    redirect_to :action => 'index' and return unless @entry    
+    redirect_to :action => 'index' and return if @entry.is_disabled?
 
     @comment = Comment.new_from_cookie(cookies['comment_identity']) if !current_user && !cookies['comment_identity'].blank?
     @comment ||= Comment.new
@@ -48,6 +61,7 @@ class AnonymousController < ApplicationController
     
     @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
     render(:text => 'oops, entry not found') and return unless @entry
+    render(:text => 'oops, entry deleted') and return if @entry.is_disabled?
     render(:text => 'comments disabled for this entry, sorry') and return unless @entry.comments_enabled?
     render(:text => 'sorry, anonymous users are not allowed to comment') and return unless current_user
     render(:text => 'sorry, you need to confirm your email address first') and return  unless current_user.is_confirmed?
@@ -101,6 +115,9 @@ class AnonymousController < ApplicationController
     render :text => 'sorry, anonymous users are not allowed' and return unless current_user
 
     @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
+
+    render(:text => 'oops, entry not found') and return unless @entry
+    render(:text => 'oops, entry deleted') and return if @entry.is_disabled?
     
     @comment = Comment.new(params[:comment])
     @comment.user = current_user if current_user
