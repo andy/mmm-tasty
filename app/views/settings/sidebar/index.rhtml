@@ -78,7 +78,7 @@ function onclick_show_form(section, prefix) {
 	var clicked = $(prefix + '_' + section);
 	var clicked_a = $(prefix + '_a_' + section);
 	
-	$A('new_link_' + section).each(function(element) { element.removeClassName('new-form-section-active'); });
+  // $A($('new_link_' + section)).each(function(element) { element.removeClassName('new-form-section-active'); });
 
 	if(clicked.visible()) {
 		new Effect.BlindUp(prefix + '_' + section, { duration: 0.3 });
