@@ -35,9 +35,9 @@ class User < ActiveRecord::Base
 
 	validates_presence_of :url, :on => :save, :message => "это обязательное поле"
 	
-	validates_uniqueness_of :email, :if => Proc.new { |u| !u.email.blank? }, :message => 'пользователь с таким емейлом уже зарегистрирован'
-	validates_uniqueness_of :openid, :if => Proc.new { |u| !u.openid.blank? }, :message => 'пользователь с таким openid уже зарегистрирован'
-	validates_uniqueness_of :url, :message => 'к сожалению, этот адрес уже занят'
+	validates_uniqueness_of :email, :if => Proc.new { |u| !u.email.blank? }, :message => 'пользователь с таким емейлом уже зарегистрирован', :case_sensitive => false
+	validates_uniqueness_of :openid, :if => Proc.new { |u| !u.openid.blank? }, :message => 'пользователь с таким openid уже зарегистрирован', :case_sensitive => false
+	validates_uniqueness_of :url, :message => 'к сожалению, этот адрес уже занят', :case_sensitive => false
 
 	validates_format_of :openid, :with => Format::HTTP_LINK, :if => Proc.new { |u| !u.openid.blank? }, :message => 'не похоже на openid'
   validates_format_of :email, :with => Format::EMAIL, :if => Proc.new { |u| !u.email.blank? }, :message => 'не похоже на емейл или openid'
