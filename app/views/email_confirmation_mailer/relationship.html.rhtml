@@ -8,7 +8,7 @@
 	     
 	    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><b>Здравствуйте, <%= h @user.username %>!</b></p>
 		
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">Хорошие новости! Пользователь <%= link_to @friend.login, url_for_tlog(@friend) %> подписался на ваш тлог!</p>
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">Хорошие новости! Пользователь <%= link_to @friend.url, url_for_tlog(@friend) %> подписался на ваш тлог!</p>
 		
 </p>
 		
