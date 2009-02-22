@@ -7,6 +7,8 @@ class Relationship < ActiveRecord::Base
   validates_presence_of :reader_id
   validates_inclusion_of :friendship_status, :in => -1..2
   
+  after_create :notify
+  
   acts_as_list :scope => 'reader_id = #{reader_id} AND friendship_status = #{friendship_status}'
   
   PUBLIC = 2
@@ -23,5 +25,9 @@ class Relationship < ActiveRecord::Base
     else
       "Подписаться на #{user.gender('его', 'её')} тлог"
     end
+  end
+  
+  def notify
+    EmailConfirmationMailer.deliver_relationship(user, reader) if friendship_status >= DEFAULT
   end
 end

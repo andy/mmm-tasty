@@ -95,6 +95,7 @@ class TlogController < ApplicationController
       new_friendship_status = [Relationship::PUBLIC, Relationship::DEFAULT].include?(relationship.friendship_status) ? Relationship::GUESSED : Relationship::DEFAULT
     end
     current_user.set_friendship_status_for(current_site, new_friendship_status)
+    
     render :update do |page|
       page.replace :sidebar_relationship, :partial => 'relationship'
       page.visual_effect :highlight, :sidebar_relationship, :duration => 0.3

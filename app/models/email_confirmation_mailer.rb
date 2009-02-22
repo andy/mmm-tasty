@@ -55,6 +55,16 @@ class EmailConfirmationMailer < ActionMailer::Base
     @sent_on    = Time.now
     @headers    = {}
   end
+  
+  # отправляется после подписки на тлог (обычно ссылка "добавить в друзья")
+  def relationship(user, friend)
+    @subject    = "ммм... #{friend.login} #{friend.gender("подписался", "подписалась")} на ваш тлог"
+    @body       = {:user => user, :friend => friend}
+    @recipients = user.email
+    @from       = '"Mmm... noreply" <noreply@mmm-tasty.ru>'
+    @sent_on    = Time.now
+    @headers    = {}
+  end
 
   # письмо-напоминание о забытом пароле
   def lost_password(user)
