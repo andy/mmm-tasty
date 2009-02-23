@@ -2,7 +2,9 @@ class TlogController < ApplicationController
   before_filter :require_current_site, :require_confirmed_current_user, :require_confirmed_current_site
   before_filter :find_entry, :only => [:show, :metadata, :subscribe, :unsubscribe, :destroy]
   before_filter :current_user_eq_current_site, :only => [:destroy, :private, :anonymous]
+
   helper :comments
+
 
   def index
     # обновляем статистику для текущего пользователя
@@ -91,6 +93,8 @@ class TlogController < ApplicationController
     relationship = current_user.relationship_with(current_site, true)
     if relationship.new_record?
       new_friendship_status = Relationship::DEFAULT
+      
+      EmailConfirmationMailer.deliver_relationship(current_site, current_user)
     else
       new_friendship_status = [Relationship::PUBLIC, Relationship::DEFAULT].include?(relationship.friendship_status) ? Relationship::GUESSED : Relationship::DEFAULT
     end
