@@ -35,3 +35,6 @@ div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }
 /* feedback admin page */
 .onair .feedback { margin: 20px 10px 10px 20px; }
 .onair .feedback .feedback_buttons { font-size: 11px; color: #666; }
+
+/* quotes fix */
+div.quote_entry span.quote_entry_body p { display: inline; }
