@@ -97,23 +97,25 @@ class ApplicationController < ActionController::Base
     end
   
     def preload_current_user
-      # from session
-      @current_user = session[:user_id] ? (User.find_by_id(session[:user_id]) || false) : nil
-                      
-      logger.info "user #{@current_user.url} from session (id = #{@current_user.id})" if @current_user
+      return true if @current_user
 
-      # from tsig
-      @current_user ||= if !cookies['tsig'].blank?
-                          id, sig = cookies['tsig'].unpack('m').first.unpack('LZ*')
-                          user = User.find_by_id(id) || false
-                          if user && user.signature == sig
-                            logger.info "user #{user.url} from tsig (id = #{user.id})"
-                            session[:user_id] = user.id
-                          end
-                          user
-                        else
-                          false
-                        end
+      # from session
+      if session[:user_id]
+        @current_user = User.find_by_id(session[:user_id], :conditions => 'is_disabled = 0')
+
+        logger.info "user #{@current_user.url} from session (id = #{@current_user.id})" and return true if @current_user
+      end
+
+      unless cookies['tsig'].blank?
+        id, sig = cookies['tsig'].unpack('m').first.unpack('LZ*')
+        user = User.find_by_id(id, :conditions => 'is_disabled = 0')
+        if user && user.signature == sig
+          session[:user_id] = user.id
+          logger.info "user #{user.url} from tsig (id = #{user.id})"
+          @current_user = user
+          return true
+        end
+      end
 
       true
     end

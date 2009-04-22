@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
     user.tlog_design_settings = TlogDesignSettings.create :user => user
     # добавляем новости автоматически
     news = User.find_by_url('news')
-    Relationship.create :user => news, :reader => user, :position => 0, :last_viewed_entries_count => news.entries_count_for(user), :last_viewed_at => Time.now, :friendship_status => Relationship::DEFAULT
+    Relationship.create(:user => news, :reader => user, :position => 0, :last_viewed_entries_count => news.entries_count_for(user), :last_viewed_at => Time.now, :friendship_status => Relationship::DEFAULT) if news
   end
   
   def validate
