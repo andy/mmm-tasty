@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  protected
+  # protected
   
   def tasty_error_message_on(object, method, options = {})
     if obj = instance_variable_get("@#{object}")

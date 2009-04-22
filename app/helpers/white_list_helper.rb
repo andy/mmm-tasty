@@ -7,35 +7,32 @@ module WhiteListHelper
     
     flash_width = options[:flash_width] || 400
     
-    doc = Hpricot(html, :fixup_tags => true)
-
-    # Оборачиваем все незакрытые тексты в <p>
-    (doc/"/*").each { |e| e.swap("<p>" + e.to_s + "</p>") if e.is_a?(Hpricot::Text) }
     
-    # Заменяем в параграфах переносы на <br/>
-    (doc/"//p").each do |elm|
-      elm.swap("<p>"+elm.innerHTML.gsub(/([^\n]\n)(?=[^\n])/, '\1<br />')+"</p>")
-    end
+    
+    doc = Hpricot(simple_tasty_format(html), :xhtml_strict => true)
 
     # Делаем сканирование элементов
     allowed_tags = %w(a b i img p strong ul ol li h1 h2 h3 h4 h5 h6 div object param)
     allowed_attributes = %w(class id href alt src width height border tag name value)
     valid_links = /^http(s?):\/\//
     
-    doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes))
-
+    doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :xhtml_strict => true)
+    
     (doc/"//p").each do |paragraph|
-      paragraph.swap(paragraph.to_html.gsub(/(\n\n+)/, "</p><p>")) if paragraph.to_html =~ /\n\n/
+      paragraph.swap("") and next if paragraph.inner_html.blank?
+
+      # paragraph.swap(paragraph.to_html.gsub(/(\n\n+)/, "</p><p>")) if paragraph.to_html =~ /\n\n/
       paragraph.children.select {|e| e.text?}.each do |text|
-        text.innerHTML = (auto_link(text.to_html).
+        new_text = auto_link(text.to_html).
         # [andrewzotov] -> ссылка на пользователя
         # link_to_user здесь не работает, потому что lameditize вызвыается из моделей
-        gsub(/(\[([a-z0-9_-]{3,20})\])/) do
+        gsub(/(\[([a-z0-9_-]{2,20})\])/) do
           user = User.find_by_url($2)
-          user ? "<a href='#{host_for_tlog(user.login)}'>#{user.login}</a>" : $1
+          user ? "<a href='#{host_for_tlog(user.url)}' class='entry_tlog_link'>#{user.url}</a>" : $1
         end.
-        gsub(/(\n+)/, "<br/>"))
-      end      
+        gsub(/(\n+)/, "<br/>")
+        text.swap(new_text) unless new_text.blank?        
+      end
     end
     
     (doc/"//object").each do |flash|
