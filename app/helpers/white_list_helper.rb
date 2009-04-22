@@ -9,7 +9,7 @@ module WhiteListHelper
       logger.error html
       logger.error "> Exception was: #{ex.message}"
       
-      "внутреняя ошибка сервера" 
+      "внутреняя ошибка сервера"
     end
   end
 
@@ -27,11 +27,11 @@ module WhiteListHelper
     valid_links = /^http(s?):\/\//
     
     doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :xhtml_strict => true)
+
+    # Удаляем пустые параграфы
+    (doc/"//p[text()='']").remove
     
     (doc/"//p").each do |paragraph|
-      paragraph.swap("") and next if paragraph.inner_html.blank?
-
-      # paragraph.swap(paragraph.to_html.gsub(/(\n\n+)/, "</p><p>")) if paragraph.to_html =~ /\n\n/
       paragraph.children.select {|e| e.text?}.each do |text|
         new_text = auto_link(text.to_html).
         # [andrewzotov] -> ссылка на пользователя
