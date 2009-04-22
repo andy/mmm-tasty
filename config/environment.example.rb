@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
   config.gem 'sqlite3-ruby', :lib => 'sqlite3'
   config.gem 'ruby-openid', :lib => 'openid'
   config.gem 'memcache-client', :lib => 'memcache'
+  config.gem 'hpricot'
   
   # if you plan on using mysql, uncomment this
   # config.gem 'mysql'

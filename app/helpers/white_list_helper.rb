@@ -87,7 +87,9 @@ module WhiteListHelper
   end
 
   def allowed_flash_domain?(url)
-    domain = URI.parse(url).try(:host).to_s.split(".").reverse[0,2].reverse.join(".")
+    domain = URI.parse(url).try(:host).to_s.split(".").reverse[0,2].reverse.join(".") rescue nil
+    return false unless domain
+    
     flash_whitelist_file = File.join(RAILS_ROOT, 'config', 'flash_whitelist.yml')
     flash_whitelist = YAML.parse_file(flash_whitelist_file).children.map(&:value)
     flash_whitelist.is_a?(Array) && flash_whitelist.include?(domain)
