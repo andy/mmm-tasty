@@ -27,7 +27,7 @@ module WhiteListHelper
     (doc/"//p").each do |paragraph|
       paragraph.swap(paragraph.to_html.gsub(/(\n\n+)/, "</p><p>")) if paragraph.to_html =~ /\n\n/
       paragraph.children.select {|e| e.text?}.each do |text|
-        text.swap(auto_link(text.to_html).
+        text.innerHTML = (auto_link(text.to_html).
         # [andrewzotov] -> ссылка на пользователя
         # link_to_user здесь не работает, потому что lameditize вызвыается из моделей
         gsub(/(\[([a-z0-9_-]{3,20})\])/) do
