@@ -1,13 +1,23 @@
 module WhiteListHelper
   VALID_FLASH_PARAMS = %w(movie allowfullscreen allowscriptaccess wmode flashvars)
 
+  def white_list_html_with_rescue(html, options = {})
+    begin
+      white_list_html(html, options)
+    rescue Exception => ex
+      logger.error "> Failed to render the following content"
+      logger.error html
+      logger.error "> Exception was: #{ex.message}"
+      
+      "внутреняя ошибка сервера" 
+    end
+  end
+
   def white_list_html(html, options = {})
     html.gsub!('&amp;', '&')
     html.gsub!('amp;', '')
     
     flash_width = options[:flash_width] || 400
-    
-    
     
     doc = Hpricot(simple_tasty_format(html), :xhtml_strict => true)
 

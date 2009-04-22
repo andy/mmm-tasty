@@ -1,8 +1,5 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-
-  # protected
-  
   def tasty_error_message_on(object, method, options = {})
     if obj = instance_variable_get("@#{object}")
       id = options.delete(:id) || "#{object}_#{method}"
@@ -71,24 +68,24 @@ END
   end
   
   def white_list_video_entry(text)
-    white_list_html(text, :flash_width => 420)
+    white_list_html_with_rescue(text, :flash_width => 420)
   end
 
   
   def white_list_entry(text, options = {})
-    white_list_html(text)
+    white_list_html_with_rescue(text)
   end
   
   def white_list_sidebar(text, options = {})
-    white_list_html(text)
+    white_list_html_with_rescue(text)
   end
   
   def white_list_comment(text)
-    white_list_html(text, :flash_width => 290)
+    white_list_html_with_rescue(text, :flash_width => 290)
   end
   
   def white_list_anonymous_comment(text)
-    white_list_html(text, :flash_width => 290)
+    white_list_html_with_rescue(text, :flash_width => 290)
   end
 
   # Возвращает ссылку на тлог. Результат можно контролировать:
