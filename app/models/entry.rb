@@ -602,24 +602,24 @@ class VideoEntry < Entry
   end
   
   # пытаемся подключить видео формат после того как видео было найдено
-  def after_find
-    self.metadata = {} if self.metadata.nil?
-    if self.metadata[:video_module].blank?
-      self.metadata[:video_module] = Video::detect_by_link(self.data_part_1)
-      self.metadata_will_change!
-    end
-    self.extend self.metadata[:video_module].blank? ? Video::Unknown : self.metadata[:video_module].constantize
-  end
+  # def after_find
+  #   self.metadata = {} if self.metadata.nil?
+  #   if self.metadata[:video_module].blank?
+  #     self.metadata[:video_module] = Video::detect_by_link(self.data_part_1)
+  #     self.metadata_will_change!
+  #   end
+  #   self.extend self.metadata[:video_module].blank? ? Video::Unknown : self.metadata[:video_module].constantize
+  # end
   
-  def data_part_1=(link)
-    write_attribute(:data_part_1, link)
-    unless link.blank?
-      self.metadata = {} if self.metadata.nil?      
-      self.metadata[:video_module] = Video::detect_by_link(link)
-      self.metadata_will_change!
-      self.extend metadata[:video_module].blank? ? Video::Unknown : metadata[:video_module].constantize
-    end
-  end
+  # def data_part_1=(link)
+  #   write_attribute(:data_part_1, link)
+  #   unless link.blank?
+  #     self.metadata = {} if self.metadata.nil?      
+  #     self.metadata[:video_module] = Video::detect_by_link(link)
+  #     self.metadata_will_change!
+  #     self.extend metadata[:video_module].blank? ? Video::Unknown : metadata[:video_module].constantize
+  #   end
+  # end
 end
 
 

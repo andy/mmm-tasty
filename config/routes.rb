@@ -1,3 +1,5 @@
+require 'config/initializers/domains'
+
 ActionController::Routing::Routes.draw do |map|
 
   map.vote 'vote/:entry_id/:action', :controller => 'vote'

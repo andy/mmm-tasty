@@ -1,5 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+
   protected
   
   def tasty_error_message_on(object, method, options = {})
@@ -69,56 +70,25 @@ END
       gsub(/([^\n]\n)(?=[^\n])/, '\1<br/>') # 1 newline   -> br
   end
   
-  def white_list_entry_without_auto_link(text)
-    WhiteListHelper.tags = %w( b i pre strong em sub sup small big ul ol li br a img blockquote )
-    WhiteListHelper.attributes = %w( href src width height alt cite datetime title class )
-    simple_tasty_format(white_list(text, :nofollow => true))
-  end
-  
   def white_list_video_entry(text)
-    WhiteListHelper.tags = %w( b i pre strong em sub sup small big ul ol li br a img blockquote object embed param )
-    WhiteListHelper.attributes = %w( href src width height alt cite datetime title class classid codebase name value type wmode flashvars )
-    simple_tasty_format(white_list(text, :nofollow => true))
+    white_list_html(text, :flash_width => 420)
   end
+
   
   def white_list_entry(text, options = {})
-    WhiteListHelper.tags = %w( h1 h2 h3 h4 h5 b i pre strong em sub sup small big ul ol li br a img blockquote strike )
-    WhiteListHelper.attributes = %w( href src width height alt cite datetime title class)
-
-    text ||= ''
-    text = text.gsub(/ -- /, ' &mdash; ').gsub('... ', '&#133; ').gsub(/\.\.\.</, '&#133;<').gsub(/\.\.\.$/, '&#133;').strip
-    html = auto_link text, :all, :target => '_blank' do |text|
-      truncate(text, 30)
-    end
-    html = white_list(html, :nofollow => true)
-    if options && options[:use_br]
-      html = simple_tasty_format_without_p(html)
-    else
-      html = simple_tasty_format(html)
-    end
-    html
+    white_list_html(text)
   end
   
   def white_list_sidebar(text, options = {})
-    WhiteListHelper.tags = %w( b i pre strong em sub sup small big ul ol li br a img blockquote object embed param style table tr td th map area )
-    WhiteListHelper.attributes = %w( href src width height alt cite datetime title target cellpadding allowscriptaccess pluginspage quality bgcolor name cellspacing border class style classid codebase value type wmode flashvars )
-    white_list(text, :nofollow => true)
+    white_list_html(text)
   end
   
   def white_list_comment(text)
-    WhiteListHelper.tags = %w( b i strong em sub sup small big ul ol li br a img blockquote )
-    WhiteListHelper.attributes = %w( href src width height alt cite datetime title class)
-    html = auto_link text, :all, :target => '_blank', :rel => 'nofollow' do |text|
-      truncate(text, 30)
-    end
-    simple_tasty_format(white_list(html, :nofollow => true))
+    white_list_html(text, :flash_width => 290)
   end
   
   def white_list_anonymous_comment(text)
-    html = auto_link strip_tags(text), :all, :target => '_blank', :rel => 'nofollow' do |text|
-      truncate(text, 30)
-    end
-    simple_tasty_format(html)
+    white_list_html(text, :flash_width => 290)
   end
 
   # Возвращает ссылку на тлог. Результат можно контролировать:
