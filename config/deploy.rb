@@ -69,7 +69,7 @@ namespace :deploy do
   namespace :cache do
     desc "Flush memcache"
     task :flush do
-      run "echo flush_all | nc localhost 11211"
+      run "echo flush_all | nc -q 1 localhost 11211"
     end
   end
   
