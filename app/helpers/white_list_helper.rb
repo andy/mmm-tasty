@@ -24,15 +24,14 @@ module WhiteListHelper
     # Делаем сканирование элементов
     allowed_tags = %w(a b i img p strong ul ol li h1 h2 h3 h4 h5 h6 div object param)
     allowed_attributes = %w(class id href alt src width height border tag name value)
-    valid_links = /^http(s?):\/\//
     
     doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :xhtml_strict => true)
 
     # Удаляем пустые параграфы
-    (doc/"//p[text()='']").remove
+    # (doc/"//p[text()='']").remove    
     
     (doc/"//p").each do |paragraph|
-      paragraph.children.select {|e| e.text?}.each do |text|
+      paragraph.children.select { |e| e.text? }.each do |text|
         new_text = auto_link(text.to_html).
         # [andrewzotov] -> ссылка на пользователя
         # link_to_user здесь не работает, потому что lameditize вызвыается из моделей
@@ -46,7 +45,7 @@ module WhiteListHelper
     end
     
     (doc/"//object").each do |flash|
-
+      
       width  = flash.attributes['width'].to_i
       height = flash.attributes['height'].to_i
       src    = flash.attributes['src']
@@ -56,7 +55,7 @@ module WhiteListHelper
         width = flash_width
       end
 
-      embed_params = {'allowfullscreen' => "true", "allowscriptaccess" => "always"}
+      embed_params = {'allowfullscreen' => 'true', 'allowscriptaccess' => 'never'}
       # processing params
       (flash/"//param").each do |param|
         if VALID_FLASH_PARAMS.include?(param.attributes['name'].downcase)
@@ -87,8 +86,6 @@ module WhiteListHelper
     end
     
     html = auto_link(doc.to_html.gsub(/<p>\s*?<\/p>/mi, ''))
-  
-    # logger.debug html
   
     html    
   end
