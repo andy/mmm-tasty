@@ -19,6 +19,9 @@ class ConfirmController < ApplicationController
   def code
     user = User.find(params[:code].split(/_/)[0].to_i) rescue nil
     render_tasty_404('Ошибка. Указанный код подтверждения не был найден') and return unless user
+    
+    render_tasty_404('Ошибка. Ваш аккаунт заблокирован') and return if user.is_disabled?
+
     email = user.validate_confirmation(params[:code])
     render_tasty_404('Ошибка. Указанный код подтверждения не работает') and return unless email
 

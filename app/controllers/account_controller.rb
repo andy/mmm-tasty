@@ -120,10 +120,14 @@ class AccountController < ApplicationController
         login_with_openid email_or_openid
       else
         @user = User.new :email => email_or_openid, :password => params[:user][:password], :url => params[:user][:url], :openid => nil
+        
+        # проверяем на левые емейл адреса
+        @user.errors.add(:email, 'извините, но выбранный вами почтовый сервис находится в черном списке') if @user.email.any? && Disposable::is_disposable_email?(@user.email) 
+
         @user.settings = {}
         @user.is_confirmed = false
         @user.update_confirmation!(@user.email)
-        @user.save
+        @user.save if @user.errors.empty?
         if @user.errors.empty?
           EmailConfirmationMailer.deliver_signup(@user)
           login_user @user, :remember => @user.email, :redirect_to => confirm_url(:action => :required)

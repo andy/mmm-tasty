@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
     
     if openid.blank? && !email.blank? && password.nil? && crypted_password.blank?
       errors.add(:password, 'необходимо выбрать пароль')
-    end
+    end    
   end
   
   # Encrypts some data with the salt.
