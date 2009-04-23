@@ -38,3 +38,4 @@ div#sidebar_about_content div#about_submenu span { font-size: 0.8em; }
 
 /* quotes fix */
 div.quote_entry span.quote_entry_body p { display: inline; }
+div.quote_entry span.quote_entry_source p { display: inline; font-style: italic; font-size: 90%; }
