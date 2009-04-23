@@ -122,7 +122,7 @@
 <% cache(:controller => '/tlog', :action => 'index', :content_for => 'sidebar_sections') do %>
 	<% current_site.sidebar_sections.each do |section| %>
 		<div class='sidebar_section' id='<%= section.dom_id %>'>
-			<%= link_to_function section.name, "sidebar_toggle('section_#{section.id}')", :class => "sidebar_toggle #{'highlight' if section.is_open?}", :id => section.dom_id(nil, :link) %>
+			<%= link_to_function h(section.name), "sidebar_toggle('section_#{section.id}')", :class => "sidebar_toggle #{'highlight' if section.is_open?}", :id => section.dom_id(nil, :link) %>
 			<div class='sidebar_section_content' id='<%= section.dom_id(nil, :content) %>' <%= ' style="display: none"' unless section.is_open? %>>
 				<% section.elements.each do |element| %>				
 					<p><%= render element.template_path, { :element => element } %></p>
