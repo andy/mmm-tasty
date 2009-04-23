@@ -19,11 +19,7 @@ module WhiteListHelper
     
     flash_width = options[:flash_width] || 400
     
-    logger.debug simple_tasty_format(html)
-    
     doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
-
-    logger.debug doc.to_html
 
     # Делаем сканирование элементов
     allowed_tags = %w(a b i br img p strong ul ol li h1 h2 h3 h4 h5 h6 div object param)
@@ -35,6 +31,8 @@ module WhiteListHelper
     # (doc/"//p[text()='']").remove    
     
     (doc/"//p").each do |paragraph|
+      next if paragraph.children.blank?
+
       paragraph.children.select { |e| e.text? }.each do |text|
         new_text = auto_link(text.to_html).
         # [andrewzotov] -> ссылка на пользователя
