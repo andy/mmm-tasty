@@ -35,8 +35,7 @@ module WhiteListHelper
 
       paragraph.children.select { |e| e.text? }.each do |text|
         new_text = auto_link(text.to_html).
-        # [andrewzotov] -> ссылка на пользователя
-        # link_to_user здесь не работает, потому что lameditize вызвыается из моделей
+        # [andy] -> ссылка на пользователя
         gsub(/(\[([a-z0-9_-]{2,20})\])/) do
           user = User.find_by_url($2)
           user ? "<a href='#{host_for_tlog(user.url)}' class='entry_tlog_link'>#{user.url}</a>" : $1

@@ -10,8 +10,9 @@
 # correspond to. The deploy_to path must be the path on each machine that will
 # form the root of the application path.
 
-set :application, "tlogs"
-set :repository, "svn://tlogs.ru/trunk"
+set :scm, 'git'
+set :application, 'tasty'
+set :repository, 'git://github.com/andy/mmm-tasty.git'
 
 # =============================================================================
 # ROLES
@@ -22,26 +23,19 @@ set :repository, "svn://tlogs.ru/trunk"
 # be used to single out a specific subset of boxes in a particular role, like
 # :primary => true.
 
-role :web, "tlogs.ru"
-role :app, "tlogs.ru"
-role :db,  "tlogs.ru", :primary => true
-
+role :app, "mmm-tasty.ru", :primary => true
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 # =============================================================================
 # OPTIONAL VARIABLES
 # =============================================================================
-set :deploy_to, "/home/joe/tlogs/app" # defaults to "/u/apps/#{application}"
-set :user, "flippy"            # defaults to the currently logged in user
-# set :scm, :darcs               # defaults to :subversion
-# set :svn, "/path/to/svn"       # defaults to searching the PATH
-# set :darcs, "/path/to/darcs"   # defaults to searching the PATH
-# set :cvs, "/path/to/cvs"       # defaults to searching the PATH
-# set :gateway, "gate.host.com"  # default to no gateway
+set :deploy_to, '/home/tasty/mmm-tasty-git' # defaults to "/u/apps/#{application}"
+set :user, 'tasty'            # defaults to the currently logged in user
 
 # =============================================================================
 # SSH OPTIONS
 # =============================================================================
-# ssh_options[:keys] = %w(/path/to/my/key /path/to/another/key)
-# ssh_options[:port] = 25
+ssh_options[:user] = 'tasty'
+ssh_options[:port] = 53040
 
 # =============================================================================
 # TASKS
@@ -51,19 +45,52 @@ set :user, "flippy"            # defaults to the currently logged in user
 # narrow the set of servers to a subset of a role by specifying options, which
 # must match the options given for the servers to select (like :primary => true)
 
-desc <<DESC
-An imaginary backup task. (Execute the 'show_tasks' task to display all
-available tasks.)
-DESC
-task :backup, :roles => :db, :only => { :primary => true } do
-  # the on_rollback handler is only executed if this task is executed within
-  # a transaction (see below), AND it or a subsequent task fails.
-  on_rollback { delete "/tmp/dump.sql" }
 
-  run "mysqldump -u theuser -p thedatabase > /tmp/dump.sql" do |ch, stream, out|
-    ch.send_data "thepassword\n" if out =~ /^Enter password:/
+namespace :deploy do
+  desc "Update and restart web server"
+  task :default do
+    git.pull
+    web.restart
+    cache.flush
   end
+  
+  desc "Update sources, but do not restart server"
+  task :light do
+    git.pull
+  end
+  
+  namespace :git do
+    desc "Update sources from git"
+    task :pull do
+      run "cd #{deploy_to} && git pull"
+    end
+  end
+  
+  namespace :cache do
+    desc "Flush memcache"
+    task :flush do
+      run "echo flush_all | nc localhost 11211"
+    end
+  end
+  
+  namespace :web do
+    desc "Restart webserver"
+    task :restart do
+      run "cd #{deploy_to} && thin -C config/thin.yml restart"
+    end
+    
+    desc "Stop webserver"
+    task :stop do
+      run "cd #{deploy_to} && thin -C config/thin.yml stop"
+    end
+    
+    desc "Start webserver"
+    task :start do
+      run "cd #{deploy_to} && thin -C config/thin.yml start"
+    end
+  end  
 end
+
 
 # Tasks may take advantage of several different helper methods to interact
 # with the remote server(s). These are:
@@ -89,33 +116,33 @@ end
 #   are treated as local variables, which are made available to the (ERb)
 #   template.
 
-desc "Demonstrates the various helper methods available to recipes."
-task :helper_demo do
-  # "setup" is a standard task which sets up the directory structure on the
-  # remote servers. It is a good idea to run the "setup" task at least once
-  # at the beginning of your app's lifetime (it is non-destructive).
-  setup
-
-  buffer = render("maintenance.rhtml", :deadline => ENV['UNTIL'])
-  put buffer, "#{shared_path}/system/maintenance.html", :mode => 0644
-  sudo "killall -USR1 dispatch.fcgi"
-  run "#{release_path}/script/spin"
-  delete "#{shared_path}/system/maintenance.html"
-end
+# desc "Demonstrates the various helper methods available to recipes."
+# task :helper_demo do
+#   # "setup" is a standard task which sets up the directory structure on the
+#   # remote servers. It is a good idea to run the "setup" task at least once
+#   # at the beginning of your app's lifetime (it is non-destructive).
+#   setup
+# 
+#   buffer = render("maintenance.rhtml", :deadline => ENV['UNTIL'])
+#   put buffer, "#{shared_path}/system/maintenance.html", :mode => 0644
+#   sudo "killall -USR1 dispatch.fcgi"
+#   run "#{release_path}/script/spin"
+#   delete "#{shared_path}/system/maintenance.html"
+# end
 
 # You can use "transaction" to indicate that if any of the tasks within it fail,
 # all should be rolled back (for each task that specifies an on_rollback
 # handler).
 
-desc "A task demonstrating the use of transactions."
-task :long_deploy do
-  transaction do
-    update_code
-    disable_web
-    symlink
-    migrate
-  end
-
-  restart
-  enable_web
-end
+# desc "A task demonstrating the use of transactions."
+# task :long_deploy do
+#   transaction do
+#     update_code
+#     disable_web
+#     symlink
+#     migrate
+#   end
+# 
+#   restart
+#   enable_web
+# end
