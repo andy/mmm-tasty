@@ -19,13 +19,17 @@ module WhiteListHelper
     
     flash_width = options[:flash_width] || 400
     
-    doc = Hpricot(simple_tasty_format(html), :xhtml_strict => true)
+    logger.debug simple_tasty_format(html)
+    
+    doc = Hpricot(simple_tasty_format(html), :fixup_tags => true)
+
+    logger.debug doc.to_html
 
     # Делаем сканирование элементов
-    allowed_tags = %w(a b i img p strong ul ol li h1 h2 h3 h4 h5 h6 div object param)
+    allowed_tags = %w(a b i br img p strong ul ol li h1 h2 h3 h4 h5 h6 div object param)
     allowed_attributes = %w(class id href alt src width height border tag name value)
     
-    doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :xhtml_strict => true)
+    doc = Hpricot(sanitize(doc.to_html, :tags => allowed_tags, :attributes => allowed_attributes), :fixup_tags => true)
 
     # Удаляем пустые параграфы
     # (doc/"//p[text()='']").remove    
