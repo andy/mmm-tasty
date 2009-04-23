@@ -40,8 +40,7 @@ module WhiteListHelper
         gsub(/(\[([a-z0-9_-]{2,20})\])/) do
           user = User.find_by_url($2)
           user ? "<a href='#{host_for_tlog(user.url)}' class='entry_tlog_link'>#{user.url}</a>" : $1
-        end.
-        gsub(/(\n+)/, "<br/>")
+        end
         text.swap(new_text) unless new_text.blank?        
       end
     end
