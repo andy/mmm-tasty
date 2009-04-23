@@ -243,7 +243,7 @@ class User < ActiveRecord::Base
   
   # можно ли пользователю отправлять письма?
   def is_emailable?
-    self.is_confirmed? && !self.email.blank?
+    self.is_confirmed? && !self.email.blank? && !self.is_disabled?
   end
 
   # может ли вообще голосовать за эту запись?
