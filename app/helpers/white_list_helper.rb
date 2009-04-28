@@ -51,7 +51,7 @@ module WhiteListHelper
       src    = flash.attributes['src']
       
       if width > flash_width
-        height = ((width.to_f / flash_width) * height.to_f).to_i
+        height = ((flash_width / width.to_f) * height.to_f).to_i
         width = flash_width
       end
 
