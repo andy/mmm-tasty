@@ -173,6 +173,9 @@ class ApplicationController < ActionController::Base
 
     def require_confirmed_current_user
       redirect_to(:host => "www.mmm-tasty.ru", :controller => '/confirm', :action => :required) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
+      
+      redirect_to 'http://www.mmm-tasty.ru/' and return false if current_user.is_disabled?
+      
       true    
     end
     
@@ -181,6 +184,12 @@ class ApplicationController < ActionController::Base
         render_tasty_404("Этот имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/' rel='follow'>&#x2190; вернуться на главную</a>")
         return false
       end
+      
+      if current_site.is_disabled?
+        render_tasty_404("Этот аккаунт заблокирован")
+        return false
+      end
+      
       true
     end
 
