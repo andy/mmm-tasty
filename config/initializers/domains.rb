@@ -1,1 +1,1 @@
-DOMAINS = %w(mmm-tasty.ru tlogs.ru localhost)
+DOMAINS = %w(mmm-tasty.ru tlogs.ru localhost) unless defined?(DOMAINS)

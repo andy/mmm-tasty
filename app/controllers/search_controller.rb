@@ -5,8 +5,6 @@ class SearchController < ApplicationController
   layout 'main'
 
   def index
-    @adsense_enabled = true
-
     if current_site && params[:limit] == 'none'
       redirect_to search_url(:host => "www.mmm-tasty.ru", :query => params[:query])
       return

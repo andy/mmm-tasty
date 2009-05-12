@@ -6,7 +6,6 @@ class AnonymousController < ApplicationController
 
   # смотрим список записей
   def index
-    @adsense_enabled = true
     sql_conditions = 'type="AnonymousEntry" AND is_disabled = 0'
     
     # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
@@ -30,7 +29,6 @@ class AnonymousController < ApplicationController
   
   # смотрим запись
   def show
-    @adsense_enabled = true
     @entry = Entry.find_by_id_and_type params[:id], 'AnonymousEntry'
     
     redirect_to :action => 'index' and return unless @entry    

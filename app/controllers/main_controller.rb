@@ -31,9 +31,6 @@ class MainController < ApplicationController
   end
   
   def last
-    @adsense_enabled = true
-    # @social_ads_enabled = true
-
     # подгружаем
     kind = params[:kind] || 'default'
     rating = params[:rating] || 'default'  
@@ -55,9 +52,6 @@ class MainController < ApplicationController
   end
   
   def live
-    @adsense_enabled = true
-    # @social_ads_enabled = true
-    
     sql_conditions = 'entries.is_mainpageable = 1'
     
     # кешируем общее число записей, потому что иначе :page обертка будет вызывать счетчик на каждый показ
@@ -71,8 +65,6 @@ class MainController < ApplicationController
   end
   
   def last_personalized
-    @adsense_enabled = true
-
     redirect_to(last_url) and return unless current_user
 
     # такая же штука определена в tlog_feed_controller.rb
@@ -99,7 +91,6 @@ class MainController < ApplicationController
   end
   
   def random
-    @adsense_enabled = true
     # ищем публичную запись которую можно еще на главной показать
     entry = Entry.find(params[:entry_id]) if params[:entry_id]
     max_id = Entry.maximum(:id)
