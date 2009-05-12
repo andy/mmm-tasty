@@ -31,7 +31,7 @@ a, a:link, a:visited, span.orange {
 	color:#00cae2;
 }
 .main_page a, a:link, a:visited, span.orange {
-	color:#FFA500;
+	color: #ff0412;
 }
 h1 {
 	padding:0;
@@ -1301,7 +1301,7 @@ div.post_author {
 
 div.post_author a {
 	font-size:0.75em;
-	background:orange;
+	background: #404040;
 	color:white!important;
 	width:auto!important;
 	margin:0 0 0 0;
@@ -1930,7 +1930,7 @@ div.popular a {
 
 
 body.main_page {
-	background:url("/images/bg001.gif") fixed;
+	background:url("/images/becool.gif") fixed;
 }
 
 .main_rounded_holder {
@@ -2055,8 +2055,8 @@ p.main_info a {
 	text-decoration:none;
 }
 .register_enter a.selected {
-	background:#67FD2D;
-	color:#16511b!important;
+	background:#404040;
+	color:#fff!important;
 	text-decoration:none;
 }
 .register_enter a:hover {
@@ -2391,8 +2391,8 @@ div.code * {
 	text-align:center;
 }
 .sidebar h2 span, .sidebar h3 span {
-	background:#67fd2d!important;
-	color:#404040;
+	background: #404040;
+	color: #fff;
 	padding:0 2px;
 	margin:0;
 }
@@ -3144,11 +3144,12 @@ img.heart {
 .top_hello {
 	font-size:74%;
 	font-weight:normal;
+	color: #404040;
 }
 .top_hello a {
 	border:none!important;
 	background:none;
-	color:white!important;
+	color:#404040!important;
 }
 .tl {
 	/*width:246px;
