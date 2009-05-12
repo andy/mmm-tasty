@@ -1337,6 +1337,14 @@ input.button, .comment_send {
 	font-family: Tahoma, Arial, courier;
 	color:#404040!important;
 	font-size:0.92em;
+	cursor:pointer;cursor:hand;
+}
+input.dangerous {
+	border: 3px double #997d7d!important;
+	border-top-color: #e1b7b8!important;
+	border-left-color: #e1b7b8!important;
+	background: #997d7d!important;
+	color:#404040!important;	
 }
 #post_comment_preview .button {
 	height:25px;
@@ -1345,6 +1353,11 @@ input.button:active, .comment_send:active {
 	border: 3px double #CCC!important;
 	border-top-color: #999!important;
 	border-left-color: #999!important;
+}
+input.dangerous:active {
+	border: 3px double #997d7d;
+	border-top-color: #675454!important;
+	border-left-color: #675454!important;
 }
 
 #design_chooser td {
@@ -2481,6 +2494,10 @@ text-decoration:none;
 }
 .sidebar_settings ul {
 	list-style:none;
+}
+.sidebar_settings ul span.tlog_destroy {
+	color: #ba9898;
+	font-size: 80%;
 }
 .sidebar_settings ul#f_level li a, .sidebar_settings ul#f_level li {
 	color:#404040;

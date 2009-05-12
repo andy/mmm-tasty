@@ -163,4 +163,23 @@ class Settings::DefaultController < ApplicationController
       end
     end
   end
+  
+  # Удаление тлога
+  def destroy
+    @user = User.find(current_user.id)
+
+    if request.post?
+      if params[:agree] == '1'
+        @user.disable!
+
+        # выходим с сайта
+        session[:user_id] = nil
+        cookies['tsig'] = { :value => nil, :expires => Time.now, :domain => request.domain }
+        reset_session
+        redirect_to main_url(:host => 'www.mmm-tasty.ru')
+      else
+        flash[:bad] = 'Нужно согласиться с удалением тлога'
+      end
+    end
+  end
 end

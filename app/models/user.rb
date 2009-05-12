@@ -19,10 +19,7 @@ class User < ActiveRecord::Base
   has_many :faves, :dependent => :destroy
 
   after_destroy do |user|
-    # удяляем relationships
-    user.connection.delete("DELETE FROM relationships WHERE user_id = #{user.id} OR reader_id = #{user.id}")
-    # удаляем все подписки
-    user.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{user.id}")
+    user.disconnect!
   end  
   
   def signature
@@ -256,6 +253,43 @@ class User < ActiveRecord::Base
   # сила голоса пользователя. Пока что абсолютно равоне для всех
   def vote_power
     1
+  end
+  
+  # блокируем пользователя
+  def disable!
+    return false if self.is_disabled?
+
+    # выставляем флаг заблокированности
+    self.is_disabled = true
+    self.save
+    
+    # отключаем пользователя от друзей
+    self.disconnect!
+  
+    # на данный моммент не удаляем, а скрываем все записи из прямого эфира
+    self.entries.each do |entry|
+      # публичные записи прячем
+      if entry.is_mainpageable?
+        entry.visibility = 'public' 
+        entry.save
+      end
+      
+      # а анонимки - удаляем
+      entry.destroy if entry.is_anonymous?
+    end
+    
+    # удаляем личную переписку, избранное и feedback, если был
+    self.messages.map(&:destroy)
+    self.faves.map(&:destroy)
+    self.feedback.destroy unless self.feedback.blank?
+  end
+  
+  # отключаем пользователя от друзей
+  def disconnect!
+    # удяляем relationships
+    self.connection.delete("DELETE FROM relationships WHERE user_id = #{self.id} OR reader_id = #{self.id}")
+    # удаляем все подписки
+    self.connection.delete("DELETE FROM entry_subscribers WHERE user_id = #{self.id}")
   end
 
   # выставляем пользователю ключ (и создаем новый если его не было еще)

@@ -1,21 +1,4 @@
 module SettingsHelper
-  def chooser(prefix, options)
-    prefix = prefix.to_s
-    returning([]) do |new_text|
-      options.each_with_index do |value, index|
-        span_options = {
-          :id => "#{prefix}_#{index}",
-          :style => 'background-color: #FF8099; cursor: hand; cursor: pointer; padding: 0 5px;',
-          :onclick => "$('#{prefix}_#{index}', '#{prefix}_#{(index==options.size-1)?0:(index+1)}').invoke('toggle');" 
-        }
-        span_options[:style] += 'display: none;' if index != 0
-        span_options[:style] += 'background-color: #FFE680;' if index == 0
-
-        new_text << content_tag(:span, value, span_options)
-      end
-    end.join(' ')
-  end
-  
   #
   # <%= menu_item "Тип тлога", :blah, %w(blah index gah)
   # <%= menu_item

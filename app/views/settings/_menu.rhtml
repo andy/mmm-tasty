@@ -22,4 +22,5 @@
 	  <%#= menu_item 'домен', settings_premium_url(:host => host_for_tlog, :action => :domain), %w(settings/premium/domain) %>
 	<%# end %>
 	<%= menu_item 'Выйти', url_for_tlog %>
+	<%= menu_item '<span class="tlog_destroy">Удалить тлог</span>', :destroy %>
 </ul>

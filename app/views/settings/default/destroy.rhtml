@@ -1,0 +1,19 @@
+<% @title = 'удаление тлога' %>
+<% content_for :header do %>
+	Удаление тлога
+<% end %>
+
+<p class='settings_warning'><span>Удаление нельзя отменить</span>. При удалении тлога все ваши записи и комментарии будут удалены с сайта безвозвратно. Вернуть назад ничего нельзя.</p>
+
+<p class='settings_warning'><span class='highlight'>Удаление происходит моментально.</span></p>
+
+<form method='post' class='destroy_form' class='big'>
+  <label>
+    <input type='checkbox' name='agree' value='1' />
+    <span>Я хочу <b>безвозвратно удалить</b> свой тлог и понимаю, что восстановить его будет невозможно.</span>
+  </label>
+  
+  <div class='submit_button'>
+    <input type='submit' value='Удалить тлог' class='button dangerous' />
+  </div>
+</form>

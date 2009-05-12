@@ -144,7 +144,11 @@ class ApplicationController < ActionController::Base
     # Фильтр который требует чтобы пользователь был авторизован прежде чем
     #  мог получить доступ к указанной странице
     def require_current_user
-      return true if current_user && current_user.is_a?(User)
+      if current_user && current_user.is_a?(User)        
+        redirect_to login_url(:host => "www.mmm-tasty.ru") and return false if current_user.is_disabled?
+        return true
+      end
+      
       flash[:notice] = 'Вам необходимо зайти чтобы выполнить запрос'
       if request.get?
         session[:redirect_to] = "#{request.protocol}#{request.host_with_port}#{request.request_uri}"
@@ -174,7 +178,7 @@ class ApplicationController < ActionController::Base
     def require_confirmed_current_user
       redirect_to(:host => "www.mmm-tasty.ru", :controller => '/confirm', :action => :required) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
       
-      redirect_to 'http://www.mmm-tasty.ru/' and return false if current_user.is_disabled?
+      redirect_to login_url(:host => "www.mmm-tasty.ru") and return false if current_user && current_user.is_disabled?
       
       true    
     end
@@ -186,7 +190,7 @@ class ApplicationController < ActionController::Base
       end
       
       if current_site.is_disabled?
-        render_tasty_404("Этот аккаунт заблокирован")
+        render_tasty_404("Этот аккаунт заблокирован или удален")
         return false
       end
       
