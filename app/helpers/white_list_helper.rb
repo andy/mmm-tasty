@@ -55,7 +55,12 @@ module WhiteListHelper
         width = flash_width
       end
 
-      embed_params = {'allowfullscreen' => 'true', 'allowscriptaccess' => 'never'}
+      # параметры по-умолчанию для флеша
+      embed_params = {'allowfullscreen' => 'false', 'allowscriptaccess' => 'never'}
+      
+      # для белых доменов, разрешаем полноэкранный режим
+      embed_params['allowfullscreen'] = 'true' if allowed_flash_domain?(src)
+
       # processing params
       (flash/"//param").each do |param|
         if VALID_FLASH_PARAMS.include?(param.attributes['name'].downcase)
@@ -64,18 +69,17 @@ module WhiteListHelper
       end      
       src ||= embed_params["movie"]
 
-      if allowed_flash_domain?(src)
-        text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}'></param>"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></embed></object>"
+      text = "<object width='#{width}' height='#{height}'>#{embed_params.map{|name, value| "<param name='#{name}' value='#{value}'></param>"}.join}<embed src='#{src}' type='application/x-shockwave-flash' #{embed_params.except('movie').map{|name, value| "#{name}='#{value}'"}.join(" ")} width='#{width}' height='#{height}'></embed></object>"
 
-        if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
-          flash.swap(text)
-        else
-          flash.swap("<p>#{text}</p>")
-        end
+      if flash.css_path.include?(" p ") || flash.css_path.include?("p:")
+        flash.swap(text)
       else
-        flash.innerHTML = '<p>К сожалению, с этого домена нельзя размещать видео или флеш</p>'
-        # flash.swap("")
+        flash.swap("<p>#{text}</p>")
       end
+      # else
+      #   flash.innerHTML = '<p>К сожалению, с этого домена нельзя размещать видео или флеш</p>'
+      #   # flash.swap("")
+      # end
     end
     
     html = auto_link(doc.to_html.gsub(/<p>\s*?<\/p>/mi, ''))
