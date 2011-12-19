@@ -13,7 +13,7 @@ class CreateRelationships < ActiveRecord::Migration
       t.column :comment_count, :integer, { :null => false, :default => 0 }
       t.column :last_comment_at, :timestamp
     end
-    
+
     add_index :relationships, [:user_id, :reader_id, :position]
     add_index :relationships, [:reader_id, :user_id, :position]
   end

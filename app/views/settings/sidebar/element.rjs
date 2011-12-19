@@ -1,5 +1,5 @@
 page.call :clear_all_errors
-if @element.valid?  
+if @element.valid?
   page.insert_html :bottom, @section.dom_id(:elements), :partial => 'element'
   page[@section.dom_id(@element[:type])].value = ''
   page.visual_effect :highlight, @element.dom_id

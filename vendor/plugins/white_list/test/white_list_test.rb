@@ -67,9 +67,9 @@ class WhiteListTest < Test::Unit::TestCase
     assert_white_listed %(<SCRIPT\nSRC=http://ha.ckers.org/xss.js></SCRIPT>), ""
   end
 
-  [%(<IMG SRC="javascript:alert('XSS');">), 
-   %(<IMG SRC=javascript:alert('XSS')>), 
-   %(<IMG SRC=JaVaScRiPt:alert('XSS')>), 
+  [%(<IMG SRC="javascript:alert('XSS');">),
+   %(<IMG SRC=javascript:alert('XSS')>),
+   %(<IMG SRC=JaVaScRiPt:alert('XSS')>),
    %(<IMG """><SCRIPT>alert("XSS")</SCRIPT>">),
    %(<IMG SRC=javascript:alert(&quot;XSS&quot;)>),
    %(<IMG SRC=javascript:alert(String.fromCharCode(88,83,83))>),
@@ -86,28 +86,28 @@ class WhiteListTest < Test::Unit::TestCase
       assert_white_listed img_hack, "<img>"
     end
   end
-  
+
   def test_should_sanitize_tag_broken_up_by_null
     assert_white_listed %(<SCR\0IPT>alert(\"XSS\")</SCR\0IPT>), "&lt;scr>alert(\"XSS\")&lt;/scr>"
   end
-  
+
   def test_should_sanitize_invalid_script_tag
     assert_white_listed %(<SCRIPT/XSS SRC="http://ha.ckers.org/xss.js"></SCRIPT>), ""
   end
-  
+
   def test_should_sanitize_script_tag_with_multiple_open_brackets
     assert_white_listed %(<<SCRIPT>alert("XSS");//<</SCRIPT>), "&lt;"
     assert_white_listed %(<iframe src=http://ha.ckers.org/scriptlet.html\n<), %(&lt;iframe src="http:" />&lt;)
   end
-  
+
   def test_should_sanitize_unclosed_script
     assert_white_listed %(<SCRIPT SRC=http://ha.ckers.org/xss.js?<B>), "<b>"
   end
-  
+
   def test_should_sanitize_half_open_scripts
     assert_white_listed %(<IMG SRC="javascript:alert('XSS')"), "<img>"
   end
-  
+
   def test_should_not_fall_for_ridiculous_hack
     img_hack = %(<IMG\nSRC\n=\n"\nj\na\nv\na\ns\nc\nr\ni\np\nt\n:\na\nl\ne\nr\nt\n(\n'\nX\nS\nS\n'\n)\n"\n>)
     assert_white_listed img_hack, "<img>"

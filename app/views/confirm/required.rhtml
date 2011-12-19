@@ -7,8 +7,8 @@
 
 <% if Time.now - current_user.created_at > 5.minutes %>
 	<p class='highlight'>Похоже что с момента Вашей регистрации прошло уже более пяти минут. Если письмо так и не пришло, то мы можем выслать его еще раз.
-	
-		<form method='post' action='<%= confirm_url(:action => :resend) %>' class='small'>		
+
+		<form method='post' action='<%= confirm_url(:action => :resend) %>' class='small'>
 			<input type='submit' value='Выслать письмо еще раз' class='button' />
 		</form>
 	</p>

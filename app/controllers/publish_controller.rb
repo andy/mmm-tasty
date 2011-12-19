@@ -3,7 +3,7 @@ class PublishController < ApplicationController
 
   def index
   end
-  
+
   def preview
     render :nothing => true and return unless request.post?
     if params[:entry][:id]
@@ -19,7 +19,7 @@ class PublishController < ApplicationController
     @entry.valid?
     render :update do |page|
       page.call :clear_all_errors
-      
+
       if @entry.errors.size > 0
         page.replace_html 'preview_holder', ''
         @entry.errors.each do |element, message|
@@ -34,39 +34,39 @@ class PublishController < ApplicationController
   def text
     process_entry_request 'TextEntry'
   end
-  
+
   def link
     process_entry_request 'LinkEntry'
   end
-  
+
   def quote
     process_entry_request 'QuoteEntry'
   end
-  
+
   def image
     process_entry_request 'ImageEntry'
   end
-  
+
   def song
     process_entry_request 'SongEntry'
   end
-  
+
   def video
     process_entry_request 'VideoEntry'
   end
-  
+
   def convo
     process_entry_request 'ConvoEntry'
   end
-  
+
   def code
     process_entry_request 'CodeEntry'
   end
-  
+
   def anonymous
     process_entry_request 'AnonymousEntry'
   end
-  
+
   private
     # страница для произвольной записи
     def process_entry_request(type)
@@ -74,7 +74,7 @@ class PublishController < ApplicationController
       @new_record = true
       @attachment = nil
       # @ad = nil
-      
+
       if !current_user.can_create?(klass) && !params[:id]
         @entry = klass.new
         render :action => 'limit_exceeded'
@@ -96,7 +96,7 @@ class PublishController < ApplicationController
           @entry.visibility = @entry.is_anonymous? ? 'private' : current_user.tlog_settings.default_visibility
           logger.info "creating new entry of type #{type}" if @entry.new_record?
         end
-        
+
         @new_record = @entry.new_record?
         @entry.attributes = params[:entry]
         if @entry.visibility != 'voteable' || @new_record
@@ -113,7 +113,7 @@ class PublishController < ApplicationController
           @new_record = @entry.new_record?
           @entry.save!
           # @entry.ad.save! if @entry.ad && @entry.ad.new_record?
-        
+
           if @entry.can_have_attachments? && @entry.has_attachment && @new_record
             @attachment = Attachment.new params[:attachment]
             logger.info "adding attachment to entry id = #{@entry.id}"
@@ -168,7 +168,7 @@ class PublishController < ApplicationController
       render :text => 'oops, bad entry type', :status => 403
       false
     end
-    
+
     def in_bookmarklet?
       !!params[:bm]
     end

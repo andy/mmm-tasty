@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   protected
-  
+
   def tasty_error_message_on(object, method, options = {})
     if obj = instance_variable_get("@#{object}")
       id = options.delete(:id) || "#{object}_#{method}"
@@ -14,7 +14,7 @@ module ApplicationHelper
       ''
     end
   end
-  
+
   # >> avatar_image_tag(current_user, :empty => false)       DEFAULT
   # >> avatar_image_tag(current_user, :empty => :blank)
   def avatar_image_tag(user=nil, options = {})
@@ -30,7 +30,7 @@ module ApplicationHelper
       end
     end
   end
-  
+
   def flash_div
     [:bad, :good].each do |key|
       if flash[key]
@@ -48,13 +48,13 @@ END
     end
     ""
   end
-  
+
   def audio_player_id
     @audio_player_id ||= 0
     @audio_player_id += 1
     "#{@audio_player_id}"
   end
-  
+
   def simple_tasty_format(text)
     '<p>' + text.to_s.
       gsub(/\r\n?/, "\n").                    # \r\n and \r -> \n
@@ -68,19 +68,19 @@ END
       gsub(/\n\n+/, '</br><br/>').          # 2+ newline  -> paragraph
       gsub(/([^\n]\n)(?=[^\n])/, '\1<br/>') # 1 newline   -> br
   end
-  
+
   def white_list_entry_without_auto_link(text)
     WhiteListHelper.tags = %w( b i pre strong em sub sup small big ul ol li br a img blockquote )
     WhiteListHelper.attributes = %w( href src width height alt cite datetime title class )
     simple_tasty_format(white_list(text, :nofollow => true))
   end
-  
+
   def white_list_video_entry(text)
     WhiteListHelper.tags = %w( b i pre strong em sub sup small big ul ol li br a img blockquote object embed param )
     WhiteListHelper.attributes = %w( href src width height alt cite datetime title class classid codebase name value type wmode flashvars )
     simple_tasty_format(white_list(text, :nofollow => true))
   end
-  
+
   def white_list_entry(text, options = {})
     WhiteListHelper.tags = %w( h1 h2 h3 h4 h5 b i pre strong em sub sup small big ul ol li br a img blockquote strike )
     WhiteListHelper.attributes = %w( href src width height alt cite datetime title class)
@@ -98,13 +98,13 @@ END
     end
     html
   end
-  
+
   def white_list_sidebar(text, options = {})
     WhiteListHelper.tags = %w( b i pre strong em sub sup small big ul ol li br a img blockquote object embed param style table tr td th map area )
     WhiteListHelper.attributes = %w( href src width height alt cite datetime title target cellpadding allowscriptaccess pluginspage quality bgcolor name cellspacing border class style classid codebase value type wmode flashvars )
     white_list(text, :nofollow => true)
   end
-  
+
   def white_list_comment(text)
     WhiteListHelper.tags = %w( b i strong em sub sup small big ul ol li br a img blockquote )
     WhiteListHelper.attributes = %w( href src width height alt cite datetime title class)
@@ -113,7 +113,7 @@ END
     end
     simple_tasty_format(white_list(html, :nofollow => true))
   end
-  
+
   def white_list_anonymous_comment(text)
     html = auto_link strip_tags(text), :all, :target => '_blank', :rel => 'nofollow' do |text|
       truncate(text, 30)
@@ -127,7 +127,7 @@ END
   def link_to_tlog(user, options = {}, html_options = nil)
     link_to_tlog_if(true, user, options, html_options)
   end
-  
+
   def link_to_tlog_if(condition, user, options = {}, html_options = nil)
     options ||= {}
     html_options ||= {}
@@ -146,7 +146,7 @@ END
     html_options.merge!({ :class => css_class.strip })
     link_to_if condition, username, url_for_tlog(user), html_options
   end
-  
+
   def host_for_tlog(user=nil, options = {})
     user ||= current_user
     to = options.delete(:to) || :tlog
@@ -154,17 +154,17 @@ END
     url = user.url rescue user
     the_url = "#{url}.mmm-tasty.ru"
     the_url += ":#{request.port}" if request && request.port != 80
-    
+
     the_url
   end
-  
+
   def url_for_tlog(user=nil, options = {})
     page = options.delete(:page) || 0
     fragment = options.delete(:fragment) || nil
     fragment = (page > 0 ? '#' : '/#') + fragment if fragment
     "http://#{host_for_tlog(user, options)}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
   end
-    
+
   def mark(keyword)
     Entry.find_by_sql("/* #{keyword} */ SELECT id FROM entries WHERE id = 0")
   end

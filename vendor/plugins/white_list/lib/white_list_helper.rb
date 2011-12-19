@@ -16,39 +16,39 @@ module WhiteListHelper
       def #{attr}=(value) @@#{attr} = Set.new(value) end
       def #{attr}() @@#{attr} end
     EOS
-    
+
     # prefix the instance methods with white_listed_*
     inst_methods << "def white_listed_#{attr}() ::WhiteListHelper.#{attr} end"
   end
-  
+
   klass.class_eval klass_methods.join("\n"), __FILE__, __LINE__
   class_eval       inst_methods.join("\n"),  __FILE__, __LINE__
 
-  # This White Listing helper will html encode all tags and strip all attributes that aren't specifically allowed.  
+  # This White Listing helper will html encode all tags and strip all attributes that aren't specifically allowed.
   # It also strips href/src tags with invalid protocols, like javascript: especially.  It does its best to counter any
   # tricks that hackers may use, like throwing in unicode/ascii/hex values to get past the javascript: filters.  Check out
   # the extensive test suite.
   #
   #   <%= white_list @article.body %>
-  # 
+  #
   # You can add or remove tags/attributes if you want to customize it a bit.
-  # 
+  #
   # Add table tags
-  #   
+  #
   #   WhiteListHelper.tags.merge %w(table td th)
-  # 
+  #
   # Remove tags
-  #   
+  #
   #   WhiteListHelper.tags.delete 'div'
-  # 
+  #
   # Change allowed attributes
-  # 
+  #
   #   WhiteListHelper.attributes.merge %w(id class style)
-  # 
+  #
   # white_list accepts a block for custom tag escaping.  Shown below is the default block that white_list uses if none is given.
-  # The block is called for all bad tags, and every text node.  node is an instance of HTML::Node (either HTML::Tag or HTML::Text).  
-  # bad is nil for text nodes inside good tags, or is the tag name of the bad tag.  
-  # 
+  # The block is called for all bad tags, and every text node.  node is an instance of HTML::Node (either HTML::Tag or HTML::Text).
+  # bad is nil for text nodes inside good tags, or is the tag name of the bad tag.
+  #
   #   <%= white_list(@article.body) { |node, bad| white_listed_bad_tags.include?(bad) ? nil : node.to_s.gsub(/</, '&lt;') } %>
   #
   def white_list(html, options = {}, &block)
@@ -85,7 +85,7 @@ module WhiteListHelper
 
             # we have to find closer if this node can have childs (e.g. not childless)
             stack.push node.name if !bad && !node.childless?
-            
+
             # if that's some closing node - verify the stack to see if the previously saved node matches
             if !bad && node.closing == :close
               # close all nodes until we ran out of stack or hit current node
@@ -93,8 +93,8 @@ module WhiteListHelper
                 break if (name = stack.pop) == node.name
                 nodes << HTML::Tag.new(node.parent, node.line, node.position, name, nil, :close)
               end
-            end  
-            
+            end
+
             nodes << node
           else
             block.call node, bad
@@ -104,7 +104,7 @@ module WhiteListHelper
       new_text << stack.reverse.map { |name| "</#{name}>" }
     end.join
   end
-  
+
   protected
     def contains_bad_protocols?(value)
       WhiteListHelper.contains_bad_protocols?(white_listed_protocols, value)

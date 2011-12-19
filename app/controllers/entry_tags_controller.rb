@@ -31,7 +31,7 @@ class EntryTagsController < ApplicationController
       render :nothing => true
     end
   end
-  
+
   private
     def require_entry
       @entry = Entry.find_by_id_and_user_id params[:entry_id], current_site.id

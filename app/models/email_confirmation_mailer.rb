@@ -18,7 +18,7 @@ class EmailConfirmationMailer < ActionMailer::Base
     @sent_on    = Time.now
     @headers    = {}
   end
-  
+
   def message(user, message)
     @subject    = 'ммм.... новое личное сообщение'
     @body       = { :user => user, :message => message }
@@ -27,7 +27,7 @@ class EmailConfirmationMailer < ActionMailer::Base
     @send_on    = Time.now
     @headers    = {}
   end
-  
+
   def comment(user, comment)
     @subject    = "ммм... комментарий (#{comment.entry.excerpt})"
     @body       = {:comment => comment}
@@ -35,7 +35,7 @@ class EmailConfirmationMailer < ActionMailer::Base
     @from       = '"Mmm... comments" <comments@mmm-tasty.ru>'
     @sent_on    = Time.now
     @headers    = {}
-  end  
+  end
 
   def comment_reply(user, comment)
     @subject    = "ммм... ответ на Ваш комментарий (#{comment.entry.excerpt})"
@@ -44,8 +44,8 @@ class EmailConfirmationMailer < ActionMailer::Base
     @from       = '"Mmm... comments" <comments@mmm-tasty.ru>'
     @sent_on    = Time.now
     @headers    = {}
-  end  
-  
+  end
+
   # письмо для пользователей подписанных на комментарии
   def comment_to_subscriber(user, comment)
     @subject    = "ммм... комментарий (#{comment.entry.excerpt})"

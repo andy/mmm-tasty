@@ -4,7 +4,7 @@ class MoveUserSettingsToModel < ActiveRecord::Migration
     add_column :users, :comments_auto_subscribe, :boolean, :null => false, :default => true
     add_column :users, :gender, :string, :limit => 1, :null => false, :default => 'm'
     add_column :users, :username, :string
-    
+
     User.find(:all).each do |user|
       User.transaction do
         if user.settings
@@ -16,7 +16,7 @@ class MoveUserSettingsToModel < ActiveRecord::Migration
         user.save!
       end
     end
-    
+
     remove_column :tlog_settings, :email_comments
   end
 

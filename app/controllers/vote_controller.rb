@@ -3,7 +3,7 @@ class VoteController < ApplicationController
 
   def up; vote(1) end
   def down; vote(-1) end
-  
+
   private
     def vote(rating)
       @entry.vote(current_user, rating)

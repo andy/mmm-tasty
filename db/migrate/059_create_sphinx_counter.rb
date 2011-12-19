@@ -4,7 +4,7 @@ class CreateSphinxCounter < ActiveRecord::Migration
       t.column :counter_id, :integer
       t.column :max_doc_id, :integer
     end
-    
+
     add_index :sphinx_counter, [:counter_id], :unique => true
   end
 

@@ -18,7 +18,7 @@
 			<%= render 'entries/entry_display', { :entry => entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>
 
-		<%= render 'globals/pagination', { :pageable => @entry_ids } %>	
+		<%= render 'globals/pagination', { :pageable => @entry_ids } %>
 	</div>
 <% end %>
 
@@ -30,7 +30,7 @@
 			<%= link_to 'персональная лента', { :action => :last_personalized, :page => nil }, :class => (params[:action] == 'last_personalized') ? 'highlight' : nil %>
 		</div>
 	</div>
-	
+
 	<div class='section'>
 		<h2><span>И капля информации</span></h2>
 		<div>

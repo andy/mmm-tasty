@@ -10,7 +10,7 @@ class CreateBookmarklets < ActiveRecord::Migration
       t.column :autosave, :boolean, :null => false, :default => 0
       t.column :is_public, :boolean, :null => false, :default => 0
     end
-    
+
     add_index :bookmarklets, [:user_id, :created_at]
     add_index :bookmarklets, [:is_public, :created_at]
   end

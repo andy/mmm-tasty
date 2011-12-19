@@ -1,13 +1,13 @@
 <% @title = 'настройки внешнего вида тлога' %>
 <% content_for :head do %>
   <!-- http://developer.yahoo.com/yui/articles/hosting/ -->
-  <!-- css --> 
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/colorpicker/assets/skins/sam/colorpicker.css"> 
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/container/assets/skins/sam/container.css"> 
-  <!-- js --> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-min.js"></script> 
-  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-min.js"></script> 
+  <!-- css -->
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/colorpicker/assets/skins/sam/colorpicker.css">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/container/assets/skins/sam/container.css">
+  <!-- js -->
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/utilities/utilities.js"></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/slider/slider-min.js"></script>
+  <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/colorpicker/colorpicker-min.js"></script>
   <script type="text/javascript" src="http://yui.yahooapis.com/2.5.2/build/container/container-min.js"></script>
 <% end %>
 <% content_for :header do %>
@@ -33,7 +33,7 @@
 				<%= tasty_error_message_on 'attachment', 'uploaded_data' %>
 				<div class='input_note'>
 					<%= link_to_function "Использовать ссылку", "$('choise_2', 'choise_1').invoke('toggle');" %>
-				</div>			
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -71,7 +71,7 @@
 			</td>
 		</tr>
 	</table>
-	
+
 	<h2>Цвета</h2>
 	<table id='design_colors' class='form'>
 		<tr>
@@ -115,11 +115,11 @@
 			<td><%= text_field 'design', 'color_link', :class => 'tlog_color_picker', :autocomplete => 'off' %></td>
 		</tr>
 	</table>
-	
+
 	<div class='submit_button'>
 		<input type='submit' value='Сохранить' class='button' />
 	</div>
-	
+
 	<h2>Предпросмотр</h2>
 	<div id='design_preview' style='<%= "background-image: url(#{image_path @design.background_url});" unless @design.background_url.blank? %><%= "background-color: ##{@design.color_bg};" unless @design.color_bg.blank? %>' class='design_color_bg'>
 		<div id='design_tlog_title'>
@@ -164,7 +164,7 @@
 			<%= tasty_error_message_on 'design', 'user_css' %>
 		</div>
 	</div>
-	
+
 
 	<div class='submit_button'>
 		<input type='submit' value='Сохранить' class='button' />
@@ -200,7 +200,7 @@ function design_check_box(element, field) {
     field.style.color = '';
     $$('.' + field.id + '_label').each(function(e) {
       e.style.color = '';
-    });    
+    });
   }
 }
 
@@ -209,21 +209,21 @@ var TlogColorPicker = Class.create({
   initialize: function(elements) {
     this.yuc = YAHOO.util.Color;
     this.repositionable = true;
-    
+
     this.panel = new YAHOO.widget.Panel('y-panel', {
       width: '400px',
       visible: false,
       constraintoviewport: true,
-      close: true, 
+      close: true,
       draggable: true,
       dragonly: true,
       underlay: 'shadow',
       keylisteners: YAHOO.util.KeyListener(document.body, [YAHOO.util.KeyListener.KEY.ESC, YAHOO.util.KeyListener.KEY.ENTER], this.onKeyPress.bind(this)),
       effect: { effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.3 }
     });
-    
+
     this.panel.renderEvent.subscribe(function() {
-      if(!this.picker) { 
+      if(!this.picker) {
         this.picker = new YAHOO.widget.ColorPicker('y-picker', {
           images: {
             PICKER_THUMB: '<%= image_path('colorpicker/select.gif') %>',
@@ -246,14 +246,14 @@ var TlogColorPicker = Class.create({
     });
     this.panel.dragEvent.subscribe(this.onDrag.bind(this));
     this.panel.render(document.body);
-    
+
     // install our handlers
     self = this;
     elements.each(function(element) {
       element.observe('click', self.onClick.bindAsEventListener(self));
       self.colorize(element, element.value);
     });
-    
+
     // handle panel events
     Event.observe('y-panel-ok', 'click', this.hide.bindAsEventListener(this));
     Event.observe('y-panel-cancel', 'click', this.cancel.bindAsEventListener(this));
@@ -297,7 +297,7 @@ var TlogColorPicker = Class.create({
       } else {
         element.style.backgroundColor = 'black';
       }
-      
+
       $$('.' + element.id).each(function(e) {
         e.style.color = '#' + hex_color;
       });
@@ -323,7 +323,7 @@ var TlogColorPicker = Class.create({
   onKeyPress: function(key, event) {
     alert(key);
     alert(event);
-    
+
     this.hide();
 
     event.stop();

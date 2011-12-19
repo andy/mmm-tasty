@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
     @messages = Message.find_for_user(:site => current_site, :user => current_user, :page => { :size => 10, :current => params[:page] })
     render :layout => 'tlog'
   end
-  
+
   # POST messages_url
   def create
     @message            = Message.new params[:message]
@@ -16,13 +16,13 @@ class MessagesController < ApplicationController
     @message.save
     EmailConfirmationMailer.deliver_message(current_site, @message) if @message.valid? && @message.sender_id != current_site.id && current_site.is_emailable? && current_site.tlog_settings.email_messages?
   end
-  
+
   # DELETE message_url(@message)
   def destroy
     @message = Message.find(params[:id])
     @message.destroy if @message.is_owner?(current_user)
   end
-  
+
   private
     def require_messages_enabled
       !current_site.tlog_settings.sidebar_hide_messages?

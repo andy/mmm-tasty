@@ -31,7 +31,7 @@
 		<%= link_to 'на кого угодно', { :action => :users }, :class => (params[:action] == 'users') ? 'highlight' : nil %><br/>
 		<%= link_to 'на новеньких', { :action => :new_users, :page => nil }, :class => (params[:action] == 'new_users') ? 'highlight' : nil %>
 	</div>
-	
+
 	<br/>
 	<%= render :partial => 'feedbacks/feedbacks' %>
 <% end %>

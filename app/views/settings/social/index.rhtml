@@ -7,7 +7,7 @@
 <% end %>
 
 <% if @light %>
-	<%= link_to "&#x2190; вернуться назад", :action => :index %><br><br>	
+	<%= link_to "&#x2190; вернуться назад", :action => :index %><br><br>
 <% end %>
 
 <p class='settings_warning'>
@@ -16,7 +16,7 @@
 	<% unless @light %>
 	Если у Вас тормозит перетаскивание используйте <%= link_to "легкую версию этой страницы", :action => :light %>
 	<% end %>
-	
+
 	<%= "<br><br>" if @light %>
 </p>
 

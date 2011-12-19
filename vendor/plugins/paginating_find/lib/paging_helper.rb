@@ -1,7 +1,7 @@
 module PaginatingFind
   module Helpers
-    DEFAULT_OPTIONS = { :name => :page, :window_size => 2, 
-      :always_show_anchors => true, :link_to_current_page => false, 
+    DEFAULT_OPTIONS = { :name => :page, :window_size => 2,
+      :always_show_anchors => true, :link_to_current_page => false,
       :params => {} }
 
     def paginating_links(paginator, options = {}, html_options = {})

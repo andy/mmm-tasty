@@ -8,47 +8,47 @@ class Entry < ActiveRecord::Base
 	has_many :faves, :dependent => :destroy
   has_and_belongs_to_many :subscribers, :class_name => 'User', :join_table => 'entry_subscribers'
   # has_one :ad, :class_name => 'SocialAd', :dependent => :destroy
-  
+
   named_scope :anonymous, :conditions => { :type => 'AnonymousEntry' }
   named_scope :for_view, :include => [:author, :attachments, :rating], :order => 'entries.id DESC'
   named_scope :private, :conditions => 'entries.is_private = 1 AND entries.type != "AnonymousEntry"'
-  
+
   after_destroy do |entry|
     # удаляем всех подписчиков этой записи
     entry.subscribers.clear
     # уменьшаем счетчик скрытых записей, если эта запись - скрытая
     User.decrement_counter(:private_entries_count, entry.user_id) if entry.is_private?
-    # уменьшаем количество просмотренных записей для всех пользователей которые подписаны на ленту, но только если это 
-    #  была видимая запись И если она не входила в число _новых_ записей для пользователя который просматривает. Поэтому, как 
-    #  критерий мы испльзуем поле last_viewed_at для того чтобы определить входила ли запись в число новых 
+    # уменьшаем количество просмотренных записей для всех пользователей которые подписаны на ленту, но только если это
+    #  была видимая запись И если она не входила в число _новых_ записей для пользователя который просматривает. Поэтому, как
+    #  критерий мы испльзуем поле last_viewed_at для того чтобы определить входила ли запись в число новых
     Relationship.update_all "last_viewed_entries_count = last_viewed_entries_count - 1", "user_id = #{entry.user_id} AND last_viewed_entries_count > 0 AND last_viewed_at > '#{entry.created_at.to_s(:db)}'" unless entry.is_private?
 
     # обновляем таймстамп который используется для инвалидации кеша тлоговых страниц, но только в том случае
     #  если меняются штуки отличные от комментариев
     entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
   end
-  
+
   after_create do |entry|
     # счетчик скрытых записей. нам так удобнее делать постраничную навигацию
     User.increment_counter(:private_entries_count, entry.user_id) if entry.is_private?
   end
-  
+
   after_save do |entry|
     # обновляем таймстамп который используется для инвалидации кеша тлоговых страниц, но только в том случае
     #  если меняются штуки отличные от комментариев
     entry.author.update_attributes(:entries_updated_at => Time.now) unless (entry.changes.keys - ['comments_count', 'updated_at']).blank?
   end
-  
-	
+
+
 	acts_as_sphinx
 	acts_as_taggable
-	
+
 	attr_accessible :data_part_1, :data_part_2, :data_part_3
 	serialize :metadata
 	cattr_accessor :has_attachment
-	
+
 	validates_presence_of :author
-	
+
 	ENTRY_MAX_LENGTH = 10.kilobytes
 	ENTRY_MAX_LINK_LENGTH = 2.kilobytes
 	PAGE_SIZE = 15
@@ -67,7 +67,7 @@ class Entry < ActiveRecord::Base
   }
   KINDS_FOR_SELECT = KINDS.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:select], k.to_s] }
   KINDS_FOR_SELECT_SIGNULAR = KINDS.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:singular], k.to_s] }
-  
+
   # видимость записи, @entry.visibility - это виртуальное поле, options: 0 - is_voteable, 1 - is_mainpageable, 2 - is_private
   VISIBILITY = {
     :private => { :new => 'закрытая - не увидит никто, кроме вас', :edit => 'закрытая - не увидит никто, кроме вас', :options => [false, false, true], :order => 1 },
@@ -77,12 +77,12 @@ class Entry < ActiveRecord::Base
   }
   VISIBILITY_FOR_SELECT_NEW = VISIBILITY.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:new], k.to_s] }
   VISIBILITY_FOR_SELECT_EDIT = VISIBILITY.sort_by { |obj| obj[1][:order] }.map { |k,v| [v[:edit], k.to_s] }
-  
+
 	# Виртуальный атрибут visibility позволяет нам заботиться о всех составляющих видимости записи практически через одну функцию
   def visibility
     VISIBILITY.find { |v| v[1][:options] == [self.is_voteable?, self.is_mainpageable?, self.is_private?] }[0].to_s
   end
-  
+
   def visibility=(kind)
     options = VISIBILITY[kind.to_sym][:options]
 
@@ -93,10 +93,10 @@ class Entry < ActiveRecord::Base
       self.is_voteable = true if options[0] && self.new_record?
     end
   end
-  
+
   # Могут ли у этой записи быть аттачи? По умолчанию аттачменты отключены
   def can_have_attachments?; false end
-  
+
   # Анонимная запись или нет?
   def is_anonymous?
     self[:type] == 'AnonymousEntry'
@@ -128,7 +128,7 @@ class Entry < ActiveRecord::Base
       (zero_if_last && entry_page == total_pages) ? 0 : entry_page
     end
   end
-    
+
   def next(options = {})
     include_private = options.fetch(:include_private, false)
     @next ||= Entry.find_by_sql("SELECT id, created_at, user_id, comments_count, updated_at, is_voteable, is_private, is_mainpageable, comments_enabled FROM entries WHERE id > #{self.id} AND user_id = #{self.user_id}#{' AND is_private = 0 ' unless include_private} LIMIT 1").first rescue nil
@@ -142,32 +142,32 @@ class Entry < ActiveRecord::Base
   def next_id
     @next_id ||= Entry.find_by_sql("SELECT id FROM entries WHERE id > #{self.id} AND user_id = #{self.user_id} AND is_private = 0 LIMIT 1").first[:id] rescue false
   end
-  
+
   def prev_id
     @prev_id ||= Entry.find_by_sql("SELECT id FROM entries WHERE id < #{self.id} AND user_id = #{self.user_id} AND is_private = 0 ORDER BY id DESC LIMIT 1").first[:id] rescue false
   end
-  
+
   def self.new_from_bm(params)
     self.new :data_part_2 => params[:url], :data_part_1 => params[:c], :data_part_3 => params[:title]
   end
-      
+
   def to_russian(key=:who)
     entry_russian_dict[key]
   end
-  
+
   def vote(user, rating)
     return unless user.can_vote?(self)
-    
+
     # находим существующую запись
     EntryRating.transaction do
       entry_rating = EntryRating.find_by_entry_id(self.id) or return
-    
+
       # голос пользователя: нам его нужно либо создать, либо использвовать уже имющийся
       user_vote = EntryVote.find_or_initialize_by_entry_id_and_user_id(self.id, user.id)
       # новая запись или пользователь поменял свое мнение?
       if user_vote.new_record? || (rating * user.vote_power) != user_vote.value
         # вычитаем старое значение если пользователь поменял свое мнение
-        entry_rating.value -= user_vote.value unless user_vote.new_record? 
+        entry_rating.value -= user_vote.value unless user_vote.new_record?
         user_vote.value = rating * user.vote_power
         entry_rating.value += user_vote.value
 
@@ -176,11 +176,11 @@ class Entry < ActiveRecord::Base
       end
     end
   end
-  
+
   def voted?(user)
     EntryVote.find_by_entry_id_and_user_id(self.id, user.id).value rescue 0
   end
-  
+
   # в чем глубокий смысл этого кода?
   def make_voteable(enable=true)
     entry_rating = EntryRating.find_or_initialize_by_entry_id(self.id)
@@ -192,12 +192,12 @@ class Entry < ActiveRecord::Base
       self.rating = nil
     end
   end
-  
+
   def comments_grouped_by_authors
     self.comments.group_by { |comment| comment.ext_username || comment.user_id }
   end
-  
-  
+
+
   #
   # Code below goes from markaboo
   #   код для вычисления тегов для текущей записи и для тегов вообще
@@ -211,58 +211,58 @@ class Entry < ActiveRecord::Base
     find_options = DEFAULT_FIND_OPTIONS.merge(find_options)
     page_options = DEFAULT_PAGE_OPTIONS.merge(page_options)
     offset = (page_options[:page] - 1) * page_options[:limit]
-    
-    conditions = "tags.name IN (#{categories.map(&:sql_quote)})" 
+
+    conditions = "tags.name IN (#{categories.map(&:sql_quote)})"
     conditions += " AND entries.user_id = #{find_options[:owner].id}" if find_options[:owner]
-    conditions += ' AND entries.is_private = 0' unless find_options[:include_private] 
-    
+    conditions += ' AND entries.is_private = 0' unless find_options[:include_private]
+
 
     sql = <<-GO
-      SELECT entries.id 
-      FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id INNER JOIN entries ON entries.id = taggings.taggable_id  
-      WHERE #{conditions} 
+      SELECT entries.id
+      FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id INNER JOIN entries ON entries.id = taggings.taggable_id
+      WHERE #{conditions}
       ORDER BY entries.id DESC LIMIT #{offset}, #{page_options[:limit]}
     GO
-    
+
     entry_ids = Tag.find_by_sql(sql)
     entry_ids = entry_ids.collect!(&:id)
-    
+
     records = find(entry_ids, :order => 'entries.id DESC', :include => [:author])
-    class << records; self end.send(:define_method, :total) {page_options[:total].to_i}    
+    class << records; self end.send(:define_method, :total) {page_options[:total].to_i}
     class << records; self end.send(:define_method, :limit) {page_options[:limit].to_i}
     class << records; self end.send(:define_method, :offset) {offset}
     records.extend Paginator
     records
   end
-  
+
   # Returns the N most frequent categories (N defaults to 10)
   def self.top_categories(options={})
     options = DEFAULT_CATEGORY_OPTIONS.merge(options)
-    
+
     conditions = []
     conditions << "entries.user_id = #{options[:owner].id}" if options[:owner]
     conditions << 'entries.is_private = 0' unless options[:include_private]
-    
+
     sql = <<-GO
     SELECT name, COUNT(*) number
-    FROM tags 
-    INNER JOIN taggings 
-    ON tags.id = taggings.tag_id 
-    INNER JOIN entries 
-    ON taggings.taggable_id = entries.id 
+    FROM tags
+    INNER JOIN taggings
+    ON tags.id = taggings.tag_id
+    INNER JOIN entries
+    ON taggings.taggable_id = entries.id
     INNER JOIN users
     ON entries.user_id = users.id
-    #{" WHERE %s " % conditions.join(' AND ') unless conditions.blank?}  
-    GROUP BY name 
-    ORDER BY number DESC, name ASC 
+    #{" WHERE %s " % conditions.join(' AND ') unless conditions.blank?}
+    GROUP BY name
+    ORDER BY number DESC, name ASC
     #{"limit %d " % options[:max_rows] unless options[:max_rows] == -1}
     GO
     result = connection.execute(sql.gsub("\n", ' ').squeeze(' '))
     tags = []
-    result.each {|row| tags << [row[0], row[1].to_i]} 
+    result.each {|row| tags << [row[0], row[1].to_i]}
     tags
   end
-  
+
   # Use a better-performing query to count the resources associated with a particular tag
   def self.count_tagged_with(tags, options={})
     options = DEFAULT_FIND_OPTIONS.merge(options)
@@ -274,10 +274,10 @@ class Entry < ActiveRecord::Base
 
     sql = <<-GO
       SELECT count(distinct entries.id) count_all
-      FROM entries 
-      INNER JOIN taggings 
-      ON entries.id = taggings.taggable_id AND 'Entry' = taggings.taggable_type 
-      INNER JOIN tags 
+      FROM entries
+      INNER JOIN taggings
+      ON entries.id = taggings.taggable_id AND 'Entry' = taggings.taggable_type
+      INNER JOIN tags
       ON taggings.tag_id = tags.id
       WHERE #{conditions.join(' AND ')}
     GO
@@ -285,8 +285,8 @@ class Entry < ActiveRecord::Base
     result = connection.execute(sql.gsub("\n", ' ').squeeze(' '))
     result.fetch_row[0].to_i
   end
-  
-  
+
+
   before_validation :reset_data_parts_if_blank
   before_create :set_default_metadata
 
@@ -297,24 +297,24 @@ class Entry < ActiveRecord::Base
       self.data_part_2 = nil if self.data_part_2.blank?
       self.data_part_3 = nil if self.data_part_3.blank?
       true
-    end    
-    
+    end
+
     # добавляет префикс http:// к ссылке если она вообще похожа на ссылку
     def make_a_link_from_data_part_1_if_present
       self.data_part_1 = make_a_link_from_data(self.data_part_1)
-      true  
+      true
     end
 
     # добавляет префикс http:// к ссылке если она вообще похожа на ссылку
     def make_a_link_from_data_part_3_if_present
       self.data_part_3 = make_a_link_from_data(self.data_part_3)
-      true  
+      true
     end
-    
+
     def no_attachment
       !self.has_attachment
     end
-  
+
   private
     # делает ссылку из строки. это нужно в нескольких моделях сразу, где пользователь может ввести ссылку на
     # какой-нибудь адрес при этом не указав http:// в начале. Чтобы потом не возиться - возимся сразу
@@ -332,7 +332,7 @@ class Entry < ActiveRecord::Base
   	    self.metadata = {}
       end
   	  true
-    end    
+    end
 end
 
 
@@ -347,7 +347,7 @@ class TextEntry < Entry
 
   def entry_russian_dict; { :who => 'ммм... пост', :whom => 'ммм... пост' } end
   def excerpt
-    if self.data_part_2.to_s.length > 0 
+    if self.data_part_2.to_s.length > 0
       self.data_part_2.to_s.truncate(150).to_s
     else
       self.data_part_1.to_s.truncate(150).to_s
@@ -377,7 +377,7 @@ class AnonymousEntry < Entry
 
   def entry_russian_dict; { :who => 'анонимка', :whom => 'анонимку' } end
   def excerpt
-    if self.data_part_2.to_s.length > 0 
+    if self.data_part_2.to_s.length > 0
       self.data_part_2.to_s.truncate(150).to_s
     else
       self.data_part_1.to_s.truncate(150).to_s
@@ -404,7 +404,7 @@ class QuoteEntry < Entry
   validates_presence_of :data_part_1, :on => :save
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on => :save, :too_long => 'это поле слишком длинное'
   validates_length_of :data_part_2, :within => 0..ENTRY_MAX_LENGTH, :on => :save, :if => Proc.new { |e| !e.data_part_2.blank? }, :too_long => 'это поле слишком длинное'
-  
+
   def entry_russian_dict; { :who => 'цитата', :whom => 'цитату' } end
   def excerpt
     self.data_part_1.to_s.truncate(150).to_s
@@ -437,11 +437,11 @@ class LinkEntry < Entry
       'Ссылка'
     end
   end
-  
+
   def self.new_from_bm(params)
     self.new :data_part_1 => params[:url], :data_part_2 => params[:title], :data_part_3 => params[:c]
   end
-  
+
   before_validation :make_a_link_from_data_part_1_if_present
 end
 
@@ -470,7 +470,7 @@ class ImageEntry < Entry
       'Картинка'
     end
   end
-  
+
   def self.new_from_bm(params)
     url = params[:url]
     uri = URI.parse(url)
@@ -479,7 +479,7 @@ class ImageEntry < Entry
     # если фликер - спец обработчик
     if uri.host && uri.path && uri.host.ends_with?('flickr.com')
 
-      # согласно http://www.flickr.com/services/api/misc.urls.html      
+      # согласно http://www.flickr.com/services/api/misc.urls.html
       photo_id = if uri.host.ends_with?('.static.flickr.com')
                   # статический путь до картинки - http://farm1.static.flickr.com/81/248825450_1140cb041a.jpg?v=0
                   uri.path.match(/^\/[0-9]*\/([0-9]*)/i)[1]
@@ -499,18 +499,18 @@ class ImageEntry < Entry
     end
     self.new :data_part_1 => source, :data_part_2 => content, :data_part_3 => url
   end
-  
-  
+
+
   def data_part_1=(link)
     write_attribute(:data_part_1, link)
-    
+
     if link =~ Format::HTTP_LINK
       self.metadata_will_change!
       self.metadata = {} if self.metadata.nil?
       self.metadata.merge!(get_metadata_for_linked_image(link))
     end
   end
-  
+
   # функция вычисления симметричных размеров для текущей картинки. работает как для записей
   # с локальной картинкой, так и для записей только со ссылкой на картинку.
   def geometry(options = {})
@@ -518,7 +518,7 @@ class ImageEntry < Entry
     height = options[:height] || 0
     image = options[:image]
     image ||= self.attachments.first if self.attachments
-    
+
     if image
       image_width, image_height = self.attachments.first.width, self.attachments.first.height
     elsif self.metadata && self.metadata.has_key?(:width)
@@ -531,7 +531,7 @@ class ImageEntry < Entry
     h_ratio = height > 0 ? height.to_f / image_height.to_f : 1
 
     ratio = [w_ratio, h_ratio].min
-    
+
     # пересчитываем
     width = ratio < 1 ? (image_width * ratio).to_i : image_width
     height = ratio < 1 ? (image_height * ratio).to_i : image_height
@@ -560,12 +560,12 @@ end
 class SongEntry < Entry
   validates_presence_of :data_part_1, :if => :no_attachment, :message => 'это обязательное поле'
   validates_format_of :data_part_1, :with => Format::HTTP_LINK, :if => :no_attachment, :message => 'ссылка должна быть на веб-сайт, т.е. начинаться с http://'
-  validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LINK_LENGTH, :if => :no_attachment, :too_long => 'ссылка какая-то очень длинная'  
+  validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LINK_LENGTH, :if => :no_attachment, :too_long => 'ссылка какая-то очень длинная'
   validates_length_of :data_part_2, :within => 0..ENTRY_MAX_LENGTH, :if => Proc.new { |e| !e.data_part_2.blank? }, :too_long => 'это поле слишком длинное'
 
   def entry_russian_dict; { :who => 'песня', :whom => 'песню' } end
   def can_have_attachments?; true; end
-  
+
   def excerpt
     self.data_part_2.to_s.truncate(150).to_s
   end
@@ -579,17 +579,17 @@ end
 #   data_part_2 - описание
 class VideoEntry < Entry
   validates_presence_of :data_part_1, :message => 'это обязательное поле'
-#  validates_format_of :data_part_1, :with => Format::HTTP_LINK, :message => 'ссылка должна быть на веб-сайт, т.е. начинаться с http://'  
+#  validates_format_of :data_part_1, :with => Format::HTTP_LINK, :message => 'ссылка должна быть на веб-сайт, т.е. начинаться с http://'
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on => :save, :too_long => 'ммм... код какой-то слишком длинный'
   validates_length_of :data_part_2, :within => 0..ENTRY_MAX_LENGTH, :on => :save, :if => Proc.new { |e| !e.data_part_2.blank? }, :too_long => 'это поле слишком длинное'
   def entry_russian_dict; { :who => 'видео', :whom => 'видео' } end
-  
+
   before_validation :make_a_link_from_data_part_1_if_present
-  
+
   def excerpt
     self.data_part_2.to_s.truncate(150).to_s
   end
-  
+
   def self.new_from_bm(params)
     if params[:c] && params[:c].downcase.starts_with?('<object')
       embed_or_url = params[:c]
@@ -600,7 +600,7 @@ class VideoEntry < Entry
     end
     self.new :data_part_1 => embed_or_url, :data_part_2 => desc
   end
-  
+
   # пытаемся подключить видео формат после того как видео было найдено
   def after_find
     self.metadata = {} if self.metadata.nil?
@@ -610,11 +610,11 @@ class VideoEntry < Entry
     end
     self.extend self.metadata[:video_module].blank? ? Video::Unknown : self.metadata[:video_module].constantize
   end
-  
+
   def data_part_1=(link)
     write_attribute(:data_part_1, link)
     unless link.blank?
-      self.metadata = {} if self.metadata.nil?      
+      self.metadata = {} if self.metadata.nil?
       self.metadata[:video_module] = Video::detect_by_link(link)
       self.metadata_will_change!
       self.extend metadata[:video_module].blank? ? Video::Unknown : metadata[:video_module].constantize
@@ -628,7 +628,7 @@ class ConvoEntry < Entry
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on => :save, :too_long => 'ммм... слишком длинный диалог'
   validates_length_of :data_part_2, :within => 0..ENTRY_MAX_LENGTH, :on => :save, :if => Proc.new { |e| !e.data_part_2.blank? }, :too_long => 'это поле слишком длинное'
   def entry_russian_dict; { :who => 'диалог', :whom => 'диалог' } end
-  
+
   def excerpt
     self.data_part_1.to_s.truncate(150).to_s
   end
@@ -643,7 +643,7 @@ class CodeEntry < Entry
   validates_length_of :data_part_1, :within => 1..ENTRY_MAX_LENGTH, :on  => :save, :too_long => 'ммм... слишком много кода'
   validates_length_of :data_part_2, :within => 0..ENTRY_MAX_LENGTH, :on => :save, :if => Proc.new { |e| !e.data_part_2.blank? }, :too_long => 'это поле слишком длинное'
   def entry_russian_dict; { :who => 'код', :whom => 'код' } end
-  
+
   def excerpt
     self.data_part_1.to_s.truncate(150).to_s
   end

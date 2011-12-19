@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
     @comment.request = request
     @comment.entry_id = @entry.id
     @comment.valid?
-    
+
     if @comment.errors.empty?
       @comment.save!
       current_user.comments(current_site) if current_user
@@ -53,20 +53,20 @@ class CommentsController < ApplicationController
       if current_site.is_emailable? && current_site.email_comments? && (!current_user || current_site.id != current_user.id)
         EmailConfirmationMailer.deliver_comment(current_site, @comment)
       end
-      
+
       # отправляем комменатрий каждому пользователю
       users.each do |user|
         EmailConfirmationMailer.deliver_comment_reply(user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_site.id
       end
-      
+
       # отправляем сообщение всем тем, кто наблюдает за этой записью, и кому мы еще ничего не отправляли
       (@entry.subscribers - users).each do |user|
         EmailConfirmationMailer.deliver_comment_to_subscriber(user, @comment) if user.is_emailable? && user.email_comments? && user.id != current_user.id
       end
-      
+
       # автоматически подписываем пользователя если на комментарии к этой записи если он еще не подписан
       @entry.subscribers << current_user if current_user && current_user.comments_auto_subscribe? && @entry.user_id != current_user.id && !@entry.subscribers.map(&:id).include?(current_user.id)
-      
+
       unless current_user
         cookies['comment_identity'] = { :value => @comment.pack_for_cookie, :expires => 10.years.from_now, :domain => request.domain }
       end
@@ -77,7 +77,7 @@ class CommentsController < ApplicationController
           page.call 'window.location.reload'
 
           ## this does not work in safari:
-          # redirect_to entry_url(@entry)          
+          # redirect_to entry_url(@entry)
         end }
       end
     else
@@ -88,9 +88,9 @@ class CommentsController < ApplicationController
           page.call :error_message_on, "comment_ext_username", message if element == 'user_id' # добавляем
         end
       end
-    end    
+    end
   end
-  
+
   def destroy
     # пока что мы позволяем удалять комменатрии только зарегистрированным пользователям
     if current_user
@@ -110,9 +110,9 @@ class CommentsController < ApplicationController
         end
       }
     end
-    
+
   end
-  
+
   private
     # проверка доступа к комментированию записи.
     def find_entry

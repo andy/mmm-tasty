@@ -10,7 +10,7 @@ class CreateFaves < ActiveRecord::Migration
 
     # количество сохраненных закладок у текущего пользователя
     add_column :users, :faves_count, :integer, { :null => false, :default => 0 }
-    
+
     # закладки текущего пользователя
     add_index :faves, [:user_id, :entry_id], :unique => true
     # мои закладки у текущего пользователя
@@ -18,7 +18,7 @@ class CreateFaves < ActiveRecord::Migration
     # закладки определенного типа
     add_index :faves, [:user_id, :entry_type]
   end
-  
+
   def self.down
     drop_table :faves
     remove_column :users, :faves_count

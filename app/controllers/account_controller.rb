@@ -42,7 +42,7 @@ class AccountController < ApplicationController
       @user = User.find(current_user.id)
       @user.url = params[:user][:url]
       @user.valid?
-      
+
       if !@user.errors.on("url")
         @user.update_attribute(:url, @user.url)
         current_user.url = @user.url
@@ -77,7 +77,7 @@ class AccountController < ApplicationController
       @email = current_user.email if current_user && current_user.email
     end
   end
-  
+
   def recover_password
     @user = User.find(params[:user_id])
     if @user && @user.recover_secret == params[:secret]
@@ -92,16 +92,16 @@ class AccountController < ApplicationController
         end
       end
     else
-      
+
     end
   end
-  
+
   # показывается когда мы действительно высылаем какой-то текст
   def lost_password_sent
     @user = nil
     @user = User.find(flash[:lost_user_id]) if flash[:lost_user_id]
   end
-  
+
   # выходим из системы
   def logout
     session[:user_id] = nil
@@ -135,8 +135,8 @@ class AccountController < ApplicationController
       @user = User.new
       @user.email = params[:openid] if params[:openid]
     end
-  end  
-  
+  end
+
   # возвращает статус для имени пользователя
   def update_url_status
     url = params[:url] || ''
@@ -154,7 +154,7 @@ class AccountController < ApplicationController
       page << '}'
     end
   end
-  
+
   def openid_verify
     return_to = account_url(:only_path => false, :action => 'openid_verify')
     parameters = params.reject{|k,v| request.path_parameters[k] }
@@ -164,9 +164,9 @@ class AccountController < ApplicationController
     when OpenID::Consumer::SUCCESS
 
       openid = oresponse.endpoint.claimed_id
-      
+
       # если пользователь с таким openid уже сущствует то все что нам нужно сделать
-      # - это залогинить его в систему 
+      # - это залогинить его в систему
       # в противном случае мы выставляем :openid и перебрасываем на signup
       user = User.find_by_openid openid
       if user
@@ -202,7 +202,7 @@ class AccountController < ApplicationController
 
     redirect_to login_url
   end
-    
+
   private
     def login_with_openid(openid)
       begin
@@ -213,13 +213,13 @@ class AccountController < ApplicationController
         redirect_to signup_url
         return
       end
-      
+
       # success
       return_to = account_url(:action => 'openid_verify')
       trust_root = account_url
 
       unless User.find_by_openid(oid_req.endpoint.claimed_id)
-        sreg_request = OpenID::SReg::Request.new        
+        sreg_request = OpenID::SReg::Request.new
         sreg_request.request_fields(['nickname', 'fullname', 'email', 'dob', 'gender'], false) # optional
         oid_req.add_extension(sreg_request)
         # oid_req.add_extension_arg('sreg', 'optional', 'nickname,fullname,email,dob,gender')
@@ -238,7 +238,7 @@ class AccountController < ApplicationController
 
       return OpenID::Consumer.new(session, store)
     end
-    
+
     def login_user(user, options = {})
       raise "ALERT, USER IS NOT USER IN LOGIN_USER, user='#{user.inspect}'" unless user.is_a?(User)
       cookies['login_field_value'] = { :value => options[:remember], :expires => 10.years.from_now, :domain => request.domain } if options[:remember]
@@ -252,7 +252,7 @@ class AccountController < ApplicationController
       end
       redirect_to redirect || url_for_tlog(user)
     end
-    
+
     def redirect_home_if_current_user
       redirect_to url_for_tlog(current_user) and return false if current_user
       true

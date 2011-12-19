@@ -13,14 +13,14 @@ Rails::Initializer.run do |config|
 
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.default_charset = "utf-8"
-  
+
   config.gem 'image_science', :version => '>= 1.1.3'
   config.gem 'will_paginate', :version => '>= 2.2.2'
   config.gem 'coderay'
   config.gem 'sqlite3-ruby', :lib => 'sqlite3'
   config.gem 'ruby-openid', :lib => 'openid'
   config.gem 'memcache-client', :lib => 'memcache'
-  
+
   # if you plan on using mysql, uncomment this
   # config.gem 'mysql'
 end

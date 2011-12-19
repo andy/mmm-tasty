@@ -14,7 +14,7 @@
 
 <div class="post_body <%= "post_#{entry.class.to_s.underscore}" %>" id="<%= dom_id(entry) %>">
 	<!-- <div class='rel'><div class='post_anonymous_author'><%= link_to "Анонимка ##{entry.id}", anonymous_path(:action => :show, :id => entry.id) %></div></div> -->
-	
+
 	<%- if entry.comments_enabled? || entry.comments.size > 0 -%>
 		<div class='service_comments<%= ' has_comments' if entry.comments.size > 0 %>'>
 			<div class="comment_cloud iePNG<%= ' has_comments' if entry.comments.size > 0 %>"><a href="/main/anonymous/show/<%= entry.id %>" title='читать комментарии / комментировать'><span id='entry_comments_count_<%= entry.id %>'><%= entry.comments.size %></span></a></div>
@@ -22,11 +22,11 @@
 	<%- else -%>
 		<div class='service_link'><a href="/main/anonymous/show/<%= entry.id %>" title='постоянная ссылка только на эту запись'>link</a></div>
 	<%- end -%>
-	
+
   <% content_tag :div, :class => 'service_link anonymous_entry_delete_link', :id => dom_id(entry, :toggle) do %>
     <%= link_to_remote entry.is_disabled? ? 'undel' : 'del', { :url => "/main/anonymous/toggle/#{entry.id}" }, { :id => dom_id(entry, :toggle_link) } %>
   <% end if is_admin? %>
-	
+
 	<% if entry.data_part_2 %>
 		<h1><span class="post_text_h1"><%= white_list_entry entry.data_part_2 %></span></h1>
 	<% end %>

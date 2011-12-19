@@ -8,7 +8,7 @@ class CreateSocialAds < ActiveRecord::Migration
       t.column :impressions, :integer, { :null => false, :default => 0 }
       t.column :clicks, :integer, { :null => false, :default => 0 }
     end
-    
+
     add_index :social_ads, [:user_id, :entry_id], :unique => true
     add_index :social_ads, [:created_at, :user_id]
   end

@@ -10,7 +10,7 @@
 		<%- prev_entry = entry -%>
 	<% end %>
 
-	<%= render 'globals/pagination', { :pageable => @entry_ids, :reverse => true } %>	
+	<%= render 'globals/pagination', { :pageable => @entry_ids, :reverse => true } %>
 </div>
 
 <% content_for :sidebar_left do %>
@@ -19,7 +19,7 @@
 		<p>Анонимка - это обычная текстовая запись, только мы с вами не видим кто её написал, а ЭВМ тщательно это скрывает.</p><br/>
 		<p>Написать анонимку - это как незнакомцу рассказать то, чем с друзьями не поделишься.</p>
 	</div>
-	
+
 	<% if current_user %>
 		<div class='section'>
 			<h2><span>Как написать анонимку?</span></h2>

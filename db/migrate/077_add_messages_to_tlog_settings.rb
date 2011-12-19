@@ -7,7 +7,7 @@ class AddMessagesToTlogSettings < ActiveRecord::Migration
     # отправлять ли личные сообщения по почте?
     add_column :tlog_settings, :email_messages, :boolean, { :default => true, :null => false }
   end
-  
+
   def self.down
     remove_column :tlog_settings, :sidebar_hide_messages
     remove_column :tlog_settings, :sidebar_messages_title

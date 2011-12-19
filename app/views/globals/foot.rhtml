@@ -1,5 +1,5 @@
 <div id="footer">
-	<p>&copy; 2007–<%= Date.today.year %>, 
+	<p>&copy; 2007–<%= Date.today.year %>,
 	<% if current_site %>
 		<%= link_to_tlog(current_site) %> (<%= link_to 'rss', tlog_feed_url(:action => 'rss') %>) @
 	<% end %>

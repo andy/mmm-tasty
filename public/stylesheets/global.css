@@ -14,8 +14,8 @@ body {
 
 }
 table {
-	border:0px; 
-	border-collapse:collapse; 
+	border:0px;
+	border-collapse:collapse;
 }
 td, th {
 	vertical-align:top;
@@ -40,7 +40,7 @@ h1 {
 	color:#333;
 	font-size:180%;
 	letter-spacing:-1px;
-	font-weight:normal;	
+	font-weight:normal;
 }
 /*div.clearboth {
 	clear:both;
@@ -72,7 +72,7 @@ textarea {
 	text-align: left;
 	margin:0 auto;
 	border:0;
-	
+
 }
 
 .l_2 #wrapper, .settings #weapper {
@@ -136,7 +136,7 @@ div.post_name a {
 	float: left;
 	width: 600px;
 }*/
-.sidebar { 
+.sidebar {
 	left:-92px;
 	position:absolute;
 	z-index:1;
@@ -207,10 +207,10 @@ div.post_name a {
 	top:-12px;
 }
 .tlog .sidebar_tlog_right .sidebar {
-	left:544px;	
+	left:544px;
 }
 *html .tlog .sidebar_tlog_right .sidebar {
-	left:285px;	
+	left:285px;
 }
 .content_holder {
 	/*background:url(/images/rm_bg.png) left;*/
@@ -224,7 +224,7 @@ div.post_name a {
 	padding:0px 20px 20px 12px;
 	width:175px;
 	overflow:hidden;
-	
+
 }
 .content a {
 	color:#404040;
@@ -233,7 +233,7 @@ div.post_name a {
 	padding-left:58px;
 }
 *html .main_page .sidebar {
-	
+
 }
 div.avatar_holder {
 	position:relative;
@@ -361,11 +361,11 @@ div#fixedbox_r_t {
 div.pref {
 	font-family:Tahoma, Arial, sans serif MS!important;
 	color:white!important;
-	
-	
+
+
 }
 div.pref_png {
-	background:url("/images/pref_bg.png") no-repeat top left; 
+	background:url("/images/pref_bg.png") no-repeat top left;
 }
 		#pref_table {
 			p osition:relative;
@@ -393,7 +393,7 @@ div.pref_png {
 		}
 		#pref_pref a {
 			position:relative;
-			bottom:-2px	
+			bottom:-2px
 		}
 		#pref_exit a {
 			position:relative;
@@ -431,7 +431,7 @@ a.username {
 
 #pref_your_site {
 	padding-right:8px;
-	
+
 }
 
 span.pref_text a {
@@ -468,7 +468,7 @@ div.left {
 	padding:0 4px;
 	font-size:0.92em;
 }
- 
+
 #public_friends, #friends, #ignored, #trash {
 	margin-bottom:40px;
 }
@@ -482,27 +482,27 @@ div.left {
 	color:blue;
 }
 #ignored a {
-	color:red;	
+	color:red;
 }
 #trash a {
-	color:#888;	
+	color:#888;
 }
 
 /* SERVICE TAGS FOR POST */
 div.convo {
-	
+
 }
 .person_1, .person_2  {
 	padding:8px 15px;
 	color:#404040;
 	font-size:0.85em;
-	
+
 }
 .person_1 span, .person_2 span {
 	font-weight:bold;
 	letter-spacing:2px;
 	font-size:0.8em;
-} 
+}
 .person_2 {
 	background:#ccc;
 }
@@ -612,7 +612,7 @@ div.service_comments, div.service_link, div.service_edit {
 	height:15px;
 	text-align:center;
 	font-size:10px;
-	
+
 }
 div.service_comments a {
 	color:white;
@@ -638,7 +638,7 @@ div.right ul {
 	list-style:none;
 }
 div.right ul li {
-	margin-top:2px;	
+	margin-top:2px;
 	text-align:left;
 }
 div.right ul li a{
@@ -650,7 +650,7 @@ img.avatar {
 	padding:3px;
 	background:white;
 	margin-bottom:-2px;
-} 
+}
 div.user_action a{
 	display:block;
 }
@@ -672,14 +672,14 @@ div.post_body {
 }
 div.post_body h1 {
 	margin:0 0 10px 0;
-	
+
 	padding-bottom:3px;
 	font-weight:normal;
-} 
+}
 
 .post_text_entry p {
 	font-size:100.01%;
-	line-height:1.5em;	
+	line-height:1.5em;
 	padding-bottom:10px;
 }
 .post_text {
@@ -697,20 +697,20 @@ span.post_text_h1 p {
 	margin:5px 0;
 	padding:0px;
 	/*padding-left:15px;*/
-	
+
 }
-	
+
 /* POST LINK */
 
 div.post_link_entry a.big_link {
-	font-size:162%;		
+	font-size:162%;
 	font-style:bold;
 	line-height:1.1em;
 	overflow:hidden;
 	/*padding-left:15px;*/
 	padding-bottom:3px;
 	/*border-left:3px solid #FFA200;*/
-	
+
 	display:block;
 	margin-right:12px;
 }
@@ -729,7 +729,7 @@ a.big_link:hover {
 div.post_body img {
 	border:0;
 	padding:1px;
-} 
+}
 .pic_comment p , .video_comment p{
 	text-align:left;
 }
@@ -751,7 +751,7 @@ div.quote_entry span.quote_entry_source {
 	font-size:100%;
 	font-style:italic;
 	padding-top:12px;
-} 
+}
 .laquo, .raquo {
 	position:relative;
 	font-family:Times New Roman;
@@ -760,7 +760,7 @@ div.quote_entry span.quote_entry_source {
 	padding:0 4px;
 	/*color:#ACACAC;*/
 	line-height:0.01em !important;
-	
+
 }
 /* choose your post */
 table.post {
@@ -781,9 +781,9 @@ table.post td {
 	/*background:#888;*/
 	padding:0px 0pt 38px;
 	display:block;
-	
+
 	margin:0 58px;
-	
+
 }
 #sidebar_relationship a {
 	background:#67FD2D;
@@ -825,7 +825,7 @@ div.layout_2 span.header {
 }
 div.layout_2 span.header:first-letter {
 	text-transform:uppercase;
-} 
+}
 div.layout_2 h1 {
 	font-size:1.75em;
 	letter-spacing:-1px;
@@ -932,8 +932,8 @@ form.small fieldset {
 	margin-top:20px;
 	display:block;
 	clear:both;
-	
-} 
+
+}
 form.small fieldset legend {
 	background:white;
 	padding:0 10px;
@@ -1036,7 +1036,7 @@ div.top_comments_text {
 	font-style:italic;
 	color:#222;
 	font-size:11px;
-	font-family: Georgia, serif; 
+	font-family: Georgia, serif;
 }
 
 #comment_submit_button {
@@ -1053,7 +1053,7 @@ div.top_comments_text {
 
 .your_comment {
 	font-size:140%;
-	padding-bottom:10px;	
+	padding-bottom:10px;
 }
 
 .post_comment {
@@ -1111,7 +1111,7 @@ div.post_comment_avatar {
 
 .post_comment_author a:hover {
 	text-decoration:underline;
-} 
+}
 
 #comment_ext_username_error_content {
 	position:relative;
@@ -1184,7 +1184,7 @@ div.post_comment_avatar {
 }
 div#post_preview {
 	font-size:87%;
-	padding-right:222px;	
+	padding-right:222px;
 	border-top:1px dashed #444;
 	border-bottom:1px dashed #444;
 	background:url("/images/post_preview_bg.gif");
@@ -1247,7 +1247,7 @@ form.post input.button {
 	width:auto;
 	display:inline;
 	font-size:90%;
-	
+
 }
 
 div.form_submit_options {
@@ -1310,7 +1310,7 @@ div.post_author a {
 	font-family:Georgia, Times New Roman, Courier New;
 	font-weight:bold;
 	font-style:italic;
-} 
+}
 div.post_anonymous_author a {
 	font-size:0.75em;
 	background:orange;
@@ -1390,11 +1390,11 @@ input.button:active, .comment_send:active {
 
 div.tlog #flash {
 	position:relative;
-	
+
 }
 
 div.tlog #flash p {
-	
+
 	color:white!important;
 }
 
@@ -1461,7 +1461,7 @@ h3 {
 }
 .sidebar_holder {
 	position:relative;
-} 
+}
 div#main_right {
 	margin-top:-10px;
 	float:left;
@@ -1497,7 +1497,7 @@ div.mini-tlog .post_text_h1 {
 
 div#entry_helper {
 	float:right;
-	width:100px; 
+	width:100px;
 	font-size:70%;
 	color:#808080;
 	padding-left:30px;
@@ -1559,7 +1559,7 @@ td#main_left p  {
 	font-size:75%;
 	padding:5px 0;
 /*	word-spacing:0.5em;   */
-}	
+}
 
 /*.body_layout_main h2 {
 	color:#515151;
@@ -1587,8 +1587,8 @@ ul.helpful_links {
 	list-style:none;
 	border-left:1px dashed #A1A1A1;
 	padding-left:25px;
-}	
-	
+}
+
 ul.helpful_links li {
 	line-height:1.2em;
 }
@@ -1599,10 +1599,10 @@ ul.helpful_links li a, ul.helpful_links li a:visited {
 	color:#03ACEB;
 	display:block;
 	padding:6px 0;
-}	
+}
 
 ul.helpful_links li a:hover {
-	color:#ffa500;	
+	color:#ffa500;
 }
 
 /*div#mini-links h2 {
@@ -1721,7 +1721,7 @@ ul#tlog_menu li a {
 
 #new_users_list {
 	margin:0 auto;
-		
+
 }
 
 #new_users_list td {
@@ -1734,7 +1734,7 @@ ul#tlog_menu li a {
 #new_users_list td a{
 	font-size:0.75em;
 	font-style:italic;
-	
+
 }
 
 #new_users_list td div.rel img {
@@ -1749,7 +1749,7 @@ ul#tlog_menu li a {
 div#navigation {
 	display:none;
 	margin-top:25px;
-	
+
 }
 
 div.code {
@@ -1804,11 +1804,11 @@ div.code pre {
 
 .bg_interesting {
 	background:url("/images/bg_interesting.gif")!important;
-	
+
 	bottom:-15px;
 }
 .bg_interesting .layout_1 {
-	
+
 	background:url("/images/bg_right_i.gif") repeat-y!important;
 }
 
@@ -1825,7 +1825,7 @@ div.code pre {
 .bg_interesting .bg_text_date {
 	padding:0 5px;
 	margin:0 5px;
-	
+
 }
 
 
@@ -1844,7 +1844,7 @@ div.service_date {
 }
 
 div.service_date span{
-	padding:0 1px; 
+	padding:0 1px;
 }
 
 * html span.bg_text_date {
@@ -1902,7 +1902,7 @@ div.main_page {
 	font-size:1.5em;
 
 	padding:0;
-	
+
 }
 
 div.live a, div.popular a {
@@ -1915,14 +1915,14 @@ div.live a, div.popular a {
 }
 .settings h2 {
 	padding:25px 0pt 8px
-} 
+}
 div.popular a {
-	
+
 }
 
 .register_enter, .register_enter a {
 	color:white!important;
-	
+
 }
 .live a:hover, .popular a:hover {
 	background:#eef9ff;
@@ -1938,7 +1938,7 @@ body.main_page {
 	margin:0 auto;
 	text-align:center;
 	position:relative;
-	
+
 }
 
 .main_rounded_holder, .logo, .register_enter {
@@ -2011,7 +2011,7 @@ div.main_line {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top:20px;
-	
+
 }
 
 .main_popular a {
@@ -2060,7 +2060,7 @@ p.main_info a {
 	text-decoration:none;
 }
 .register_enter a:hover {
-	
+
 }
 div.live {
 	white-space:nowrap;
@@ -2072,7 +2072,7 @@ div.live, div.popular {
 }
 div.popular {
 	padding:2em 0 0 0;
-} 
+}
 div.popular a {
 	line-height:1.5em;
 	border-bottom:#ffe515solid 1px!important;
@@ -2115,7 +2115,7 @@ div.popular p a, div.live p a {
 #settings_menu ul li a {
 	padding:5px 10px;
 	display:block;
-	color:#777;	
+	color:#777;
 	font-size:0.75em;
 	text-decoration:none;
 	background:#e0e0e0;
@@ -2129,7 +2129,7 @@ div.popular p a, div.live p a {
 	font-size:0.73em;
 	color:#777!important;
 	margin-top:3px;
-} 
+}
 .lost_password_tip {
 	display:block;
 	margin-top:-12px;
@@ -2239,7 +2239,7 @@ a {
 	padding:0 0 0 15px!important;
 }
 .comment_delete {
-	position:relative; 
+	position:relative;
 	left:319px;
 	position:relative;
 	top:-4px;
@@ -2250,7 +2250,7 @@ a {
 }
 .users_nav a {
 	background:white;
-} 
+}
 .img_reply {
 	position:relative;
 	top:-3px;
@@ -2268,7 +2268,7 @@ a {
 .hover div.service_comments,  .hover div.service_link, .hover div.service_edit
 {
 	display:block;
-} 
+}
 div.service_link {
 	top:10px;
 }
@@ -2283,7 +2283,7 @@ div.about {
 }
 .avatar_about{
 	display:inline;
-	float:left;	
+	float:left;
 	margin:0 12px 12px 0;
 }
 .about_reg {
@@ -2304,9 +2304,9 @@ div.about {
 }
 .css_help div.code {
 	padding-bottom:0;
-} 
+}
 div.code * {
-	font-family:courier new, courier!important; 
+	font-family:courier new, courier!important;
 }
 #entry_is_voteable {
 	display:inline!important;
@@ -2353,7 +2353,7 @@ div.code * {
 	padding-left:2px
 	text-decoration:none;
 	margin:0 0 0 1px;
-} 
+}
 .vote_up:hover, .vote_down:hover {
 	background:#e6e6e6;
 	color:black;
@@ -2374,7 +2374,7 @@ div.code * {
 .last_is_empty_note {
 	margin-top:30px;
 	font-style:italic;
-} 
+}
 .main_page h2 {
 	text-align:left;
 	font-size:1.3em;
@@ -2498,7 +2498,7 @@ text-decoration:none;
 	background:white;
 	color:#808080;
 	margin-left:-30px;
-	padding:0 10px 0 30px; 
+	padding:0 10px 0 30px;
 }
 .sidebar_settings ul#f_level ul li {
 	border:0;
@@ -2519,7 +2519,7 @@ text-decoration:none;
 	font-size:72%;
 	color:#808080;
 	line-height:1em;
-} 
+}
 .section-name {
 	display:inline;
 }
@@ -2563,7 +2563,7 @@ text-decoration:none;
 }
 *html #pref_friends {
 	background:#777;
-	
+
 }
 #pref_friends_i {
 	max-height:480px;
@@ -2585,7 +2585,7 @@ text-decoration:none;
 #pref_friends_holder a {
 	/*position:relative;*/
 	z-index:1001;
-	
+
 }
 .pref_friends_user img {
 	display:none;
@@ -2621,7 +2621,7 @@ text-decoration:none;
 	left:-20px;
 	top:-3px;*/
 }
- 
+
 .pref_friendship_status_1 a{
 	color:#ccc!important;
 }
@@ -2801,7 +2801,7 @@ div.post_author:hover a.heart_red {
 }
 #design_tlog_title {
 	margin-bottom:10px;
-	font-weight:bold; 
+	font-weight:bold;
 }
 #design_preview_tlog {
 	width:220px;
@@ -2813,8 +2813,8 @@ div.post_author:hover a.heart_red {
 	padding:15px 24px;
 }
 #design_preview_tlog p, #design_preview_tlog h2 {
-	padding:3px 0; 
-} 
+	padding:3px 0;
+}
 #tlog_func li {
 	/*border-bottom:1px solid #9e9e9e;*/
 	padding-bottom:15px;
@@ -2839,7 +2839,7 @@ div.post_author:hover a.heart_red {
 .sidebar h1 {
 	font-size:10px;
 	font-family:Verdana, Arial;
-	letter-spacing:0px; 
+	letter-spacing:0px;
 	font-style:normal;
 }
 img.heart {
@@ -2871,7 +2871,7 @@ img.heart {
 }
 .main_page .entry_metadata_holder {
 	bottom:28px;
-} 
+}
 *html .entry_metadata_holder {
 	position:relative;
 	bottom:0;
@@ -2911,7 +2911,7 @@ img.heart {
 	bottom:-2px;
 }
 *html  .entry_metadata {
-	position:static;	
+	position:static;
 }
 .entry_metadata a {
 	text-decoration:none;
@@ -2931,7 +2931,7 @@ img.heart {
 /* sibar other */
 #sidebar_tag_cloud {
 	bor der-bottom:1px solid #eee;
-	
+
 }
 .sidebar_search {
 	margin:0 0 20px 0;
@@ -2952,7 +2952,7 @@ img.heart {
 }
 #sb_f_c {
 	padding:5px 12px;
-	
+
 }
 .emd_addtag_tip {
 	font-family:tahoma;
@@ -3020,7 +3020,7 @@ img.heart {
 }
 .sidebar_section .hightlight {
 	font-weight:bold;
-} 
+}
 .sidebar_section p {
 	background:#eee;
 	color:#404040;
@@ -3090,7 +3090,7 @@ img.heart {
 	overflow:scroll;
 }
 #lightbox h1 {
-	padding:20px 0 0 0; 
+	padding:20px 0 0 0;
 	margin:0;
 }
 #lightbox h2 {
@@ -3109,7 +3109,7 @@ img.heart {
 #help_body {
 	width:400px!important;
 	display:block;
-	
+
 }
 #help_admin {
 	padding:10px 0;
@@ -3139,7 +3139,7 @@ img.heart {
 	font-family:tahoma;
 }
 .pref_new_entry {
-	color:#9BD890;	
+	color:#9BD890;
 }
 .top_hello {
 	font-size:74%;
@@ -3165,7 +3165,7 @@ img.heart {
 }
 .users {
 	text-align:center;
-	
+
 }
 .users div {
 	padding-bottom:15px;
@@ -3211,7 +3211,7 @@ img.heart {
 td.avatar {
 	padding:0 20px 30px 50px;
 }
-td.about { 
+td.about {
 	padding:0 50px 30px 20px;
 }
 .others a{
@@ -3219,12 +3219,12 @@ td.about {
 	clear:both;
 	width:140px;
 	color:#404040;
-} 
+}
 /* set new look for date */
 
 .bg_text_date {
 	/*font-family:Trebuchet MS;*/
-} 
+}
 div.service_date {
 	font-size:0.9em!important;
 	margin-left:53px;
@@ -3287,7 +3287,7 @@ body.bg_main .textarea-resizer {
 }
 #entry_visibility_div {
 	margin:35px 0 20px 0;
-} 
+}
 .link a {
 	font-size:1.5em;
 	margin-bottom:10px;
@@ -3297,7 +3297,7 @@ div.search {
 
 }
 .sidebar_calendar {
-	
+
 }
 .calendar a {
 }
@@ -3339,7 +3339,7 @@ span.month, span.year {
 	/*border-bottom:1px dotted white;*/
 	color:#404040;
 	background:white;
-	
+
 }
 .sidebar_section_content {
 	padding-top:5px;
@@ -3366,8 +3366,8 @@ span.month, span.year {
 .sidebar_section .highlight, .sidebar_section a.highlight {
 	font-size:148%;
 	position:relative;
-    
-} 
+
+}
 #google_inline_text_ad {
 	padding:0 0 23px 42px;
 }
@@ -3403,7 +3403,7 @@ span.month, span.year {
 }
 #sidebar_sections li {
 	font-size:0.72em;
-	margin-bottom:15px;	
+	margin-bottom:15px;
 	padding:10px;
 }
 #sidebar_sections li ul li {
@@ -3437,7 +3437,7 @@ span.month, span.year {
 #design_colors input.checkbox {
 	width:auto;
 	height:auto;
-} 
+}
 .date_style td {
 	font-size:72%;
 }
@@ -3472,10 +3472,10 @@ img.private_message {
 }
 #sidebar_messages_content .button_send {
 	margin:5px 0 0 0;
-} 
+}
 .main_quotes {
 	font-size:50%!important;
-	margin-top:35px;	
+	margin-top:35px;
 }
 .main_quotes .quote_entry_source a {
 	font-size: 140%;
@@ -3485,9 +3485,9 @@ img.private_message {
 	padding:8px 56px 15px;
 }
 .main_quotes span, .main_quotes a {
-	
+
 }
-.main_info {	
+.main_info {
 	background: #fff1ca;
 	display:inline;
 }
@@ -3523,7 +3523,7 @@ td.about p{
 .vertical_nav a {
 	background: white;
 }
-.post_text {	
+.post_text {
 	border-left:1px dotted #404040;
 	margin-top:0px;
 	padding-left:12px;

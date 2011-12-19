@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-	<body style="padding:30px 20px 50px 30px; margin:0;">	     
+	<body style="padding:30px 20px 50px 30px; margin:0;">
     <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><b>Здравствуйте, <%= h @message.user.username %>!</b></p>
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">Пользователь <%= h @message.sender.url %> оставил<%= @message.sender.gender('', 'а') %> Вам <%= ' личное ' if @message.is_private? %> сообщение:</p>
 		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><%= h @message.body %></p>
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><%= link_to messages_url(:host => host_for_tlog(@message.user)), messages_url(:host => host_for_tlog(@message.user)) %></p>
-		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">C уважением, <img src="http://www.mmm-tasty.ru/images/letter-logo.gif?1176812378" width='101' height='27' style="position:relative; bottom:-18px;  	margin-left:4px;" /></p>		
+		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">C уважением, <img src="http://www.mmm-tasty.ru/images/letter-logo.gif?1176812378" width='101' height='27' style="position:relative; bottom:-18px;  	margin-left:4px;" /></p>
 	</body>
 </html>

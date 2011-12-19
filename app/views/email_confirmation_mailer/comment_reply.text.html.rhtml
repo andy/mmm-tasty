@@ -2,11 +2,11 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<body style="padding:30px 20px 50px 30px; margin:0;">
-	     
+
 	    <p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><b>Здравствуйте, <%= h @user.username %>!</b></p>
-		
+
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;">Пользователь <%= link_to_comment_author(@comment) %> ответил на Ваш комментарий к записи <i>"<%= h @comment.entry.excerpt %>":</i></p>
-		
+
 		<p  style="font-style:italic; font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040;"><b>Вам ответили:</b><br/>
 			<% if @comment.user_id == 0 %>
 				<%= @comment.fetch_cached_or_run_block { |text| white_list_anonymous_comment text } %>
@@ -21,8 +21,8 @@
 				<%= link_to "#{url_for_tlog(User.find(@comment.entry.user_id))}#{entry_path(@comment.entry)}#comment#{@comment.id}", "#{url_for_tlog(User.find(@comment.entry.user_id))}#{entry_path(@comment.entry)}#comment#{@comment.id}" %>
 			<% end %>
 		</p>
-		
+
 		<p style="font-family:Trebuchet MS, Arial, sans serif; font-size:0.95em; width:600px; color:#404040; text-align:right;">C уважением, <img src="http://www.mmm-tasty.ru/images/letter-logo.gif?1176812378" width='101' height='27' style="position:relative; bottom:-18px; margin-left:4px;" /></p>
-		
+
 	</body>
 </html>

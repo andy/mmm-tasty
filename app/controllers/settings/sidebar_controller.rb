@@ -9,13 +9,13 @@ class Settings::SidebarController < ApplicationController
 
   helper :settings
   layout "settings"
-  
+
   cache_sweeper :sidebar_sweeper, :exclude => [:index]
 
   def index
     @tlog_settings = current_user.tlog_settings
   end
-  
+
   # добавляем новую секцию
   def section
     render :nothing => true and return unless request.post?
@@ -28,11 +28,11 @@ class Settings::SidebarController < ApplicationController
         else
           flash[:bad] = "Не удалось добавить новую секцию из-за ошибки: #{@section.errors.on(:name)}"
         end
-        redirect_to :action => :index 
+        redirect_to :action => :index
       }
       wants.js # render section.rjs
     end
-  end  
+  end
 
   # переключяем флаг закрыта/открыта
   def section_toggle_is_open
@@ -45,7 +45,7 @@ class Settings::SidebarController < ApplicationController
     render :nothing => true and return unless request.post?
     @section.destroy
   end
-  
+
   # обновляем содержимое секции
   def section_update
     render :nothing => true and return unless request.post?
@@ -58,7 +58,7 @@ class Settings::SidebarController < ApplicationController
         else
           flash[:bad] = "Не удалось изменить имя раздела из-за ошибки: #{@section.errors.on(:name)}"
         end
-        redirect_to :action => :index 
+        redirect_to :action => :index
       }
       wants.js # render section_update.rjs
     end
@@ -74,12 +74,12 @@ class Settings::SidebarController < ApplicationController
     @tlog_settings = current_user.tlog_settings
     @tlog_settings.toggle!("sidebar_#{@name}")
   end
-  
+
   def element
     require 'pp'
     klass = SidebarElement::TYPES[params[:element][:type]] || SidebarElement::TYPES['default']
     pp @section
-    @element = klass.constantize.create :content => params[:element][:content], :section => @section 
+    @element = klass.constantize.create :content => params[:element][:content], :section => @section
 
     pp @element
     respond_to do |wants|
@@ -89,21 +89,21 @@ class Settings::SidebarController < ApplicationController
         else
           flash[:bad] = "Не удалось добавить элемент из-за ошибки: #{@element.errors.on(:content)}"
         end
-        redirect_to :action => :index 
+        redirect_to :action => :index
       }
       wants.js # render element.rjs
     end
   end
-  
+
   def element_delete
     @element.destroy
   end
-  
+
   def element_update
     render :nothing => true and return unless request.post?
     @element.content = params[:element][:content]
     @element.save
-    
+
     respond_to do |wants|
       wants.html {
         if @element.valid?
@@ -111,12 +111,12 @@ class Settings::SidebarController < ApplicationController
         else
           flash[:bad] = "Не удалось значение из-за ошибки: #{@element.errors.on(:content)}"
         end
-        redirect_to :action => :index 
+        redirect_to :action => :index
       }
       wants.js # render element_update.rjs
     end
   end
-  
+
   # Parameters: {"action"=>"sort", "controller"=>"settings/sidebar", "elements_sidebar_section_15"=>["17", "18", "19"]}
   def sort
     sections = params.select { |key, value| key.starts_with?('elements_sidebar_section_') }
@@ -129,22 +129,22 @@ class Settings::SidebarController < ApplicationController
     end
     render :nothing => true
   end
-  
+
   private
     def preload_section
       @section = SidebarSection.find_by_id_and_user_id(params[:section_id], current_user.id) if params[:section_id]
     end
-    
+
     def preload_element
       return true unless params[:element_id]
       @element = SidebarElement.find params[:element_id]
       @element.section.user_id == current_user.id
     end
-    
+
     def require_section
       render :text => ':section_id missing' and return false unless @section
     end
-    
+
     def require_element
       render :text => ':element_id missing' and return false unless @element
     end

@@ -29,5 +29,5 @@ production:
   adapter: mysql
   database: tlogs_production
   username: tlogs
-  password: 
+  password:
   host: localhost

@@ -3,9 +3,9 @@
   total_pages = pageable.page_count if pageable.respond_to?(:page_count)
   total_pages ||= pageable.total_pages if pageable.respond_to?(:total_pages)
   total_pages ||= 0
-  
+
   previous_page = next_page = nil
-  
+
   if total_pages > 0
     previous_page = pageable.previous_page if (pageable.respond_to?(:previous_page?) && pageable.previous_page?) || pageable.previous_page
     next_page = pageable.next_page if (pageable.respond_to?(:next_page?) && pageable.next_page?) || pageable.next_page
@@ -14,10 +14,10 @@
     next_page = nil if next_page && next_page > 67 && params[:controller] == 'search'
   end
 
-  
+
   css_class ||= ''
-  reverse ||= false  
-  url_options ||= {}  
+  reverse ||= false
+  url_options ||= {}
  %>
 <% if total_pages > 1 %>
 	<div class='entry_pagination<%= " #{css_class}" unless css_class.blank? %>'>

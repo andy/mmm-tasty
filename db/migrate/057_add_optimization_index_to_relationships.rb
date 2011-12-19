@@ -4,6 +4,6 @@ class AddOptimizationIndexToRelationships < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :relationships, [:reader_id, :friendship_status]    
+    remove_index :relationships, [:reader_id, :friendship_status]
   end
 end

@@ -2,7 +2,7 @@
 	<div id='<%= section.dom_id(:h2) %>' class='section-h2'>
 		<div id='<%= section.dom_id(:h2_name) %>' class='section-name'><%= section.name %></div>
 		<%= render :partial => 'section_form', :locals => { :section => section } %>
-		
+
 		<%= link_to_remote image_tag(section.is_open? ? 'sidebar_open.gif' : 'sidebar_closed.gif'), { :url => settings_sidebar_url(:action => 'section_toggle_is_open', :section_id => section.id) }, :id => section.dom_id(:toggle_is_open), :title => 'Открыт или закрыт раздел по-умолчанию' %>
 		<%= link_to_function image_tag('edit.gif'), "$('#{section.dom_id(:h2_name)}').toggle(); $('#{section.dom_id(:h2_form)}').toggle();", :title => 'редактировать' %>
 		<%= link_to_remote image_tag('delete.gif'), :url => settings_sidebar_url(:action => 'section_destroy', :section_id => section.id), :confirm => 'Вы действительно хотите полностью удалить этот раздел?', :title => 'удалить раздел' %>

@@ -2,15 +2,15 @@
 //
 // Copyright (c) 2008 Cabel Sasser / Panic Inc
 // All rights reserved.
-// 
+//
 //     Requires: FancyZoomHTML.js
 // Instructions: Include JS files in page, call setupZoom() in onLoad. That's it!
 //               Any <a href> links to images will be updated to zoom inline.
 //               Add rel="nozoom" to your <a href> to disable zooming for an image.
-// 
+//
 // Redistribution and use of this effect in source form, with or without modification,
 // are permitted provided that the following conditions are met:
-// 
+//
 // * USE OF SOURCE ON COMMERCIAL (FOR-PROFIT) WEBSITE REQUIRES ONE-TIME LICENSE FEE PER DOMAIN.
 //   Reasonably priced! Visit www.fancyzoom.com for licensing instructions. Thanks!
 //
@@ -49,7 +49,7 @@ var myWidth = 0, myHeight = 0, myScroll = 0; myScrollWidth = 0; myScrollHeight =
 var zoomOpen = false, preloadFrame = 1, preloadActive = false, preloadTime = 0, imgPreload = new Image();
 var preloadAnimTimer = 0;
 
-var zoomActive = new Array(); var zoomTimer  = new Array(); 
+var zoomActive = new Array(); var zoomTimer  = new Array();
 var zoomOrigW  = new Array(); var zoomOrigH  = new Array();
 var zoomOrigX  = new Array(); var zoomOrigY  = new Array();
 
@@ -67,7 +67,7 @@ if (navigator.userAgent.indexOf("MSIE") != -1) {
 function setupZoom() {
 	prepZooms();
 	insertZoomHTML();
-	zoomdiv = document.getElementById(zoomID);  
+	zoomdiv = document.getElementById(zoomID);
 	zoomimg = document.getElementById(theID);
 }
 
@@ -113,9 +113,9 @@ function preloadAnimStart() {
 	preloadTime = new Date();
 	document.getElementById("ZoomSpin").style.left = (myWidth / 2) + 'px';
 	document.getElementById("ZoomSpin").style.top = ((myHeight / 2) + myScroll) + 'px';
-	document.getElementById("ZoomSpin").style.visibility = "visible";	
+	document.getElementById("ZoomSpin").style.visibility = "visible";
 	preloadFrame = 1;
-	document.getElementById("SpinImage").src = zoomImagesURI+'zoom-spin-'+preloadFrame+'.png';  
+	document.getElementById("SpinImage").src = zoomImagesURI+'zoom-spin-'+preloadFrame+'.png';
 	preloadAnimTimer = setInterval("preloadAnim()", 100);
 }
 
@@ -127,7 +127,7 @@ function preloadAnim(from) {
 		preloadFrame++;
 		if (preloadFrame > 12) preloadFrame = 1;
 	} else {
-		document.getElementById("ZoomSpin").style.visibility = "hidden";    
+		document.getElementById("ZoomSpin").style.visibility = "hidden";
 		clearInterval(preloadAnimTimer);
 		preloadAnimTimer = 0;
 		zoomIn(preloadFrom);
@@ -156,15 +156,15 @@ function zoomClick(from, evt) {
 		// But only display the spinner if it's not already being displayed!
 		if (preloadAnimTimer == 0) {
 			preloadFrom = from;
-			preloadAnimStart();	
+			preloadAnimStart();
 		}
 	} else {
 		// Otherwise, we're loaded: do the zoom!
 		zoomIn(from, shift);
 	}
-	
+
 	return false;
-	
+
 }
 
 // Zoom: Move an element in to endH endW, using zoomHost as a starting point.
@@ -192,7 +192,7 @@ function zoomIn(from, shift) {
 
 	// Make up for a scrolled containing div.
 	// TODO: This HAS to move into findElementPos.
-	
+
 	if (document.getElementById('scroller')) {
 		hostX = hostX - document.getElementById('scroller').scrollLeft;
 	}
@@ -211,18 +211,18 @@ function zoomIn(from, shift) {
 		if (document.getElementById("ShadowBox")) {
 			document.getElementById("ShadowBox").style.visibility = "hidden";
 		} else if (! browserIsIE) {
-		
+
 			// Wipe timer if shadow is fading in still
 			if (fadeActive["ZoomImage"]) {
 				clearInterval(fadeTimer["ZoomImage"]);
 				fadeActive["ZoomImage"] = false;
-				fadeTimer["ZoomImage"] = false;			
+				fadeTimer["ZoomImage"] = false;
 			}
-			
-			document.getElementById("ZoomImage").style.webkitBoxShadow = shadowSettings + '0.0)';			
+
+			document.getElementById("ZoomImage").style.webkitBoxShadow = shadowSettings + '0.0)';
 		}
-		
-		document.getElementById("ZoomClose").style.visibility = "hidden";     
+
+		document.getElementById("ZoomClose").style.visibility = "hidden";
 
 		// Setup the CAPTION, if existing. Hide it first, set the text.
 
@@ -273,9 +273,9 @@ function zoomIn(from, shift) {
 		zoomChangeY = (((myHeight / 2) - (endH / 2) - hostY) + myScroll);
 		zoomChangeW = (endW - startW);
 		zoomChangeH = (endH - startH);
-		
+
 		// Shift key?
-	
+
 		if (shift) {
 			tempSteps = zoomSteps * 7;
 		} else {
@@ -296,9 +296,9 @@ function zoomIn(from, shift) {
 		}
 
 		// Do It!
-		
-		zoomTimer[theID] = setInterval("zoomElement('"+zoomID+"', '"+theID+"', "+zoomCurrent+", "+startW+", "+zoomChangeW+", "+startH+", "+zoomChangeH+", "+hostX+", "+zoomChangeX+", "+hostY+", "+zoomChangeY+", "+tempSteps+", "+includeFade+", "+fadeAmount+", 'zoomDoneIn(zoomID)')", zoomTime);		
-		zoomActive[theID] = true; 
+
+		zoomTimer[theID] = setInterval("zoomElement('"+zoomID+"', '"+theID+"', "+zoomCurrent+", "+startW+", "+zoomChangeW+", "+startH+", "+zoomChangeH+", "+hostX+", "+zoomChangeX+", "+hostY+", "+zoomChangeY+", "+tempSteps+", "+includeFade+", "+fadeAmount+", 'zoomDoneIn(zoomID)')", zoomTime);
+		zoomActive[theID] = true;
 	}
 }
 
@@ -313,10 +313,10 @@ function zoomOut(from, evt) {
 		tempSteps = zoomSteps * 7;
 	} else {
 		tempSteps = zoomSteps;
-	}	
+	}
 
 	// Check to see if something is happening/open
-  
+
 	if (zoomActive[theID] != true) {
 
 		// First, get rid of the shadow if necessary.
@@ -324,15 +324,15 @@ function zoomOut(from, evt) {
 		if (document.getElementById("ShadowBox")) {
 			document.getElementById("ShadowBox").style.visibility = "hidden";
 		} else if (! browserIsIE) {
-		
+
 			// Wipe timer if shadow is fading in still
 			if (fadeActive["ZoomImage"]) {
 				clearInterval(fadeTimer["ZoomImage"]);
 				fadeActive["ZoomImage"] = false;
-				fadeTimer["ZoomImage"] = false;			
+				fadeTimer["ZoomImage"] = false;
 			}
-			
-			document.getElementById("ZoomImage").style.webkitBoxShadow = shadowSettings + '0.0)';			
+
+			document.getElementById("ZoomImage").style.webkitBoxShadow = shadowSettings + '0.0)';
 		}
 
 		// ..and the close box...
@@ -372,7 +372,7 @@ function zoomOut(from, evt) {
 
 		// Do It!
 
-		zoomTimer[theID] = setInterval("zoomElement('"+zoomID+"', '"+theID+"', "+zoomCurrent+", "+startW+", "+zoomChangeW+", "+startH+", "+zoomChangeH+", "+startX+", "+zoomChangeX+", "+startY+", "+zoomChangeY+", "+tempSteps+", "+includeFade+", "+fadeAmount+", 'zoomDone(zoomID, theID)')", zoomTime);	
+		zoomTimer[theID] = setInterval("zoomElement('"+zoomID+"', '"+theID+"', "+zoomCurrent+", "+startW+", "+zoomChangeW+", "+startH+", "+zoomChangeH+", "+startX+", "+zoomChangeX+", "+startY+", "+zoomChangeY+", "+tempSteps+", "+includeFade+", "+fadeAmount+", 'zoomDone(zoomID, theID)')", zoomTime);
 		zoomActive[theID] = true;
 	}
 }
@@ -382,7 +382,7 @@ function zoomOut(from, evt) {
 function zoomDoneIn(zoomdiv, theID) {
 
 	// Note that it's open
-  
+
 	zoomOpen = true;
 	zoomdiv = document.getElementById(zoomdiv);
 
@@ -396,8 +396,8 @@ function zoomDoneIn(zoomdiv, theID) {
 		shadowLeft = parseInt(zoomdiv.style.left) - 13;
 		shadowTop = parseInt(zoomdiv.style.top) - 8;
 		shadowWidth = zoomdiv.offsetWidth + 26;
-		shadowHeight = zoomdiv.offsetHeight + 26; 
-	
+		shadowHeight = zoomdiv.offsetHeight + 26;
+
 		shadowdiv.style.width = shadowWidth + 'px';
 		shadowdiv.style.height = shadowHeight + 'px';
 		shadowdiv.style.left = shadowLeft + 'px';
@@ -405,14 +405,14 @@ function zoomDoneIn(zoomdiv, theID) {
 
 		document.getElementById("ShadowBox").style.visibility = "visible";
 		fadeElementSetup("ShadowBox", 0, 100, 5);
-		
+
 	} else if (! browserIsIE) {
 		// Or, do a fade of the modern shadow
 		fadeElementSetup("ZoomImage", 0, .8, 5, 0, "shadow");
 	}
-	
+
 	// Position and display the CAPTION, if existing
-  
+
 	if (includeCaption && document.getElementById(zoomCaption).innerHTML != "") {
 		// setOpacity(0, zoomCaptionDiv);
 		zoomcapd = document.getElementById(zoomCaptionDiv);
@@ -420,8 +420,8 @@ function zoomDoneIn(zoomdiv, theID) {
 		zoomcapd.style.left = (myWidth / 2) - (zoomcapd.offsetWidth / 2) + 'px';
 		zoomcapd.style.visibility = "visible";
 		// fadeElementSetup(zoomCaptionDiv, 0, 100, 5);
-	}   
-	
+	}
+
 	// Display Close Box (fade it if it's not IE)
 
 	if (!browserIsIE) setOpacity(0, "ZoomClose");
@@ -430,7 +430,7 @@ function zoomDoneIn(zoomdiv, theID) {
 
 	// Get keypresses
 	document.onkeypress = getKey;
-	
+
 }
 
 // Finished Zooming Out
@@ -438,7 +438,7 @@ function zoomDoneIn(zoomdiv, theID) {
 function zoomDone(zoomdiv, theID) {
 
 	// No longer open
-  
+
 	zoomOpen = false;
 
 	// Clear stuff out, clean up
@@ -459,7 +459,7 @@ function zoomDone(zoomdiv, theID) {
 function zoomElement(zoomdiv, theID, zoomCurrent, zoomStartW, zoomChangeW, zoomStartH, zoomChangeH, zoomStartX, zoomChangeX, zoomStartY, zoomChangeY, zoomSteps, includeFade, fadeAmount, execWhenDone) {
 
 	// console.log("Zooming Step #"+zoomCurrent+ " of "+zoomSteps+" (zoom " + zoomStartW + "/" + zoomChangeW + ") (zoom " + zoomStartH + "/" + zoomChangeH + ")  (zoom " + zoomStartX + "/" + zoomChangeX + ")  (zoom " + zoomStartY + "/" + zoomChangeY + ") Fade: "+fadeAmount);
-    
+
 	// Test if we're done, or if we continue
 
 	if (zoomCurrent == (zoomSteps + 1)) {
@@ -470,9 +470,9 @@ function zoomElement(zoomdiv, theID, zoomCurrent, zoomStartW, zoomChangeW, zoomS
 			eval(execWhenDone);
 		}
 	} else {
-	
+
 		// Do the Fade!
-	  
+
 		if (includeFade == 1) {
 			if (fadeAmount < 0) {
 				setOpacity(Math.abs(zoomCurrent * fadeAmount), zoomdiv);
@@ -480,21 +480,21 @@ function zoomElement(zoomdiv, theID, zoomCurrent, zoomStartW, zoomChangeW, zoomS
 				setOpacity(100 - (zoomCurrent * fadeAmount), zoomdiv);
 			}
 		}
-	  
+
 		// Calculate this step's difference, and move it!
-		
+
 		moveW = cubicInOut(zoomCurrent, zoomStartW, zoomChangeW, zoomSteps);
 		moveH = cubicInOut(zoomCurrent, zoomStartH, zoomChangeH, zoomSteps);
 		moveX = cubicInOut(zoomCurrent, zoomStartX, zoomChangeX, zoomSteps);
 		moveY = cubicInOut(zoomCurrent, zoomStartY, zoomChangeY, zoomSteps);
-	
+
 		document.getElementById(zoomdiv).style.left = moveX + 'px';
 		document.getElementById(zoomdiv).style.top = moveY + 'px';
 		zoomimg.style.width = moveW + 'px';
 		zoomimg.style.height = moveH + 'px';
-	
+
 		zoomCurrent++;
-		
+
 		clearInterval(zoomTimer[theID]);
 		zoomTimer[theID] = setInterval("zoomElement('"+zoomdiv+"', '"+theID+"', "+zoomCurrent+", "+zoomStartW+", "+zoomChangeW+", "+zoomStartH+", "+zoomChangeH+", "+zoomStartX+", "+zoomChangeX+", "+zoomStartY+", "+zoomChangeY+", "+zoomSteps+", "+includeFade+", "+fadeAmount+", '"+execWhenDone+"')", zoomTime);
 	}
@@ -527,7 +527,7 @@ function fadeOut(elem) {
 
 function fadeIn(elem) {
 	if (elem.id) {
-		fadeElementSetup(elem.id, 0, 100, 10);	
+		fadeElementSetup(elem.id, 0, 100, 10);
 	}
 }
 
@@ -553,7 +553,7 @@ function fadeElementSetup(theID, fdStart, fdEnd, fdSteps, fdClose, fdMode) {
 		fadeTimer[theID] = setInterval("fadeElement('"+theID+"', '"+fadeCurrent+"', '"+fadeAmount+"', '"+fadeSteps+"')", 15);
 		fadeActive[theID] = true;
 		fadeMode[theID] = fdMode;
-		
+
 		if (fdClose == 1) {
 			fadeClose[theID] = true;
 		} else {
@@ -590,23 +590,23 @@ function fadeElement(theID, fadeCurrent, fadeAmount, fadeSteps) {
 	} else {
 
 		fadeCurrent++;
-		
+
 		// Now actually do the fade adjustment.
-		
+
 		if (fadeMode[theID] == "shadow") {
 
 			// Do a special fade on the webkit-box-shadow of the object
-		
+
 			if (fadeAmount < 0) {
 				document.getElementById(theID).style.webkitBoxShadow = shadowSettings + (Math.abs(fadeCurrent * fadeAmount)) + ')';
 			} else {
 				document.getElementById(theID).style.webkitBoxShadow = shadowSettings + (100 - (fadeCurrent * fadeAmount)) + ')';
 			}
-			
+
 		} else {
-		
+
 			// Set the opacity depending on if we're adding or subtracting (pos or neg)
-			
+
 			if (fadeAmount < 0) {
 				setOpacity(Math.abs(fadeCurrent * fadeAmount), theID);
 			} else {
@@ -710,7 +710,7 @@ function getSize() {
 
 	// Page size w/offscreen areas
 
-	if (window.innerHeight && window.scrollMaxY) {	
+	if (window.innerHeight && window.scrollMaxY) {
 		myScrollWidth = document.body.scrollWidth;
 		myScrollHeight = window.innerHeight + window.scrollMaxY;
 	} else if (document.body.scrollHeight > document.body.offsetHeight) { // All but Explorer Mac

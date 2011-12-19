@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   skip_before_filter :require_confirmation_on_current_user
-  
+
   helper :main
   layout 'main'
 
@@ -39,7 +39,7 @@ class SearchController < ApplicationController
       @page = 0
       @entries = []
     end
-    
+
     # результаты отображаются внутри тлога если поиск выполнялся по индивидуальному тлогу
     render :layout => current_site ? 'tlog' : 'main'
   end

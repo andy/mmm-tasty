@@ -11,15 +11,15 @@ class CreateEntries < ActiveRecord::Migration
 
 			# тип записи (rails single table inheritance)
 			t.column :type, :string, { :null => false }
-			
+
 			# заблокирована ли запись?
 			t.column :is_disabled, :boolean, { :default => false, :null => false }
-			
+
 			# всякая рабочая фигня
 			t.column :created_at, :timestamp, { :null => false }
 			t.column :modified_at, :timestamp
     end
-    
+
     add_index :entries, [:user_id, :created_at, :type]
   end
 

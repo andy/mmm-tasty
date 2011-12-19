@@ -7,7 +7,7 @@
 	<p class='settings_warning'><span>У вас не указан почтовый адрес</span>. Добавление адреса активирует такие возможности как, например, отсылка новых комментариев к вашим записям.</p>
 <% end %>
 
-<% form_for :user, @user, :html => { :class => 'small' } do |f| %>	
+<% form_for :user, @user, :html => { :class => 'small' } do |f| %>
 	<table class='form' style='width: 100%'>
 		<% if !current_user.email.blank? %>
 			<tr>

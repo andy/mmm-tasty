@@ -6,10 +6,10 @@ class CreateEntryVotes < ActiveRecord::Migration
       t.column :user_id, :integer, :null => false       # пользователь которому принадлежит запись
       t.column :value, :integer, :null => false, :default => 0        # числовой рейтинг
     end
-    
+
     add_index :entry_votes, [:entry_id, :user_id], :unique => true
   end
-  
+
   def self.down
     drop_table :entry_votes
   end

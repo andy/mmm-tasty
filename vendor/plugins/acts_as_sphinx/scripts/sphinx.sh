@@ -9,13 +9,13 @@ fi
 case "$1" in
     start)
         echo -n "Starting sphinx searchd server:"
-        echo -n " searchd" ; 
+        echo -n " searchd" ;
         /sbin/start-stop-daemon --start --quiet --pidfile /var/run/searchd.pid --chdir /etc --exec /usr/local/bin/searchd
         echo "."
         ;;
     stop)
         echo -n "Stopping sphinx searchd server:"
-        echo -n " searchd" ; 
+        echo -n " searchd" ;
         /sbin/start-stop-daemon --stop --quiet --oknodo --pidfile /var/run/searchd.pid --exec /usr/local/bin/searchd
         echo "."
         ;;

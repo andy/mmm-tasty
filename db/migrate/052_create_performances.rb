@@ -7,7 +7,7 @@ class CreatePerformances < ActiveRecord::Migration
       t.column :calls, :integer, :null => false, :default => 0
       t.column :seconds, :float, :null => false, :default => 0
     end
-    
+
     add_index :performances, [:controller, :action, :function], :unique => true
   end
 

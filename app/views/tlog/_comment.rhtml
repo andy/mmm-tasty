@@ -1,6 +1,6 @@
 <a name="comment<%= comment.id %>"></a>
 <%= "<a name='new'></a>" if @last_comment_viewed == (@comments || @entry.comments).index(comment) %>
-<div class="post_comment <%= 'post_comment_new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %>" id="<%= dom_id(comment) %>">				
+<div class="post_comment <%= 'post_comment_new' if @last_comment_viewed <= (@comments || @entry.comments).index(comment) %>" id="<%= dom_id(comment) %>">
 	<div class='rel'>
 		<div class='post_comment_avatar'>
 			<% if !comment.user.nil? && comment.user.avatar %>

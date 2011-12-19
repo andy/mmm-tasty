@@ -4,7 +4,7 @@ class Settings::MobileController < ApplicationController
 
   helper :settings
   layout "settings"
-  
+
   def email
     # create mobile settings thing
     current_user.mobile_settings ||= MobileSettings.create :user => current_user, :keyword => MobileSettings.generate_keyword
@@ -26,10 +26,10 @@ class Settings::MobileController < ApplicationController
       end
     end
   end
-  
+
   def sms
   end
-  
+
   def bookmarklets
     @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_user.id) if params[:id]
     @bookmarklet ||= Bookmarklet.new
@@ -45,7 +45,7 @@ class Settings::MobileController < ApplicationController
       end
     end
   end
-  
+
   def bookmarklet_destroy
     @bookmarklet = Bookmarklet.find_by_id_and_user_id(params[:id], current_user.id)
     @bookmarklet.destroy

@@ -62,7 +62,7 @@ function error_message_on ( element, message, is_tip ) {
   remove_me = is_tip ? 'error' : 'not_really_big_error'
   element_error.removeClassName(remove_me);
   element_error.addClassName(add_me);
-  
+
   is_tip ? element.removeClassName('input_error') : element.addClassName('input_error');
   is_tip ? element.addClassName('input_succeed') : element.removeClassName('input_succeed');
 
@@ -132,7 +132,7 @@ function run_comments_views_update( ) {
 function run_entry_ratings_update( ) {
   if (typeof entry_ratings_update == 'undefined')
     return;
-    
+
   entry_ratings_update.each ( function(object) {
     var element = $('entry_rating_' + object.id);
     if (element) Element.update(element, object.value);
@@ -156,7 +156,7 @@ function enable_services_for_current_user( ) {
 
 }
 
-Event.observe(window, 'load', function( ) { 
+Event.observe(window, 'load', function( ) {
   run_comments_views_update();
   run_entry_ratings_update();
   if(current_user)
@@ -168,7 +168,7 @@ function fixPNG(element) {
 	if (/MSIE (5\.5|6).+Win/.test(navigator.userAgent))
 	{
 		var src;
-		
+
 		if (element.tagName=='IMG')
 		{
 			if (/\.png(\?[0-9]+)?$/.test(element.src))
@@ -186,7 +186,7 @@ function fixPNG(element) {
 				element.runtimeStyle.backgroundImage="none";
 			}
 		}
-		
+
 		if (src) element.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "',sizingMethod='scale')";
 	}
 }
@@ -221,7 +221,7 @@ function do_not_reply_to_comment(id) {
   Element.hide('replying_to_comment_' + id);
   Element.show('reply_to_comment_' + id);
   if(reply_to_comments.indexOf(id) != -1) reply_to_comments = reply_to_comments.without(id);
-  $('comment_reply_to').value = reply_to_comments.join(',');  
+  $('comment_reply_to').value = reply_to_comments.join(',');
   _update_comment_textarea();
 }
 
@@ -261,14 +261,14 @@ TextAreaResizer.prototype = {
 	create : function() {
 		var elt = this.element;
 		var thisRef = this;
-		
+
 		var h = this.handle = document.createElement("div");
 		h.className = "textarea-resizer";
 		h.title = "Drag to resize text box";
 		h.addEventListener("mousedown", function(evt){thisRef.dragStart(evt);}, false);
 		elt.parentNode.insertBefore(h, elt.nextSibling);
 	},
-	
+
 	dragStart : function(evt) {
 		var thisRef = this;
 		this.dragStartY = evt.clientY;
@@ -276,16 +276,16 @@ TextAreaResizer.prototype = {
 		document.addEventListener("mousemove", this.dragMoveHdlr=function(evt){thisRef.dragMove(evt);}, false);
 		document.addEventListener("mouseup", this.dragStopHdlr=function(evt){thisRef.dragStop(evt);}, false);
 	},
-	
+
 	dragMove : function(evt) {
 		this.element.style.height = this.dragStartH + evt.clientY - this.dragStartY + "px";
 	},
-	
+
 	dragStop : function(evt) {
 		document.removeEventListener("mousemove", this.dragMoveHdlr, false);
 		document.removeEventListener("mouseup", this.dragStopHdlr, false);
 	},
-	
+
 	destroy : function() {
 		var elt = this.element;
 		elt.parentNode.removeChild(this.handle);

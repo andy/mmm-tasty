@@ -8,5 +8,5 @@
 		<div class="post_body <%= "post_#{entry.class.to_s.underscore}" %>" id="<%= dom_id(entry) %>">
 			<%= render 'entries/display/' + entry.class.to_s.underscore, { :entry => entry, :embed => true } %>
 		</div>
-	</body>	
+	</body>
 </html>

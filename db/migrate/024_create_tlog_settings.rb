@@ -7,7 +7,7 @@ class CreateTlogSettings < ActiveRecord::Migration
       t.column :about, :text
       t.column :updated_at, :timestamp
     end
-    
+
     # переносим данные из одной таблицы в другую
     User.find(:all).each do |user|
       next unless user.settings

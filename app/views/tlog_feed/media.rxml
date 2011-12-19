@@ -3,10 +3,10 @@ xml.instruct! :xml, :version => '1.0', :encoding => 'UTF-8'
 xml.rss :version => '2.0', 'xmlns:media' => 'http://search.yahoo.com/mrss', 'xmlns:atom' => 'http://www.w3.org/2005/Atom' do
   xml.channel do
     xml.atom :icon, (current_site && current_site.avatar) ? image_path(current_site.avatar.public_filename) : image_path('logo.png')
-    xml.atom :link, :rel => 'next', :href => url_for(:page => @page + 1, :only_path => false) 
+    xml.atom :link, :rel => 'next', :href => url_for(:page => @page + 1, :only_path => false)
     xml.atom :link, :rel => 'previous', :href => url_for(:page => @page - 1, :only_path => false) if @page > 1
-    @entries.each do |entry|      
-      xml.item do        
+    @entries.each do |entry|
+      xml.item do
         xml.link url_for_tlog(entry.author) + entry_path(entry)
         xml.title { xml.cdata!(strip_tags(white_list_entry(entry.excerpt.to_s))) }
         if !entry.attachments.empty?

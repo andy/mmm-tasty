@@ -14,7 +14,7 @@
 				<% if @new_record %>
 					<%= link_to_function 'Дополнительно ...', 'new Effect.toggle("entry_options", "blind", { duration: 0.3 })' %>
 				<% end %>
-		
+
 				<div id='entry_options' <%= ' style="display: none"' if @new_record %>>
 					<div id='entry_visibility_div'>
 						<% if entry.visibility != 'voteable' || @new_record %>
@@ -22,9 +22,9 @@
 							<%= select :entry, :visibility, @new_record ? Entry::VISIBILITY_FOR_SELECT_NEW : Entry::VISIBILITY_FOR_SELECT_EDIT %>
 						<% end %>
 					</div>
-			
+
 					<!-- ad_annotation_div removed at rev.211 -->
-			
+
 					<div id='entry_tags'>
 						<label for='entry_tag_list'>Теги: </label><br/>
 						<%= text_field 'entry', 'tag_list', { :id => 'entry_tag_list' } %>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 		<% end %>
-		
+
 		<%= submit_to_remote "button", "Предпросмотр", :url => { :action => :preview }, :before => 'remote_request_started("generate_preview", "Подготавливаем ...");', :loaded => 'remote_request_finished("generate_preview", "Предпросмотр");', :html => { :id => 'generate_preview', :class => 'button' } %>&nbsp;
 		<%= submit_tag 'Сохранить', :class => 'button' %>
 		<div class='form_submit_return'>
@@ -44,7 +44,7 @@
 				<%= link_to 'вернуться обратно', publish_url(bookmarklet_url_options) %>
 			<% end %>
 		</div>
-	</form>	
+	</form>
 </div>
 
 <% if in_bookmarklet? && params[:bm][:autosave] == 'true' %>

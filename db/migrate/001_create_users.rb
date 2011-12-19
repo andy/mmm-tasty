@@ -12,13 +12,13 @@ class CreateUsers < ActiveRecord::Migration
       t.column :url, :string, { :null => false }
 
 			t.column :settings, :text
-			
+
 			# системные настройки
 			t.column :is_disabled, :boolean, { :default => false, :null => false }
 			t.column :created_at, :timestamp, { :null => false }
 			t.column :modified_at, :timestamp
     end
-    
+
     add_index :users, :email, :uniq => true
     add_index :users, :openid, :uniq => true
     add_index :users, :url, :uniq => true

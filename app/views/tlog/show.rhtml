@@ -27,7 +27,7 @@
 				Комментарии (<span id='top_comment_number'><%= @entry.comments_count %></span>):
 			<% end %>
 		</div>
-		
+
 		<% if current_user && current_user.id != current_site.id %>
 			<div class='rel'>
 				<div class='subscribe_controls'>
@@ -44,7 +44,7 @@
 	<% unless @entry.comments_enabled? %>
 		<div class='return_from_permalink'>
 			комментарии были отключены владельцем тлога
-		</div>	
+		</div>
 	<% end %>
 <% end %>
 

@@ -25,7 +25,7 @@
   <div class="dialog">
     <h1>Упс! Такого тлога не существует</h1>
     <p>он или никогда не существовал, или переехал на новый адрес</p>
-    <p><a href='http://www.mmm-tasty.ru/'>вернуться на главную тейсти</a> или 
+    <p><a href='http://www.mmm-tasty.ru/'>вернуться на главную тейсти</a> или
       <% if current_user %>
         <%= link_to 'вернуться в свой тлог', url_for_tlog(current_user) %>
       <% else %>

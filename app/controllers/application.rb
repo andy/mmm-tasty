@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   filter_parameter_logging :password
-  
+
   # rescue_from ActionController::RoutingError do |exception|
   #   render :template => '400.html'
   # end
@@ -20,12 +20,12 @@ class ApplicationController < ActionController::Base
         perf.stime += result.stime
         perf.utime += result.utime
         perf.cstime += result.cstime
-        perf.cutime += result.cutime      
+        perf.cutime += result.cutime
         perf.save!
       end
     end
   end
-  
+
   include ExceptionNotifiable if RAILS_ENV == 'production'
 
   # MAIN FILTERS
@@ -34,17 +34,17 @@ class ApplicationController < ActionController::Base
 
   attr_accessor   :current_user
   helper_method   :current_user
-  
+
   attr_accessor   :standalone
   helper_method   :standalone
-  
+
   helper_method :is_admin?
 
   before_filter :preload_current_site # loads @current_site
   before_filter :preload_current_user # loads @current_user
-  
+
   before_filter :preload_essential_models
-  
+
   protected
     def preload_essential_models
       Entry
@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       Avatar
       Comment
     end
-    
+
     def preload_current_site
       @standalone = false
       @current_site = nil
@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
       # 2. иначе
       #    2.a   ищем пользователя по домену, выставляем current_site
       #    2.b   возвращаем 404
-      
+
       root = ::DOMAINS.find { |key| domain.ends_with?(key) }
 
       # 1
@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
         @current_site = User.find_by_url(subdomains, :include => [:tlog_settings, :avatar]) if subdomains.count('.') == 0
         #   d.1
         # NOTE: не будет работать, потому что ВСЕ запросы будут перенаправляться на домен, а нам этого не нужно
-        # redirect_to("http://#{@current_site.domain}/") if @current_site && !@current_site.domain.blank?          
+        # redirect_to("http://#{@current_site.domain}/") if @current_site && !@current_site.domain.blank?
       else
         @current_site = User.find_by_domain(domain)
         @standalone = true if @current_site
@@ -95,11 +95,11 @@ class ApplicationController < ActionController::Base
 
       true
     end
-  
+
     def preload_current_user
       # from session
       @current_user = session[:user_id] ? (User.find_by_id(session[:user_id]) || false) : nil
-                      
+
       logger.info "user #{@current_user.url} from session (id = #{@current_user.id})" if @current_user
 
       # from tsig
@@ -117,17 +117,17 @@ class ApplicationController < ActionController::Base
 
       true
     end
-    
-    # 
+
+    #
     def prelaunch_megasecrecy
       return true if cookies['megasecret'] == 'v3' || params[:controller] == 'tlog_feed'
-      
+
       if request.post? && params[:megasecret] == 'lsd'
         cookies['megasecret'] = { :value => 'v3', :expires => 1.year.from_now, :domain => request.domain }
         redirect_to main_url(:host => "www.mmm-tasty.ru")
         return false
       end
-  
+
       render :template => 'globals/prelaunch_megasecrecy', :layout => false
       false
     end
@@ -151,31 +151,31 @@ class ApplicationController < ActionController::Base
       redirect_to login_url(:host => "www.mmm-tasty.ru")
       false
     end
-    
+
     def require_current_site
       return true if current_site && current_site.is_a?(User)
       render :template => 'global/tlog_not_found', :layout => false, :status => 404
       false
     end
-    
+
     def is_admin?
       current_user && current_user.is_admin?
     end
-    
+
     def require_admin
       return true if require_current_user && current_user.is_admin?
-      
+
       render :text => 'pemission denied', :status => 403
       return false
     end
 
     def require_confirmed_current_user
       redirect_to(:host => "www.mmm-tasty.ru", :controller => '/confirm', :action => :required) and return false if (is_owner? && !current_site.is_confirmed?) || (!current_site && current_user && !current_user.is_confirmed?)
-      true    
+      true
     end
-    
+
     def require_confirmed_current_site
-      if !current_site.is_confirmed?          
+      if !current_site.is_confirmed?
         render_tasty_404("Этот имя занято, но пользователь еще не подтвердил свою регистрацию.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/' rel='follow'>&#x2190; вернуться на главную</a>")
         return false
       end
@@ -184,7 +184,7 @@ class ApplicationController < ActionController::Base
 
     def current_user_eq_current_site
       return true if current_user && current_site && current_user.id == current_site.id
-      
+
       render(:text => 'permission denied', :status => 403) and return false
     end
 
@@ -199,10 +199,10 @@ class ApplicationController < ActionController::Base
       user ||= current_user
       return user.domain if options[:use_domain] && user.is_a?(User) && !user.domain.blank?
       url = user.url rescue user
-      
+
       the_url = "#{url}.mmm-tasty.ru"
       the_url += ":#{request.port}" unless request.port == 80
-      
+
       the_url
     end
 
@@ -213,7 +213,7 @@ class ApplicationController < ActionController::Base
       fragment = (page > 0 ? '#' : '/#') + fragment if fragment
       "http://#{host_for_tlog(user, options)}#{prefix ? "/#{prefix}" : ''}#{page > 0 ? "/page/#{page}" : ''}#{fragment}"
     end
-    
+
     def url_for_entry(entry, options = {})
       is_daylog = current_site.tlog_settings.is_daylog? if current_site
       is_daylog ||= options.delete(:is_daylog)
@@ -226,16 +226,16 @@ class ApplicationController < ActionController::Base
         options[:month] = date.month
         options[:day] = date.mday
         fragment = options.delete(:fragment) || nil
-        fragment = ((date == Date.today) ? '/#' : '#') + fragment if fragment 
+        fragment = ((date == Date.today) ? '/#' : '#') + fragment if fragment
         (date == Date.today) ? "http://#{options[:host]}#{fragment}" : "#{day_url(options)}#{fragment}"
-      else 
+      else
         options[:page] = entry.page_for(current_user)
         if entry.is_anonymous?
           url_for_tlog(user, :prefix => 'anonymous')
         elsif entry.is_private?
           url_for_tlog(user, :prefix => 'private')
         else
-          url_for_tlog(user, options) 
+          url_for_tlog(user, options)
         end
       end
     end

@@ -30,7 +30,7 @@ bored_four:
   user_id: 1
   comment: |
     Guys, thank you for your support. It's *great* pleasue to see you guys here helping me.
-    
+
     THANK YOU!
   is_disabled: f
   created_at: <%= Time.now.to_s(:db) %>

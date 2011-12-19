@@ -5,7 +5,7 @@ class ExtendTlogSettings < ActiveRecord::Migration
     add_column :tlog_settings, :sidebar_hide_calendar, :boolean, :default => 0, :null => false
     add_column :tlog_settings, :sidebar_hide_search, :boolean, :default => 0, :null => false
   end
-  
+
   def self.down
     remove_column :tlog_settings, :is_daylog
     remove_column :tlog_settings, :sidebar_hide_tags

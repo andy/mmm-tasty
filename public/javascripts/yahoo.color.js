@@ -2,7 +2,7 @@
 
 var YAHOO = function() { return {util: {}} } ();
 YAHOO.util.Color = new function() {
-  
+
   // Adapted from http://www.easyrgb.com/math.html
   // hsv values = 0 - 1
   // rgb values 0 - 255
@@ -26,11 +26,11 @@ YAHOO.util.Color = new function() {
       var var_2 = v * ( 1 - s * ( var_h - var_i ) );
       var var_3 = v * ( 1 - s * ( 1 - ( var_h - var_i ) ) );
 
-      if ( var_i == 0 ) { 
-        var_r = v; 
-        var_g = var_3; 
+      if ( var_i == 0 ) {
+        var_r = v;
+        var_g = var_3;
         var_b = var_1;
-      } else if ( var_i == 1 ) { 
+      } else if ( var_i == 1 ) {
         var_r = var_2;
         var_g = v;
         var_b = var_1;
@@ -46,7 +46,7 @@ YAHOO.util.Color = new function() {
         var_r = var_3;
         var_g = var_1;
         var_b = v;
-      } else { 
+      } else {
         var_r = v;
         var_g = var_1;
         var_b = var_2
@@ -60,7 +60,7 @@ YAHOO.util.Color = new function() {
     return [Math.round(r), Math.round(g), Math.round(b)];
   };
 
-  // added by Matthias Platzer AT knallgrau.at 
+  // added by Matthias Platzer AT knallgrau.at
   this.rgb2hsv = function (r, g, b) {
       var r = ( r / 255 );                   //RGB values = 0 ÷ 255
       var g = ( g / 255 );
@@ -117,19 +117,19 @@ YAHOO.util.Color = new function() {
     return this.hexchars.indexOf(hexchar.toUpperCase());
   };
 
-  this.hex2rgb = function(str) { 
+  this.hex2rgb = function(str) {
     var rgb = [];
-    rgb[0] = (this.toDec(str.substr(0, 1)) * 16) + 
+    rgb[0] = (this.toDec(str.substr(0, 1)) * 16) +
             this.toDec(str.substr(1, 1));
-    rgb[1] = (this.toDec(str.substr(2, 1)) * 16) + 
+    rgb[1] = (this.toDec(str.substr(2, 1)) * 16) +
             this.toDec(str.substr(3, 1));
-    rgb[2] = (this.toDec(str.substr(4, 1)) * 16) + 
+    rgb[2] = (this.toDec(str.substr(4, 1)) * 16) +
             this.toDec(str.substr(5, 1));
     // gLogger.debug("hex2rgb: " + str + ", " + rgb.toString());
     return rgb;
   };
 
-  this.isValidRGB = function(a) { 
+  this.isValidRGB = function(a) {
     if ((!a[0] && a[0] !=0) || isNaN(a[0]) || a[0] < 0 || a[0] > 255) return false;
     if ((!a[1] && a[1] !=0) || isNaN(a[1]) || a[1] < 0 || a[1] > 255) return false;
     if ((!a[2] && a[2] !=0) || isNaN(a[2]) || a[2] < 0 || a[2] > 255) return false;

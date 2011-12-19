@@ -5,7 +5,7 @@
 			<%= text_field_tag 'query', params[:query], :type => :search %>
 		</form>
 	</div>
-	
+
 	<% if @adsense_enabled && false %>
 		<h2><span>Реклама</span></h2>
 
@@ -45,14 +45,14 @@
 <body class="main_page">
 	<div class="logo">
 		<%= link_to_if (params[:controller] != 'main' || params[:action] != 'index'), image_tag("logo.png", :size => '212x45', :alt => 'Mmm... tasty', :class => 'logo_img'), main_url, :class => 'logo_link' %>
-	</div>	
+	</div>
 	<div class="register_enter">
 		<% if current_user %>
 			<div class='top_hello'>
 					Рады снова видеть Вас, <%= link_to_tlog(current_user, :link => :username) %>!
 			</div>
 		<% end %>
-		
+
 		<div class='top_menu'>
 			<ul>
 				<%= menu_item 'Что это?', :about %>
@@ -65,7 +65,7 @@
 			</ul>
 		</div>
 	</div>
-	
+
 	<div id='wrapper'>
 		<% sidebar_left = capture do %><%= yield :sidebar_left %><% end %>
 		<% unless sidebar_left.blank? %>

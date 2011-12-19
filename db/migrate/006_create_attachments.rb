@@ -8,7 +8,7 @@ class CreateAttachments < ActiveRecord::Migration
 
       # тип аттачмента
       t.column :type, :string
-      
+
       # метаданные
       t.column :metadata, :string
 
@@ -20,7 +20,7 @@ class CreateAttachments < ActiveRecord::Migration
       t.column :width, :integer
       t.column :height, :integer
     end
-    
+
     add_index :attachments, :entry_id
     add_index :attachments, :parent_id
   end

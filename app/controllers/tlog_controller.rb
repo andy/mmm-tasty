@@ -39,17 +39,17 @@ class TlogController < ApplicationController
       render_tasty_404("Этот имя занято, но пользователь еще не сделал ни одной записи.<br/>Загляните, пожалуйста, позже.<br/><br/><a href='http://www.mmm-tasty.ru/'>&#x2190; вернуться на главную</a>")
     end
   end
-  
+
   def private
     redirect_to '/' and return unless is_owner?
-    
+
     @title = 'ваши скрытые записи'
     @entries = current_site.entries.private.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
   end
-  
+
   def anonymous
     redirect_to '/' and return unless is_owner?
-    
+
     @title = 'ваши анонимки'
     @entries = current_site.entries.anonymous.for_view.paginate :page => params[:page], :per_page => Entry::PAGE_SIZE
     render :action => 'private'
@@ -76,11 +76,11 @@ class TlogController < ApplicationController
     @comment ||= Comment.new
     @time = @entry.created_at
   end
-  
+
   def metadata
     render :partial => 'metadata', :locals => { :entry => @entry }
   end
-  
+
   def tags
     render :partial => 'tags'
   end
@@ -100,14 +100,14 @@ class TlogController < ApplicationController
       page.visual_effect :highlight, :sidebar_relationship, :duration => 0.3
     end
   end
-  
+
   def subscribe
     @entry.subscribers << current_user if current_user
     render :update do |page|
       page.toggle('subscribe_link', 'unsubscribe_link')
     end
   end
-  
+
   def unsubscribe
     @entry.subscribers.delete(current_user) if current_user
     render :update do |page|
@@ -118,7 +118,7 @@ class TlogController < ApplicationController
   def day
     @time ||= [params[:year], params[:month], params[:day]].join('-').to_date.to_time
     @title = current_site.tlog_settings.title
-    
+
     # если пользователь предпочел скрыть прошлое, делаем вид что такой страницы не существует
     if current_site.tlog_settings.past_disabled? && @time.to_date != current_site.last_public_entry_at.to_date && !is_owner?
       @past_disabled = true
@@ -128,15 +128,15 @@ class TlogController < ApplicationController
     end
     render :action => 'day'
   end
-  
+
   # удаляет запись из тлога
   def destroy
     url = url_for_entry(@entry)
     @entry.destroy
     flash[:good] = 'Запись была удалена'
     redirect_to url
-  end  
-  
+  end
+
   private
     def find_entry
       @entry = Entry.find_by_id_and_user_id params[:id], current_site.id

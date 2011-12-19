@@ -9,7 +9,7 @@ xml.rss :version => '2.0' do
     xml.pubDate "#{@entries.first.created_at.to_s(:rfc822)}" if @entries.first
     xml.generator "mmm...rss (http://www.mmm-tasty.ru/)"
     xml.ttl 5
-  
+
     @entries.each do |entry|
       xml.item do
         xml.title { xml.cdata!("#{entry.author.url} - #{white_list_entry(entry.excerpt)}") }
@@ -17,7 +17,7 @@ xml.rss :version => '2.0' do
         xml.description { xml.cdata!(render('entries/entry_embed', { :entry => entry })) }
         xml.guid "#{url_for_tlog(entry.author) + entry_path(entry)}"
         xml.pubDate entry.created_at.to_s(:rfc822)
-        
+
         # <enclosure ...>. Не делаем для картинок, потому что они и так уже включены в код и
         #  некоторые рсс-читалки будут показывать картинку дважды
         if entry[:type] != 'ImageEntry' && !entry.attachments.empty?

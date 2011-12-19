@@ -2,10 +2,10 @@ class ConfirmController < ApplicationController
   before_filter :require_current_user, :only => [:required, :resend]
   before_filter :redirect_home_if_current_user_is_confirmed, :except => [:code]
   layout 'account'
-  
+
   def required
   end
-  
+
   def resend
     if request.post?
       current_user.update_confirmation!(current_user.email)
@@ -13,7 +13,7 @@ class ConfirmController < ApplicationController
       flash[:good] = "Загляните, пожалуйста, в почтовый ящик #{current_user.email}, там должно быть письмо с кодом подтверждения"
     end
     redirect_to confirm_url(:action => :required)
-  end  
+  end
 
   # /confirm/code/13_4efeb9ce
   def code
@@ -31,7 +31,7 @@ class ConfirmController < ApplicationController
       cookies['login_field_value'] = { :value => user.email, :expires => 10.years.from_now, :domain => request.domain } unless user.is_openid?
     end
     flash[:good] = "Вы успешно подтвердили свой емейл, #{user.username}!"
-    
+
     if current_user
       if was_confirmed
         redirect_to :action => 'email'
@@ -44,7 +44,7 @@ class ConfirmController < ApplicationController
       redirect_to login_url
     end
   end
-  
+
   private
     def redirect_home_if_current_user_is_confirmed
       redirect_to settings_url(:host => host_for_tlog(current_user)) and return false if current_user.is_confirmed?

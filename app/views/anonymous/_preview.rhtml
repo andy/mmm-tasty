@@ -2,7 +2,7 @@
 	<h2>предпросмотр
 		<span><%= button_to_function 'Отправить комментарий', "$('#{@entry.dom_id(:form)}').submit(); return false;", :class => 'button' %></span>
 	</h2>
-	<div class="post_comment post_comment_new" id="<%= dom_id(@comment) %>">				
+	<div class="post_comment post_comment_new" id="<%= dom_id(@comment) %>">
 		<div class='rel'>
 			<div class='post_comment_avatar'>
 				<% if !@comment.user.nil? && @comment.user.avatar %>

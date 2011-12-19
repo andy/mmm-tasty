@@ -8,6 +8,6 @@
 	<% "<div class='onair'>" unless current_site %>
 		<% @tags.each do |tag, weight, count| %>
 			<%= link_to tag, tag_view_url(:tags => tag), { :style => "font-size: #{weight}px;", :title => "#{count.pluralize('запись', 'записи', 'записей', true)} с этим тегом" } %>
-		<% end %>	
+		<% end %>
 	<% "</div>" unless current_site %>
 </div>

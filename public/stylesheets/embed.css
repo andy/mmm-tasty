@@ -5,7 +5,7 @@
 div.post_body img {
 	border:1px solid #777;
 	padding:1px;
-} 
+}
 
 
 /* POST QUATATION */
@@ -17,7 +17,7 @@ div.quote_entry span.quote_entry_body {
 	color:#333;
 	letter-spacing:-1px;
 	background:url("/images/bg_qout.gif") no-repeat top left;
-} 
+}
 
 div.quote_entry span.quote_entry_source {
 	display:block;
@@ -25,13 +25,13 @@ div.quote_entry span.quote_entry_source {
 	font-size:100%;
 	font-style:italic;
 	padding-top:7px;
-} 
+}
 
 
 /* POST LINK */
 
 div.post_link_entry a.big_link {
-	font-size:220%;		
+	font-size:220%;
 	font-style:bold;
 	line-height:1.1em;
 }
@@ -42,7 +42,7 @@ div.convo {
 	background:#ffefd7;
 	font-family:Arial, Hevletica;
 	margin:0 70px 0 30px;
-	
+
 }
 
 .person_1, .person_2  {
@@ -53,8 +53,8 @@ div.convo {
 
 .person_1 span, .person_2 span {
 	font-weight:bold;
-} 
+}
 
 .person_2 {
-	background:#f6ce96;	
+	background:#f6ce96;
 }

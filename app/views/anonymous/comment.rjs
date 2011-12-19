@@ -1,6 +1,6 @@
 if @comment.valid?
   page.call :clear_all_errors
-  page.redirect_to anonymous_url(:action => :show, :id => @entry.id)  
+  page.redirect_to anonymous_url(:action => :show, :id => @entry.id)
 else
   page.call :clear_all_errors
   @comment.errors.each do |element, message|

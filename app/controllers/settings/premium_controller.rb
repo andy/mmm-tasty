@@ -4,7 +4,7 @@ class Settings::PremiumController < ApplicationController
 
   helper :settings
   layout "settings"
-  
+
   def index
   end
 end

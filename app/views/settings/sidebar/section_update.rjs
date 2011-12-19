@@ -9,4 +9,3 @@ else
     page.call :error_message_on, @section.new_record? ? 'new-name-sidebar-section' : @section.dom_id(:name), message
   end
 end
-  

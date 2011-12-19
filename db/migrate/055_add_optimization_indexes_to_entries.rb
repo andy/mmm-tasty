@@ -6,6 +6,6 @@ class AddOptimizationIndexesToEntries < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :entries, [:is_mainpageable, :is_private, :id]    
+    remove_index :entries, [:is_mainpageable, :is_private, :id]
   end
 end

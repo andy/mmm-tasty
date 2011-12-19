@@ -37,16 +37,16 @@ class RequestRoutingTest < Test::Unit::TestCase
       '/'
     )
   end
-  
+
   def test_normal_routes
     assert_raise(ActionController::RoutingError) do
       @rs.recognize(@request)
     end
-    
+
     @request.path = '/test/thing'
     assert(@rs.recognize(@request))
   end
-  
+
   def test_subdomain
     @rs.draw { |m| m.connect 'thing', :controller => 'test', :conditions => { :subdomain => 'www' }  }
     @request.path = '/thing'
@@ -56,27 +56,27 @@ class RequestRoutingTest < Test::Unit::TestCase
       @rs.recognize(@request)
     end
   end
-  
+
   def test_protocol
     @rs.draw { |m| m.connect 'thing', :controller => 'test', :conditions => { :protocol => /^https/ }  }
     @request.path = '/thing'
     assert_raise(ActionController::RoutingError) do
       @rs.recognize(@request)
     end
-    
+
     @request.protocol = "https://"
     assert(@rs.recognize(@request))
   end
-  
+
   def test_alternate
-    @rs.draw { |m| 
-      m.connect 'thing', :controller => 'test', :conditions => { :remote_ip => '1.2.3.4' }  
+    @rs.draw { |m|
+      m.connect 'thing', :controller => 'test', :conditions => { :remote_ip => '1.2.3.4' }
       m.connect 'thing', :controller => 'other_test', :conditions => { :remote_ip => '1.2.3.5' }
     }
-    
+
     @request.path = '/thing'
     assert(@rs.recognize(@request))
-    
+
     @request.remote_ip = '1.2.3.5'
     assert(@rs.recognize(@request))
   end

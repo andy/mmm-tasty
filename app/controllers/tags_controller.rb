@@ -8,7 +8,7 @@ class TagsController < ApplicationController
 
     obj = current_site ? current_site : Entry
     @tags = Tag.cloud(:minimum_font_size => 14, :maximum_font_size => 25) { obj.top_categories(options) }
-    
+
     respond_to do |wants|
       wants.html { render :layout => 'tlog' if current_site }
       wants.js { render :layout => false }
@@ -18,7 +18,7 @@ class TagsController < ApplicationController
   def view
     options = {}
     options[:include_private] = true if current_user && current_site && current_site.id == current_user.id
-    options[:owner] = current_site if current_site    
+    options[:owner] = current_site if current_site
 
     @tags = params[:tags]
     total = Entry.count_tagged_with(@tags, options) unless @tags.blank?
@@ -27,5 +27,5 @@ class TagsController < ApplicationController
     # @tags_global_count = current_site ? (Entry.count_tagged_with(@tags) - total) : 0
 
     render :layout => 'tlog' if current_site
-  end  
+  end
 end

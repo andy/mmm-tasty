@@ -6,8 +6,8 @@
 		<%= menu_item 'пароль', :password %>
 		<%= menu_item 'почта', :email, %w(settings/default/email) %>
 	<% end %>
-	<%= menu_item "#{image_tag('ctulhu.gif')} Друзья", :social, %w(settings/social/index) %>	
-	<% menu_item 'Тлог', :design, %w(design settings/sidebar/index rename) do %>	
+	<%= menu_item "#{image_tag('ctulhu.gif')} Друзья", :social, %w(settings/social/index) %>
+	<% menu_item 'Тлог', :design, %w(design settings/sidebar/index rename) do %>
 		<%= menu_item 'оформление', :design %>
 		<%= menu_item 'боковая панель', :sidebar, %w(settings/sidebar/index) %>
 		<%= menu_item 'изменить адрес', account_url(:host => 'www.mmm-tasty.ru', :action => :rename), %w(rename) %>

@@ -7,7 +7,7 @@
 	embed ||= false unless local_assigns.has_key?(:embed) && embed
 	mini ||= false unless local_assigns.has_key?(:mini) && mini
 	index ||= -1 unless local_assigns.has_key?(:index) && index
-	
+
 if show_datetime -%>
 	<div class="rel">
 		<div class="service_date"<%= " title='#{entry.created_at.distance_between_in_words(Time.now, ' назад')}'" if params[:action] == 'day' %>>
@@ -18,7 +18,7 @@ if show_datetime -%>
 			<%- end -%>
 			<span class="bg_text_date"><span><%= entry.created_at.day %></span></span>
 			<span class="blue"><span><%= entry.created_at.month.to_rmonth %><%- if entry.created_at.same_day?(Time.now.yesterday) -%>,<%- end -%></span></span>
-			
+
 			<%- if entry.created_at.same_day?(Time.now.yesterday) -%>
 				<span class="blue"><span>вчера</span></span>
 			<%- end -%>
@@ -45,7 +45,7 @@ if show_datetime -%>
 			</div>
 		</div>
 	<% end -%>
-	
+
 	<%- if show_comments_bubble -%>
 		<%- if entry.comments_enabled? || entry.comments_count > 0 -%>
 			<div class='service_comments<%= ' has_comments' unless entry.comments_count.zero? %>'>
@@ -76,6 +76,6 @@ if show_datetime -%>
 		<% end %>
 	<% end %>
 	<div class='post_content'>
-		<%= render 'entries/display/' + entry.class.to_s.underscore, { :entry => entry, :mini => mini, :embed => embed } %>	
+		<%= render 'entries/display/' + entry.class.to_s.underscore, { :entry => entry, :mini => mini, :embed => embed } %>
 	</div>
 </div>

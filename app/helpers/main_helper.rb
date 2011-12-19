@@ -12,7 +12,7 @@ module MainHelper
     link_options[:class] = 'selected' if selected_action.include?(params[:action]) ||
         selected_action.include?([params[:controller], params[:action]].join('/')) ||
         selected_action.include?(params[:controller] + '/*')
-        
+
     content_tag :li, link_to(name, url, link_options)
   end
 end

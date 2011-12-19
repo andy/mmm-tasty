@@ -26,6 +26,6 @@
 			<%= render 'entries/entry_display', { :entry => entry_rating.entry, :show_comments_bubble => true, :show_username => true } %>
 		<% end %>
 
-		<%= render 'globals/pagination', { :pageable => @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } } %>	
+		<%= render 'globals/pagination', { :pageable => @entry_ratings, :reverse => true, :url_options => { :kind => @filter.kind, :rating => @filter.rating } } %>
 	</div>
 <% end %>

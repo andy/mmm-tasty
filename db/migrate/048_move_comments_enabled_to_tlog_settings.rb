@@ -2,7 +2,7 @@ class MoveCommentsEnabledToTlogSettings < ActiveRecord::Migration
   def self.up
     # добавляем поле с количеством комментариев
     add_column :tlog_settings, :comments_enabled, :boolean, :default => false, :null => true
-    
+
     # мигрируем запись из user.settings в tlog_settings..
     User.find(:all, :include => [:tlog_settings]).each do |user|
       comments_enabled = user.settings[:comments_enabled] rescue false
@@ -18,6 +18,6 @@ class MoveCommentsEnabledToTlogSettings < ActiveRecord::Migration
       user.save!
     end
     # удаляем
-    remove_column :tlog_settings, :comments_enabled    
+    remove_column :tlog_settings, :comments_enabled
   end
 end

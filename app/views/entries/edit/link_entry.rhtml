@@ -20,5 +20,5 @@
 <div id='link_comment_box'<%= "style='display: none;'" if @entry.data_part_3.blank? %>>
 	<label for='entry_data_part_3'>Описание <em>(необязательное поле)</em>: </label><br/>
 	<%= text_area 'entry', 'data_part_3', :rows => 5, :class => 'resizeable' %>
-	<%= tasty_error_message_on 'entry', 'data_part_3' %>	
+	<%= tasty_error_message_on 'entry', 'data_part_3' %>
 </div>

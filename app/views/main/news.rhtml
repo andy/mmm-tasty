@@ -1,7 +1,7 @@
 <% @title = 'новости' %>
 <% @sidebar_left_short = true %>
 <div class='onair'>
-	<%= render('globals/pagination', { :pageable => @entries, :reverse => true, :css_class => 'top_nav_paginator' }) if @page > 1 %>	
+	<%= render('globals/pagination', { :pageable => @entries, :reverse => true, :css_class => 'top_nav_paginator' }) if @page > 1 %>
 
 	<%- prev_entry = nil -%>
 	<% @entries.each do |entry| %>
@@ -9,7 +9,7 @@
 		<%- prev_entry = entry -%>
 	<% end %>
 
-	<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>	
+	<%= render 'globals/pagination', { :pageable => @entries, :reverse => true } %>
 </div>
 
 <% content_for :sidebar_left do %>

@@ -13,11 +13,11 @@
 class CGI
   class Session
     @@session_expiration_offset = 0
-    
+
     def self.session_expiration_offset
       @@session_expiration_offset
     end
-    
+
     def self.session_expiration_offset=(value)
       @@session_expiration_offset = value
     end
@@ -25,7 +25,7 @@ class CGI
     def self.expire_after(value)
       @@session_expiration_offset = value
     end
-    
+
     alias :initialize_without_dynamic_session_expiration :initialize #:nodoc:
     def initialize(request, option={}) #:nodoc:
       if @@session_expiration_offset && @@session_expiration_offset > 0
@@ -33,6 +33,6 @@ class CGI
       end
       initialize_without_dynamic_session_expiration(request, option)
     end
-    
+
   end
 end

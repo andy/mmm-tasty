@@ -11,5 +11,5 @@ class BookmarkletController < ApplicationController
   end
 
   def published
-  end  
+  end
 end

@@ -10,7 +10,7 @@
 		<% else %>
 			<%= link_to_tlog current_site, :link => :avatar if current_site.avatar %>
 		<% end %>
-		
+
 		<% if current_user && !is_owner? %>
 			<%# код из _relationship.rhtml, один в один %>
 			<%- relationship = current_user.relationship_with(current_site, true) -%>
@@ -26,7 +26,7 @@
 		<%= link_to_function "О #{current_site.gender('нём', 'ней')}", "sidebar_toggle('about')", :class => 'sidebar_toggle', :id => 'sidebar_about_link' %>
 		<div class='sidebar_section_content' id='sidebar_about_content' style='display: none'>
 				<%= white_list_entry(current_site.tlog_settings.about) %>
-				
+
 				<% unless current_site.faves.size.zero? %>
 					<div id='about_submenu'>
 					  <%= link_to "избранное", faves_url %>
@@ -40,7 +40,7 @@
 <% if is_owner? && current_site.entries_count > 0 %>
   <% personal_keep_open = %w(private anonymous).include?(params[:action]) %>
   <div class='sidebar_section' id='sidebar_personal'>
-		<%= link_to_function 'Личное', "sidebar_toggle('personal')", :title => "в вашем тлоге", :class => "sidebar_toggle #{'highlight' if personal_keep_open}", :id => 'sidebar_personal_link' %>		
+		<%= link_to_function 'Личное', "sidebar_toggle('personal')", :title => "в вашем тлоге", :class => "sidebar_toggle #{'highlight' if personal_keep_open}", :id => 'sidebar_personal_link' %>
 		<div class='sidebar_section_content' id='sidebar_personal_content' <%= " style='display: none'" unless personal_keep_open %>>
 		  <ul>
 		    <li>
@@ -52,14 +52,14 @@
 		      <%= content_tag :span, current_site.entries.anonymous.count.pluralize('штука', 'штуки', 'штук', true) %>
 		    </li>
 		  </ul>
-		</div>    
+		</div>
   </div>
 <% end %>
 
 <% unless current_site.entries_count_for(current_user).zero? %>
 	<% unless current_site.tlog_settings.sidebar_hide_search? %>
 		<div class='sidebar_section' id='sidebar_search'>
-			<%= link_to_function 'Поиск', "sidebar_toggle('search')", :title => "в #{current_site.gender("его", "её")} тлоге", :class => "sidebar_toggle #{'highlight' if params[:query]}", :id => 'sidebar_search_link' %>		
+			<%= link_to_function 'Поиск', "sidebar_toggle('search')", :title => "в #{current_site.gender("его", "её")} тлоге", :class => "sidebar_toggle #{'highlight' if params[:query]}", :id => 'sidebar_search_link' %>
 			<div class='sidebar_section_content' id='sidebar_search_content' <%= " style='display: none'" unless params[:query] %>>
 				<form method='get' action='<%= search_url %>'>
 					<%= text_field_tag 'query', params[:query], :autosave => "com.tlog.#{(current_site.domain || current_site.url).downcase.underscore}", :results => 10, :id => nil, :class => 'sidebar_search_input' %>
@@ -86,7 +86,7 @@
 			</div>
 		</div>
 	<% end %>
-	
+
 	<% if (is_owner? || !current_site.tlog_settings.past_disabled?) && (params[:action] == 'day' || !current_site.tlog_settings.sidebar_hide_calendar?) %>
 		<div class='sidebar_section' id='sidebar_calendar'>
 			<%= link_to_function 'Календарь', "sidebar_toggle('calendar')" , :class => "sidebar_toggle #{'highlight' if params[:action] == 'day'}", :id => 'sidebar_calendar_link' %>
@@ -108,7 +108,7 @@
 			</div>
 		</div>
 	<% end %>
-	
+
 	<% unless current_site.tlog_settings.sidebar_hide_messages? %>
 		<div class='sidebar_section' id='sidebar_messages'>
 			<%= link_to_function 'Сообщения', "sidebar_toggle('messages')", :class => 'sidebar_toggle', :id => 'sidebar_messages_link' %>
@@ -124,7 +124,7 @@
 		<div class='sidebar_section' id='<%= section.dom_id %>'>
 			<%= link_to_function section.name, "sidebar_toggle('section_#{section.id}')", :class => "sidebar_toggle #{'highlight' if section.is_open?}", :id => section.dom_id(nil, :link) %>
 			<div class='sidebar_section_content' id='<%= section.dom_id(nil, :content) %>' <%= ' style="display: none"' unless section.is_open? %>>
-				<% section.elements.each do |element| %>				
+				<% section.elements.each do |element| %>
 					<p><%= render element.template_path, { :element => element } %></p>
 				<% end %>
 			</div>

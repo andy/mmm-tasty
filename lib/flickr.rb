@@ -1,6 +1,6 @@
 # = Flickr
 #   An insanely easy interface to the Flickr photo-sharing service. By Scott Raymond.
-#   
+#
 # Author::    Scott Raymond <sco@redgreenblu.com>
 # Copyright:: Copyright (c) 2005 Scott Raymond <sco@redgreenblu.com>
 # License::   MIT <http://www.opensource.org/licenses/mit-license.php>
@@ -67,7 +67,7 @@ class Flickr
     raise response['err']['msg'] if response['stat'] != 'ok'
     response
   end
-  
+
   # Takes a Flickr API method name and set of parameters; returns the correct URL for the REST API.
   # If @email and @password are present, authentication information is included
   def request_url(method, *params)
@@ -76,7 +76,7 @@ class Flickr
     url += "&email=#{@email}&password=#{@password}" if @email and @password
     url
   end
-  
+
   # Does an HTTP GET on a given URL and returns the response body
   def http_get(url)
     Net::HTTP.get_response(URI.parse(url)).body.to_s
@@ -90,7 +90,7 @@ class Flickr
     user = request('test.login')['user'] rescue fail
     @user = User.new(user['id'])
   end
-  
+
   # Implements flickr.urls.lookupGroup and flickr.urls.lookupUser
   def find_by_url(url)
     response = urls_lookupUser('url'=>url) rescue urls_lookupGroup('url'=>url) rescue nil
@@ -107,7 +107,7 @@ class Flickr
   def tag(tag)
     photos('tags'=>tag)
   end
-  
+
   # Implements flickr.people.getOnlineList, flickr.people.findByEmail, and flickr.people.findByUsername
   def users(lookup=nil)
     if(lookup)
@@ -122,17 +122,17 @@ class Flickr
   def groups
     groups_getActiveList['activegroups']['group'].collect { |group| Group.new(group['nsid']) }
   end
-  
+
   # Implements flickr.tags.getRelated
   def related_tags(tag)
     tags_getRelated('tag_id'=>tag)['tags']['tag']
   end
-  
+
   # Implements flickr.photos.licenses.getInfo
   def licenses
     photos_licenses_getInfo['licenses']['license']
   end
-  
+
   # Implements everything else.
   # Any method not defined explicitly will be passed on to the Flickr API,
   # and return an XmlSimple document. For example, Flickr#test_echo is not defined,
@@ -158,7 +158,7 @@ class Flickr
   # flickr.test.login
   # uploading
   class User
-    
+
     attr_reader :client, :id, :name, :location, :photos_url, :url, :count, :firstdate, :firstdatetaken
 
     def initialize(id=nil, username=nil, email=nil, password=nil)
@@ -194,12 +194,12 @@ class Flickr
     def url
       @url.nil? ? getInfo.url : @url
     end
-        
+
     # Implements flickr.people.getPublicGroups
     def groups
       @client.people_getPublicGroups('user_id'=>@id)['groups']['group'].collect { |group| Group.new(group['nsid']) }
     end
-    
+
     # Implements flickr.people.getPublicPhotos
     def photos
       @client.people_getPublicPhotos('user_id'=>@id)['photos']['photo'].collect { |photo| Photo.new(photo['id']) }
@@ -216,13 +216,13 @@ class Flickr
       @client.contacts_getPublicList('user_id'=>@id)['contacts']['contact'].collect { |contact| User.new(contact['nsid']) }
       #or
     end
-    
+
     # Implements flickr.favorites.getPublicList and flickr.favorites.getList
     def favorites
       @client.favorites_getPublicList('user_id'=>@id)['photos']['photo'].collect { |photo| Photo.new(photo['id']) }
       #or
     end
-    
+
     # Implements flickr.photosets.getList
     def photosets
       @client.photosets_getList('user_id'=>@id)['photosets']['photoset'].collect { |photoset| Photoset.new(photoset['id']) }
@@ -239,7 +239,7 @@ class Flickr
       # or
       #@client.photos_getContactsPhotos['photos']['photo'].collect { |photo| Photo.new(photo['id']) }
     end
-    
+
     def to_s
       @name
     end
@@ -270,7 +270,7 @@ class Flickr
       @id = id.to_s
       @client = Flickr.new
     end
-    
+
     def title
       @title.nil? ? getInfo.title : @title
     end
@@ -360,7 +360,7 @@ class Flickr
     # Implements flickr.photos.notes.add
     def add_note(note)
     end
-    
+
     # Implements flickr.photos.setDates
     def dates=(dates)
     end
@@ -368,11 +368,11 @@ class Flickr
     # Implements flickr.photos.setPerms
     def perms=(perms)
     end
-    
+
     # Implements flickr.photos.setTags
     def tags=(tags)
     end
-    
+
     # Implements flickr.photos.setMeta
     def title=(title)
     end
@@ -382,7 +382,7 @@ class Flickr
     # Implements flickr.photos.addTags
     def add_tag(tag)
     end
-    
+
     # Implements flickr.photos.removeTag
     def remove_tag(tag)
     end
@@ -403,12 +403,12 @@ class Flickr
     # Implements flickr.photos.notes.edit
     def editNote(note_id)
     end
-        
+
     # Converts the Photo to a string by returning its title
     def to_s
       getInfo.title
     end
-    
+
     private
 
       # Implements flickr.photos.getInfo
@@ -435,7 +435,7 @@ class Flickr
   # flickr.groups.pools.remove
   class Group
     attr_reader :id, :client, :name, :members, :online, :privacy, :chatid, :chatcount, :url
-    
+
     def initialize(id=nil)
       @id = id
       @client = Flickr.new
@@ -487,5 +487,5 @@ class Flickr
     end
 
   end
-    
+
 end

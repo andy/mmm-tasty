@@ -29,10 +29,10 @@ ActionController::Routing::Routes.draw do |map|
     www.tags 'tags/:action/:id', :controller => 'tags'
 
     map.bookmarklet 'bookmarklet/:action', :controller => 'bookmarklet'
-    
+
     www.resources :feedbacks, :member => { :publish => :post, :discard => :post }
   end
-  
+
   # это домены пользователей: andy.mmm-tasty.ru, genue.mmm-tasty.ru и так далее
   map.with_options :controller => 'tlog' do |tlog|
     tlog.tlog '', :action => 'index'
@@ -48,9 +48,9 @@ ActionController::Routing::Routes.draw do |map|
     tlog.connect 'search/:action', :controller => 'search'
     tlog.connect 'tag/*tags', :controller => 'tags', :action => 'view'
     tlog.connect 'tags/:action/:id', :controller => 'tags'
-    
+
     tlog.day ':year/:month/:day', :controller => 'tlog', :action => 'day', :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
-    
+
     tlog.tlog_feed 'feed/:action.xml', :controller => 'tlog_feed'
     tlog.tlog_feed_protected 'feed/:key/:action.xml', :controller => 'tlog_feed'
 
@@ -61,10 +61,10 @@ ActionController::Routing::Routes.draw do |map|
       entry.resources :comments, :new => { :preview => :post }
       entry.resources :tags, :controller => 'entry_tags', :name_prefix => 'entry_'
     end
-    
+
     tlog.resources :messages, :controller => 'messages'
     tlog.resources :faves, :controller => 'faves'
   end
-  
+
   map.catch_all "*anything", :controller => 'global', :action => 'not_found'
 end

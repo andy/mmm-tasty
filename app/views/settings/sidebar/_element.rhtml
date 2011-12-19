@@ -1,9 +1,9 @@
 <li id='<%= element.dom_id %>' class='sidebar-element-li'>
 	<%= image_tag 'ctulhu.gif', :class => 'ctulhu', :id => element.dom_id(:ctulhu), :title => 'я ктулху, меня можно таскать', :alt => 'drag' %>
 	<div id='<%= element.dom_id(:content) %>' class='sidebar-element-name'><%= render element.template_path, { :element => element } %></div>
-	
+
 	<%= link_to_remote image_tag('delete.gif'), :url => settings_sidebar_url(:action => 'element_delete', :element_id => element.id), :title => 'удалить этот елемент' %>
 	<%= link_to_function image_tag('edit.gif'), "$('#{element.dom_id(:edit)}').toggle();", :title => 'редактировать' %>
-	
+
 	<%= render :partial => 'element_form', :locals => { :element => element } %>
 </li>

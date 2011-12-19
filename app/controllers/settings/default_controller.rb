@@ -35,7 +35,7 @@ class Settings::DefaultController < ApplicationController
         current_user.avatar.destroy if current_user.avatar
         @avatar.save!
       end
-      
+
       # достаем настройки. здесь это будут username и gender
       @user.gender = %w(m f).include?(params[:user][:gender]) ? params[:user][:gender] : 'm'
       @user.username = params[:user][:username]
@@ -53,14 +53,14 @@ class Settings::DefaultController < ApplicationController
       end
     end
   end
-  
+
   def deavatar
     render :nothing => true and return unless request.delete?
     current_user.avatar.destroy if current_user.avatar
     flash[:good] = 'Ваш аватар был удален'
     redirect_to :action => :user_common
   end
-  
+
   def password
     redirect_to :action => 'index' if current_user.crypted_password.blank?
     if request.post?
@@ -77,7 +77,7 @@ class Settings::DefaultController < ApplicationController
       end
     end
   end
-    
+
   def agreement
   end
 
@@ -85,10 +85,10 @@ class Settings::DefaultController < ApplicationController
     @settings = current_user.settings
     @tlog_settings = current_user.tlog_settings
   end
-    
+
   def design
     @design = current_site.tlog_design_settings || current_site.create_tlog_design_settings
-    
+
     { "color_tlog_text"     => "414141",
       "color_sidebar_text"  => "FFFFFF",
       "color_voter_bg"      => "BCBCBC",
@@ -97,7 +97,7 @@ class Settings::DefaultController < ApplicationController
       "color_voter_text"    => "FFFFFF",
       "color_link"          => "FF5300",
       "color_sidebar_bg"    => "000000",
-      "color_date"          => "858585" 
+      "color_date"          => "858585"
     }.each do |key, value|
       @design.send("#{key}=", value) if @design.send(key).blank?
     end
@@ -113,18 +113,18 @@ class Settings::DefaultController < ApplicationController
           @design.tlog_background.destroy if @design.tlog_background
           @tlog_background.tlog_design_settings = @design
           @tlog_background.save!
-          
+
           # обновляем адрес..
           @design.update_attributes!({ :background_url => @tlog_background.public_filename })
         end
-        
+
         TlogSettings.increment_counter(:css_revision, current_site.tlog_settings.id)
         flash[:good] = 'Настройки сохранены'
         redirect_to settings_url(:action => :design)
       end
     end
   end
-  
+
   def email
     @user = User.find(current_user.id)
     @tlog_settings = current_user.tlog_settings
@@ -136,7 +136,7 @@ class Settings::DefaultController < ApplicationController
       @user.comments_auto_subscribe = params[:user][:comments_auto_subscribe]
       @user.save
 
-      @email = params[:user][:email]      
+      @email = params[:user][:email]
 
       @tlog_settings.update_attributes({
         :tasty_newsletter => params[:tlog_settings][:tasty_newsletter]

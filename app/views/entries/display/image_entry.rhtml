@@ -1,6 +1,6 @@
 <%# если картинка ссылкой на удаленный ресурс %>
 <% if entry.data_part_1 %>
-  <%= image_tag entry.data_part_1, { :title => '', :alt => 'изображение' }.merge(entry.geometry) %>  
+  <%= image_tag entry.data_part_1, { :title => '', :alt => 'изображение' }.merge(entry.geometry) %>
 <% elsif !entry.attachments.empty? %>
   <%
     image = entry.attachments.first

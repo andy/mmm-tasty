@@ -11,7 +11,7 @@
 		<% end %>
 
 		<%= button_to_function 'Сохранить', '$("entry_edit_form").submit(); return false;', :id => 'save_from_preview', :class => 'button' %>
-	
+
 		<%= yield :preview_controls %>
 	</div>
 </div>

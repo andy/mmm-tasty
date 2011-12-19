@@ -5,7 +5,7 @@
 <% unless @disable_css %>
 <%- if !request.cookies['css'].blank? -%>
 	<%- css = h(request.cookies['css'].value) -%>
-	
+
 	<% if css.starts_with?('http://www.mmm-tasty.ru/stylesheets/') %>
 		<%- css_path = css[36..100] -%>
 		<%= stylesheet_link_tag (css_path + 'global') %>

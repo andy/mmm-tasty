@@ -5,26 +5,26 @@ module ActionController
     class RouteSet
       def recognize(request)
         @request = request
-        
-        string_path = @request.path  
-        string_path.chomp! if string_path[0] == ?/  
-        path = string_path.split '/'  
-        path.shift  
-   
-        hash = recognize_path(path)  
-        return recognition_failed(@request) unless hash && hash['controller']  
-   
-        controller = hash['controller']  
-        hash['controller'] = controller.controller_path  
-        @request.path_parameters = hash  
-        controller.new 
+
+        string_path = @request.path
+        string_path.chomp! if string_path[0] == ?/
+        path = string_path.split '/'
+        path.shift
+
+        hash = recognize_path(path)
+        return recognition_failed(@request) unless hash && hash['controller']
+
+        controller = hash['controller']
+        hash['controller'] = controller.controller_path
+        @request.path_parameters = hash
+        controller.new
       end
        alias :recognize! :recognize
     end
-    
+
     class Route
       REQUEST_CONDITIONS = %w{subdomain domain method port remote_ip content_type accepts request_uri protocol}.map &:to_sym
-      
+
       def initialize(path, options = {})
         @path, @options = path, options
 
@@ -35,15 +35,15 @@ module ActionController
         add_default_requirements
         initialize_keys
       end
-      
+
       def initialize_hashes(options)
-        path_keys = components.collect {|c| c.key }.compact 
+        path_keys = components.collect {|c| c.key }.compact
         self.known = {}
         defaults = options.delete(:defaults) || {}
         conditions = options.delete(:require) || {}
         conditions.update(options.delete(:requirements) || {})
         request_conditions = options.delete(:conditions) || {}
-    
+
         options.each do |k, v|
           if path_keys.include?(k) then (v.is_a?(Regexp) ? conditions : defaults)[k] = v
           else known[k] = v
@@ -51,7 +51,7 @@ module ActionController
         end
         [defaults, conditions, request_conditions]
       end
-  
+
       def write_recognition(generator = CodeGeneration::RecognitionGenerator.new)
         g = generator.dup
         g.share_locals_with generator
@@ -62,7 +62,7 @@ module ActionController
           else g.constant_result(key, value)
           end
         end
-        
+
         conds = @request_conditions.collect do |key, value|
           if value.is_a? Regexp
             "@request.#{ (key == :subdomain) ? "subdomains.first" : key.to_s }.to_s =~ #{value.inspect}"
@@ -70,7 +70,7 @@ module ActionController
             "@request.#{ (key == :subdomain) ? "subdomains.first" : key.to_s } == #{value.inspect}"
           end
         end
-        
+
         if !conds.empty?
           g.if(conds.join(' && ')) { |gp| gp.go }
         else
@@ -79,7 +79,7 @@ module ActionController
 
         generator
       end
-      
+
     end
   end
 end

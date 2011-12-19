@@ -6,7 +6,7 @@ module SettingsHelper
         span_options = {
           :id => "#{prefix}_#{index}",
           :style => 'background-color: #FF8099; cursor: hand; cursor: pointer; padding: 0 5px;',
-          :onclick => "$('#{prefix}_#{index}', '#{prefix}_#{(index==options.size-1)?0:(index+1)}').invoke('toggle');" 
+          :onclick => "$('#{prefix}_#{index}', '#{prefix}_#{(index==options.size-1)?0:(index+1)}').invoke('toggle');"
         }
         span_options[:style] += 'display: none;' if index != 0
         span_options[:style] += 'background-color: #FFE680;' if index == 0
@@ -15,7 +15,7 @@ module SettingsHelper
       end
     end.join(' ')
   end
-  
+
   #
   # <%= menu_item "Тип тлога", :blah, %w(blah index gah)
   # <%= menu_item
@@ -35,7 +35,7 @@ module SettingsHelper
       content_tag :li, link_to(name, url, link_options)
     end
   end
-  
+
   # sidebar_check_box(:is_open)
   # sidebar_check_box(:hide_tags)
   # sidebar_check_box(:hide_search)

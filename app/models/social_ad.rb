@@ -18,12 +18,12 @@ class SocialAd < ActiveRecord::Base
     conditions = ["#{self.table_name}.created_at > 0 AND #{self.table_name}.is_disabled = 0"]
     conditions << ["#{self.table_name}.user_id NOT IN (SELECT user_id FROM relationships WHERE reader_id = #{user.id} AND votes_value < -2) AND #{self.table_name}.user_id != #{user.id}"] if user
     conditions << ["#{self.table_name}.user_id != #{tlog.id}"] if tlog
-    
-    
+
+
     ads = self.with_scope(:find => { :conditions => conditions.join(' AND ')}) do
       find(method, options)
     end
-    
+
     # увеличиваем счетчик показов если баннеры будут показыавться
     unless ads.empty?
       self.connection.update("UPDATE #{self.table_name} SET impressions = impressions + 1 WHERE id IN (#{ads.map(&:id).join(',')})")
@@ -32,12 +32,12 @@ class SocialAd < ActiveRecord::Base
 
     ads
   end
-  
-  
+
+
   def click!
     self.connection.update("UPDATE #{self.class.table_name} SET clicks = clicks + 1 WHERE id = #{self.id}")
   end
-  
+
   protected
     def validate
       errors.add('entry belongs to another user') unless user_id == entry.user_id

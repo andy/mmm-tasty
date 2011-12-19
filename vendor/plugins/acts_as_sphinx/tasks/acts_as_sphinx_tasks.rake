@@ -19,7 +19,7 @@ namespace :sphinx do
       system 'indexer --rotate --all'
     end
   end
-  
+
   desc "Start searchd server"
   task :start do
     if File.exists?('/var/run/searchd.pid')
@@ -31,7 +31,7 @@ namespace :sphinx do
       end
     end
   end
-  
+
   desc "Stop searchd server"
   task :stop do
     unless File.exists?('/var/run/searchd.pid')
@@ -42,7 +42,7 @@ namespace :sphinx do
       puts 'Sphinx searchd server stopped.'
     end
   end
-  
+
   desc "Restart searchd server"
   task :restart => [:stop, :start]
 end

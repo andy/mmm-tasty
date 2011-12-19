@@ -8,7 +8,7 @@ This plugin makes it easy to page through your model instances by enhancing the 
 :first   => The first page. Optional, defaults to the current page.
 :auto    => Automatically load the next page during invocation of #each. Defaults to false.
 :count   => Number of records used to determine #page_count. Specifying this
-            option prevents the plugin from running a count query, which may 
+            option prevents the plugin from running a count query, which may
             be helpful if the table to be queried is very large.
 
 Note: if :page is specified, then the :offset option is not supported and an Exception to that effect will be raised.
@@ -43,13 +43,13 @@ Some handy methods you can call on the result returned by #find, when paging is 
 
 # Get the first page of 'new' Cogs. Each page contains
 # 10 cogs, and no more than 100 cogs will be returned.
-cogs = Cog.find(:all, 
+cogs = Cog.find(:all,
                 :page,
                 :conditions => ["category = 'new'"],
                 :limit => 100)
 
 # Print the name of each cog on the 1st page. Calling #each
-# more than once will cause the 1st page to be printed for 
+# more than once will cause the 1st page to be printed for
 # each invocation.
 cogs.each { |cog| puts cog.name }
 
@@ -65,10 +65,10 @@ cogs.each { |cog| puts cog.name }
 
 - Scope Example -------------------------------------------------------
 
-# Get the second page of 'new' Cogs, using the #with_scope method. 
+# Get the second page of 'new' Cogs, using the #with_scope method.
 # Each page contains 15 cogs, and no more than 100 cogs will be returned.
 Cog.with_scope(:find => {:conditions => "category = 'new'", :include => :widget}) do
-  cogs = Cog.find(:all, 
+  cogs = Cog.find(:all,
                   :limit => 100,
                   :page => { :start => 1,
                              :current => 2,
@@ -78,8 +78,8 @@ end
 # Print the name of each cog on the 2nd page.
 cogs.each { |cog| puts cog.name }
 
-# Move to the 3rd page of cogs. The options specified by 
-# with_scope apply, even though a new page is loaded outside 
+# Move to the 3rd page of cogs. The options specified by
+# with_scope apply, even though a new page is loaded outside
 # the with_scope block.
 cogs.next_page!
 

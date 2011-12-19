@@ -8,7 +8,7 @@ class CreateFeedbacks < ActiveRecord::Migration
       t.column :is_public, :boolean, :null => false, :default => 0
       t.column :is_moderated, :boolean, :null => false, :default => 0
     end
-    
+
     add_index :feedbacks, [:user_id], :unique => true
     add_index :feedbacks, [:is_public, :created_at]
     add_index :feedbacks, [:is_moderated, :created_at]

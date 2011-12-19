@@ -9,7 +9,7 @@ class CreateTlogDesignSettings < ActiveRecord::Migration
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
     end
-    
+
     add_index :tlog_design_settings, [:user_id], :unique => true
   end
 

@@ -31,7 +31,7 @@
 						  <div class="content">
 								<%= yield :sidebar %>
 						  </div>
-						</div>								
+						</div>
 					</div>
 					<div class='show_sidebar' id='show_sidebar' style='<%= current_site.tlog_settings.sidebar_is_open? ? 'display: none' : 'display: block' %>' onclick='new Effect.Move("show_sidebar", { x: -25, duration: 0.2, afterFinish: function() { $("show_sidebar").hide(); $("tlog_sidebar_content").show(); new Effect.Move("tlog_sidebar", { x: 216, duration: 0.3 }); } });'>i</div>
 				</div>
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 		<%= render 'globals/foot' %>
-	</div>	
+	</div>
 	<%= render 'globals/top_nav' %>
 </body>
 </html>

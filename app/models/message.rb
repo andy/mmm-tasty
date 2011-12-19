@@ -11,14 +11,14 @@ class Message < ActiveRecord::Base
   def self.find_for_user(options)
     site = options.delete(:site)
     user = options.delete(:user)
-    
+
     conditions = ["user_id = #{site.id}"]
     if !user
       conditions << "is_private = 0"
     elsif site.id != user.id
       conditions << "(is_private = 0 OR sender_id = #{user.id})"
     end
-  
+
     options[:conditions] = conditions.join(' AND ')
     options[:order] = 'messages.id DESC'
     find(:all, options)

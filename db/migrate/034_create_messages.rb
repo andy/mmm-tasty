@@ -9,11 +9,11 @@ class CreateMessages < ActiveRecord::Migration
       # закрытый / удаленный комменатрий
       t.column :is_private, :boolean, { :default => false, :null => false }
       t.column :is_disabled, :boolean, { :default => false, :null => false }
-      
+
       t.column :created_at, :timestamp, { :null => false }
       t.column :updated_at, :timestamp
     end
-    
+
     add_index :messages, [:user_id]
   end
 
